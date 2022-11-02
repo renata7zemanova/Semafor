@@ -137,9 +137,20 @@ o této hodnotě \cite{rezistorova_rada}. Odpovídá tomu nabíjecí proud 1015 
 
 %rovnice 1218/1200 = 1.015 A = 1015 mA
 
-Tento nabíjecí obvod má možnost indikace nabíjení baterií a dokončení nabíjení. Tato indikace je realizována pomocí 2 LED připojených přes pull-up rezistor. Červená 
-LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje dokončené nabíjení a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu 
-připojeny katodou. 
+Vstupní a výstupní kondenzátory slouží pro filtaci zákmitů napájecího napětí a také napětí, kterým je nabíjena baterie. Hodnoty kondenzátorů byly převzaty
+z doporučení z datasheetu.
+
+Kladný pól nabíjené baterie je připojen na pinu BAT, záporný pól je připojen ke GND. 
+%do zkratek přidat GND
+
+Tento nabíjecí obvod má možnost indikace nabíjení baterií a dokončení nabíjení. Tato indikace je realizována pomocí 2 LED připojených přes pull-up rezistor. Hodnota
+pull-up rezistoru byla převzata z doporučení z datasheetu. Červená LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje dokončené nabíjení 
+a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu připojeny katodou. 
+
+Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač teploty. Tento snímač je připojen
+na baterii. V této práci není měření teploty baterií využíváno, a proto není pin obvodu TEMP nikam připojen. 
+
+%obrázek z datasheetu, kde je připojeno i meření teploty
 
 \section{Konektor}
 Jako nabíjecí a zároveň programovací konektor byl zvolen konektor USB typu C.
@@ -155,4 +166,12 @@ se jedná o vítaný bonus. čš
 
 Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}. %jmenuje se to USB protokol?
 
+%o rezistorech 5,1k
+
 %na konci bude muset být blokové schéma konkrétních (vybraných) modulů
+
+%popsat převodník komunikačních úrovní pro LED a Mikrokontrolér
+
+%power led pro první prototyp, potom nebudou, kvůli šetření energie, protože je to na baterky a mohlo by to při hrách hráče mást
+
+%zvyšovač napětí z 3V3 na 5V
