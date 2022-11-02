@@ -803,7 +803,7 @@
   (symbol (lib_id "power:+5V") (at 54.61 45.72 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid cfc7d541-1125-4f90-bacf-f375dfe3c509)
-    (property "Reference" "#PWR?" (id 0) (at 54.61 49.53 0)
+    (property "Reference" "#PWR0163" (id 0) (at 54.61 49.53 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (id 1) (at 54.61 42.1442 0))
