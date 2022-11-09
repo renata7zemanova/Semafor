@@ -7,6 +7,7 @@ voděodolnost
 %bude tady také blokové schéma
 
 \section{Mikrokontrolér}
+Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}.
 
 \section{LED}
 Jendím z nejdůležitějších požadavků na Semafor je, aby mohl svítit. Čím více možností, jak svítit, tím bude využití 
@@ -44,8 +45,19 @@ U tlačítka NC je to přesně naopak. %upravit
 
 %sem přidat fotku vnitřku mechanického tlačítka
 
-Kapacitní tlačítka jsou tvořena měděnou vrstvou (nejčastěji spirálou) a nejsou nijak mechanicky namáhána.
+Kapacitní tlačítka jsou tvořena měděnou vrstvou a nejsou nijak mechanicky namáhána. Tlačítko může být zmáčknuto i přes 
+obal krabičky, a proto může být celé zařízení mechanicky odolné i voděodolné. 
 
+Nevýhodou kapacitních tlačítek je, že nemají žádnou odezvu na dotyk. U mechanických tlačítek je odezvou samotný fyzický 
+stisk tlačítka. U kapacitních tlačítek lze tento fakt vyřešit například rozsvícením LED nebo vibrační odezvou. Vibrační 
+odezva může být realizována pomocí vibračního motoru. Některé MCU včetně vybraného mikrokontroléru ESP32-C3 nemají kapacitní
+vstupy, to znamená, že tlačítko nelze připojit přímo k pinu MCU. Buď musí být vybrán mikrokonrolér, který kapacitní vstupy má,
+nebo může být použit převodník, který má kapacitní vstupy a jeho výstupy poté mohou být připojeny k MCU. 
+
+V návrhu Semaforu byla zvolena kapacitní dotyková tlačítka. Pro možnost použití uvnitř i venku jsou díky možnosti voděodolnosti 
+vhodnějším řešením. Také označení tlačítka může být variabilní, protože může být na DPS v místě tlačítka vyznačeno barevně, nebo 
+např. samolepkou. Odezva na dotyk se realizuje pomocí vibračního motoru. Ke čtení dotykových tlačítek je využit převodník. 
+%realizace velikosti, proč centrální tlačítko větší
 
 \subsection{Princip kapacitních dotykových tlačítek}
 Základní princip je založen na měření změny kapacity. Měď, ze které je tlačítko vytvořeno má
@@ -66,24 +78,19 @@ dotyku \cite{PrincipKapTl}. S rostoucí tloušťkou izolační vrstvy se naopak 
 Pokud jsou tlačítka příliš blízko u sebe, tak může docházet k jejich vzájemnému ovlivňování. Kvůli tomu pak může docházet k
 detekci dotyku špatného tlačítka, nebo k falešné detekci dotyku. Z doporučení plyne, že pro dotyk prstu je vhodná velikost snímací 
 plochu pro prst 13~$\times$~13 mm a jejich vzdálenost alespoň 5 mm od sebe \cite{PrincipKapTl}. Proti vzájemnému ovlivňování tlačítek
-se používají uzemňovací meziplošky \cite{PrincipKapTl}.
+se používají uzemňovací meziplošky \cite{PrincipKapTl}. 
 
 %sem dát obrázek, kde je ukázán návrh GND meziplošek
 
 U kapacitních dotykových tlačítek je zapotřebí dbát na správné připojení k MCU. U vícevrstvých DPS nesmí pod tlačítky, ani pod přívody
 k MCU, vést jiné dráhy, ani se zde nesmí vyskytovat jiné součástky \cite{PrincipKapTl}. Součástky nesmí být ani z vrchní, ani ze spodní 
-strany DPS \cite{PrincipKapTl}.
+strany DPS \cite{PrincipKapTl}. Přívody kapacitních tlačítek k MCU by měly být odstíněny pomocí GND signálu.
 
 Voda a další nečistoty mění vlastní kapacitu tlačítka a může tak docházet k falešným stiskům tlačítka. Tento problém lze řešit softwarově. 
 Lze využít faktu, že nečistoty působí dlouhodobě, ale stisk je krátkodobý \cite{PrincipKapTl}. Hodnotu vlastní kapacity tlačítka je tedy
-možné softwarově upravovat v závislosti na aktuálních dlouhodobějších stavech a detekovat tak přesněji krátkodobý stisk tlačítka. 
+možné softwarově upravovat v závislosti na aktuálních dlouhodobějších stavech a detekovat tak přesněji krátkodobý stisk tlačítka.
 
-%že jsem zvolila kapacitní tlačítka a proč
-
-
-%dát do zkratek MCU, DPS, GPIO
-
-
+%dát do zkratek MCU, DPS, GPIO, LED, GND
 
 \begin{figure}[!h]
     \begin{center}
@@ -94,6 +101,52 @@ možné softwarově upravovat v závislosti na aktuálních dlouhodobějších s
 
 Pro odlišení tlačítek je místo označeno barevným potiskem. 
 
+\section{Vibrační motor}
+Vibrační motory jsou založeny na principu kmitání. Motor je připevněn k zařízení, které je kmitáním rozvibrováno. Vibrační motory jsou dnes 
+nedílnou součástí mnoha elektronických zařízení včetně mobilního telefonu nebo dětských hraček. 
+
+Dioda slouží jako ochrana proti přepětí, protože motor je indukční zátěž, takže vytváří napěťové špičky. Díky diodě je mikrokonrolér chráněn 
+proti špičkovému napětí, které by se na něj mohlo dostat. Kondenzátor slouží k tomu, aby napěťové špičky eliminovat, nebo alespoň zmenšoval. 
+
+Vibrační motor je připojen k mikrokontroléru přes tranzistor, protože maximální výstupní proud z pinu MCU není dostatečně velký na to, aby 
+motor roztočil. Tranzistor je tedy připojen na gate tranzistoru, který se při logické jedničce na pinu sepne a motorem protéká proud, který 
+nedodává MCU, ale zdroj 3.3 V (v tomto případě baterie LiFePO4). Baterie tak dokáže dodat dostatek proudu, aby se motor roztočil. 
+
+Pro Semafor byl vybrán vibrační motor LCM1020A2945F. Tento motor má maximální požadovaný proud 120 mA \cite{vib_motor_dtsh}. Maximální proud, 
+který lze odebírat z pinu mikrokontroléru ESP32-C3, je 40 mA \cite{ESP_C3_dtsh}. Vibrační motor lze pouze spínat, nebo je možné jej připojit 
+k pinu, který dokáže generovat PWM a lze tím regulovat jeho otáčky. 
+
+Vibrační motor slouží jako odezva na dotyk kapacitního tlačítka. 
+
+%obrázek schéma zapojení + asi fotka vybraného motoru
+
+\section{Převodník pro kapacitní tlačítka}
+Vybraný mikrokonrolér ESP32-C3 nemá kapacitní vstupy, proto je zapotřebí kapacitní dotyková tlačítka připojit přes převodník. Je zapotřebí připojit 
+5 tlačítek. 
+%jaké byly možnosti 
+%zmínit se i o TTP224?
+%má 4 vstupy, ale já potřebuji 5 tlačítek
+
+Použitý převodník AT42QT1070 dokáže pracovat ve 2 režimech. V prvním režimu může být zapojeno maximálně 5 kapacitních tlačítek, která jsou připojena
+k pinům KEY0 až KEY4. Jako výstup se používají piny OUT0 až OUT4. Každé tlačítko má tedy svůj výstup, který může být připojen k GPIO pinům MCU 
+nebo k nim mohou být připojeny např. LED \cite{conv_cap_but_AT42QT1070_dtsh}. 
+
+Druhý režim je využitelný pouze v případě, je-li převodník připojen k MCU. Vtomto případě může být k převodníku připojeno až 7 kapacitních tlačítek, 
+která jsou připojena na pinech KEY0 až KEY6. Převodník poté komunikuje s MCU pomocí komunikační sběrnice I2C \cite{conv_cap_but_AT42QT1070_dtsh}. 
+Z registru převodníku lze poté vyčíst stavy daných kapacitních dotykových tlačítek. 
+
+Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici I2C, tak bylo využito právě zapojení s komunikací 
+přes I2C. Díky tomu budou využity pouze 2 GPIO piny mikrokonroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
+sběrnici I2C.
+
+Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči zemi, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
+R17 a R18 slouží jako pull-up rezistory při komunikaci pomocí sběrnice I2C s mikrokonrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
+dotyková tlačítka.  
+%proč je MODE na zemi
+%proč nepoužívám pin /CHANGE?
+%obrázek - schéma
+
+
 \section{Baterie}
 Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Požadavkem je také možnost nabíjení, protože není žádoucí, aby si uživatel
 baterie měnil. Při použití na táboře by také musely být stále nové baterie v balení a musely by se neustále doplňovat a udržovat.
@@ -102,7 +155,8 @@ Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_
 
 Z nabíjecích baterií je možno vybírat z nabíjecích tužkových baterií (Ni-MH), Li-Ion, Li-Pol a LiFePO4 baterií.
 %Ni-MH
-Baterie Ni-MH mají jmenovité napětí 1,25 V, proto by bylo zapotřebí alespoň 3 článků spojených sériově, u kterých by navíc musel být stabilizátor
+Baterie Ni-MH mají jmenovité napětí 1,25 V. %citace
+Proto by bylo zapotřebí alespoň 3 článků spojených sériově, u kterých by navíc musel být stabilizátor
 na 3,3 V pro napájení mikrokontroléru. % a co inteligentní LED?
 %Li-Ion
 
@@ -114,7 +168,10 @@ LiFePO4 baterie mají jmenovité napětí v rozsahu %xyz V + citace.
 
 
 \section{Nabíjecí obvod}
-Nabíjecí obvody jsou závislé na konkrétním typu baterií, které budou nabíjeny. Vybraný typ baterií LiFePO4 lze nabíjet pomocí obvodu CN3058E \cite{charger_dtsh}. 
+Nabíjecí obvody jsou závislé na konkrétním typu baterií, které budou nabíjeny. Vzhledem k vybranému typu baterií LiFePO4 byly uvažovány pouze komerčně
+dostupné integrované obvody, které jsou určeny pro nabíjení tohoto typu baterií. 
+
+Vybraný typ baterií LiFePO4 lze nabíjet pomocí obvodu CN3058E \cite{charger_dtsh}. 
 %možná vyjmenovat další obvody a napsat proč tento
 
 Nabíjecí obvod CN3058E je určen pro nabíjení pouze LiFePO4 baterií a lze jím napájet právě 1 článek těchto baterií \cite{charger_dtsh}. Napájecí napětí tohoto 
@@ -147,10 +204,42 @@ Tento nabíjecí obvod má možnost indikace nabíjení baterií a dokončení n
 pull-up rezistoru byla převzata z doporučení z datasheetu. Červená LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje dokončené nabíjení 
 a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu připojeny katodou. 
 
-Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač teploty. Tento snímač je připojen
-na baterii. V této práci není měření teploty baterií využíváno, a proto není pin obvodu TEMP nikam připojen. 
+Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač teploty. 
+Tento snímač je připojen na baterii. V této práci není měření teploty baterií využíváno, a proto není pin obvodu TEMP nikam připojen. 
 
 %obrázek z datasheetu, kde je připojeno i meření teploty
+
+Pokud není baterie nabíjena, tak by svodový proud pinu BAT nabíjecího obvodu CN3058E vibíjel baterii. Svodový proud tohoto pinu je 3 $\mu$A \cite{charger_dtsh}. 
+Aby se baterie zbytečné navybíjela, tak je do obvodu připojen tranzistor Q2, který detekuje připojené napětí k nabíjecímu obvodu. Pokud je napětí připojeno, tak je 
+tranzistor otevřen a baterie je nabíjena. Pokud napětí připojeno není, tak je tranzistor uzavřen a baterie je díky tomu odpojena od nabíjecího obodu. Díky tomu 
+není vybíjena svodovým proudem pinu BAT. 
+
+\section{Zvyšovač napětí pro LED}
+Pro napájení vybraných inteligentních LED je zapotřebí napětí v rozsahu %xxx V proč chci vyrábět právě 5?
+
+Z komerčně dostupných integrovaných obvodů byl hledán zvyšovač napětí, který zvládne z 3,3 V vytvořit napětí 5 V a dodávat přitom alespoň 200 mA. %proč 180 mA
+Vyhovující těmto parametrům byly nalezeny obvody LT1930 a MCP1640. 
+
+%schéma zapojení z datasheetu
+
+Obvod LT1930 v doporučeném zapojení při vstupním napětí 3,3V vytváří výstupnní napětí o hodnotě 5 V s maximálním odběrem proudu 480 mA \cite{LT1930_dtsh}. Napájecí napětí 
+tohoto obvodu je v rozsahu 2,45 až 16 V, což vyhovuje napájecímu napětí z baterií LiFePO4 \cite{LT1930_dtsh}.
+%rozsah výstupního napětí
+%další důležité parametry
+
+Pin /SHDN slouží k zapínání a vypínání obvodu. Pomocí přiloženého napětí 2,4 V a více na tento pin je obvod zapnut \cite{LT1930_dtsh}. Pin SW slouží pro  připojení cívky, 
+případně diody, aby se snížilo elektromagnetické rušení \cite{LT1930_dtsh}. Pin FB slouží  pro zapojení zpětné vazby. Jeho referenční napětí je 1,255 V \cite{LT1930_dtsh}. 
+Slouží pro připojení odbočky z odporového děliče, díky čemuž je nastaveno výstupní napětí \cite{LT1930_dtsh}.
+%napsat vzorec jako rovnici V OUT = 1.255V(1 + R1/R2) a odcitovat
+
+%zvyšovač napětí z 3V3 na 5V
+% vzorec pro výpočet odporů
+
+%proč byl vybrán právě tento?
+
+%výběr diody
+%výběr cívky
+%schéma zapojení vybraného typu
 
 \section{Konektor}
 Jako nabíjecí a zároveň programovací konektor byl zvolen konektor USB typu C.
@@ -166,6 +255,7 @@ se jedná o vítaný bonus. čš
 
 Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}. %jmenuje se to USB protokol?
 
+%o transilech k USB + Shotkyny
 %o rezistorech 5,1k
 
 %na konci bude muset být blokové schéma konkrétních (vybraných) modulů
@@ -174,4 +264,4 @@ Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu 
 
 %power led pro první prototyp, potom nebudou, kvůli šetření energie, protože je to na baterky a mohlo by to při hrách hráče mást
 
-%zvyšovač napětí z 3V3 na 5V
+%zvukova sinalizace - piezo
