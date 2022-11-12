@@ -6,29 +6,139 @@ voděodolnost
 %tady musí být text
 %bude tady také blokové schéma
 
+\section{Bezdrátová komunikace}
+Použití na táborech a outdoorových akcích vyřadilo z výběru drátovou komunikaci. K DPS by muselo být ještě velké množství kabelů 
+o délce několika stovek metrů minimálně. Bezdrátová komunikace je z tohoto hlediska velmi praktická. Je to také moderní řešení 
+náležící dnešní době. 
+
+Jedním ze základních požadavků bylo, že jednotlivé DPS mezi sebou musí být schopny komunikovat. Vzhledem k použití na táborech 
+musel být vybrán komunikační protokol a následně k němu přizpůsoben hardware. 
+
+Práce tedy započala tím, že byla udělána rešerše existujících bezdrátových komunikačních protokolů a následně byly tyto protokoly 
+mezi sebou porovnány. Vzhledem k použití na outdoorových akcí byl kladem důraz na komunikační vzdálenost a náročnost na výkon, 
+jelikož zařízení je napájeno z baterií. 
+
+\subsection{WiFi}
+Komunikace pomocí WiFi sítě je jednou z nejznámějších a nejpoužívanějších bezdrátových komunikací užívaných širokou veřejností. 
+WiFi je dnes na každém pracovišti, na veřejných místech i v každé domácnosti. Využívána je především k připojení k internetu. 
+Přes WiFi lze přenášet velké objemy dat vysokou rychlostí. Pracuje v pásmech v okolí frekvencí 2,4 GHz a 5,0 GHz s dosahem 
+desítek až nižších stovek metrů \cite{Bezdrat_muni}.
+%doplnit
+
+Výhody \cite{Bezdrat_muni}:
+Pracuje v bezlicenčním pásmu %doplnit do textu
+Levná %doplnit do textu
+Velmi rozšířená
+
+Nevýhody \cite{Bezdrat_muni}:
+Omezený výkon - není možné pokrýt rozáhlejší oblasti %doplnit do textu
+%doplnit
+
+\subsection{Bluetooth}
+Bluetooth je také velmi rozšířenou technologií bezdrátové komunikace. V dnešní době rozšířené WiFi komunikace je ale na ústupu. Používá 
+se na přenos dat na krátké vzdálenosti. Běžně se využívala pro přenos fotografií z jednoho zařízení do druhého apod. V dnešní době se
+spíše využívá pro připojení bezdrátových periferií jako jsou bezdrátová sluchátka, myši a klávesnice. Tato technologie je zaměřena 
+především na nízkou spotřebu, i proto je komunikační vzdálenost maximálně 100 metrů \cite{Bezdrat_muni}. V praxi jde ale o nižsí desítky
+metrů. Bluetooth je také technologií pro propojení pouze 2 zařízení, kde jedno je tzv. master a druhý tzv. slave \cite{Bezdrat_muni}. 
+Jedno zařízení je tedy nadřazeno druhému. V případě telefonu a sluchátek je telefon nadřazený sluchátkům. 
+%doplnit
+
+Výhody:
+Nízká spotřeba
+
+Nevýhody:
+Krátký dosah
+Propojení pouze 2 zařízení
+%doplnit
+
+\subsection{NFC}
+NFC je jedna z novějších technologií, která se používá převážně při platbě kartou. Jde tedy o přenos malých objemů dat na velmi krátkou 
+vzdálenost, tj. do desítek centimetrů \cite{Bezdrat_muni}. NFC je technologií, kde stačí, aby pouze jedno zařízení mělo zdroj elektrické 
+energie \cite{Bezdrat_muni}. Druhé zařízení se chová jako anténa, ze které je možné vyčíst informace \cite{Bezdrat_muni}. Například při 
+platbě kartou v sobě karta nemá žádný zdroj energie, ale při přiložení k terminálu je pomocí elektromagnetické indukce vyčteno identifikační
+číslo karty. Díky tomu je možné zaplatit. 
+%doplnit
+
+Výhody \cite{Bezdrat_muni}
+Rychlost %doplnit do textu
+Možnost interakce se zařízeními bez vlastního zdroje elektrické energie
+
+Nevýhody \cite{Bezdrat_muni}
+Velmi krátká komunikační vzdálenost
+Komunikace pouze mezi dvěma zařízeními 
+Nízká rychlost přenosu
+Malý objem přenášených dat
+%doplnit
+%doplnit do zkratek NFC (Near Field Communication)
+
+\subsection{ZigBee}
+%doplnit
+
+%Velká přehledová tabulka s důležitými údaji od každého protokolu, aby bylo jasné, proč byla vybrána LoRa.
+
 \section{Mikrokontrolér}
+Požadavky na mikrokonrolér:
+Dostatečný počet GPIO %specifikovat minimum
+Dostatek paměti %lépe specifikovat
+WiFi
+ADC %pro senzor pro osvětlení
+Cena %rozumné hranice
+Periferie pro připojení pro LoRa modul
+
+Nice to have:
+USB rozhraní (nemusel by být použit převodník)
+Možnost režimu spánku %možná nepsat
+
+%proč jsem vybrala ESP
+%proč právě tento typ 
+%napsat přesné označení čipu - dále ž jen ESP32-C3
 Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}.
+%jaké má periferie
 
 \section{LED}
 Jendím z nejdůležitějších požadavků na Semafor je, aby mohl svítit. Čím více možností, jak svítit, tím bude využití 
 při hrách a táborových programech větší. K tomu jsou použity LED. Obyčejné LED mají pouze jednu barvu, kterou 
 mohou svítit. Existují také RBG LED, ale ty mají 4 vývody a každá LED tak zabírá 3 GPIO piny mikrokontroléru - jeden pin
 pro jednu barvu. K tomu by byl zapotřebí mikrokonrolér s velkým množství GPIO pinů a jeho programování by se tím značně 
-komplikovalo. Ani to není žádoucí, a proto byly použity programovatelné LED typu WS2812C. %citace
+komplikovalo. Ani to není žádoucí, a proto byly použity programovatelné LED typu WS2812C.
+
+Tyto programovatelné LED WS2812C lze spojovat za sebe, takže datový výstup jedné LED je připojen k datovému vstupu další 
+LED \cite{WS2812C_dtsh}. Takto lze spojit nekonečné množství těchto programovatelných LED a připojit je na jeden GPIO pin MCU. 
+Každá LED má pin pro vstupní napětí, GND, vstupní datový pin a výstupní datový pin. 
+
+Napájecí napětí těchto LED by se mělo pohybovat v rozmezí 4,5 až 5,5 V \cite{WS2812C_dtsh}. Kondenzátor u každé LED slouží pro 
+filtraci napájecího napětí. 
 
 %způsob programování (jak funguje použitá knihovna?)
 
-Tyto programovatelné LED WS2812C lze spojovat za sebe, takže datový výstup jedné LED je připojen k datovému vstupu další LED %citace
-Takto lze spojit nekonečné množství těchto programovatelných LED. 
-
 %obrázek spojení LED za sebe
 
-%napsat o jejich spotřebě
-%spočítat, jakou budou mít spotřebu celkem (všech 12) při bílé
+Komunikační napěťová úroveň logické jedničky těchto LED by měla být alespoň na úrovni 70 \% napájecího napětí \cite{WS2812C_dtsh}. 
+Protože použitý mikrokonrolér ESP32-C3 má komunikační napěťovou úroveň logické jedničky jeho napájecí napětí, což je 3 až 3,6 V, 
+tak je zapotřebí využít převodník napěťové úrovně \cite{ESP_C3_dtsh}. Komunikace je v tomto případě pouze jednosměrná, 
+to znamená, že MCU posílá data do LED, ale LED neposílají žádná data do MCU. Převodník je realizován unipolárním tranzistorem 
+a jedním pullup rezistorem. Rezistor je připojen pro k napájecímu napětí inteligentních LED WS2812C. 
+Tranzistor Q1 má gate připojený k napájecímu napětí MCU. Pokud bude mikrokonrolér do LED posílat logickou jedničku, tak bude rozdíl
+mezi gate a source 0 V. Tím pádem bude tranzistor uzavřený a tím se přes rezistor R4 připojí k LED jejich napájecí napětí. Toto napětí 
+je pro inteligentní LED logickou jedničkou. Pokud bude MCU posílat logickou nulu, tedy 0 V, tak je rozdíl napětí mezi gate a source 
+napájecí napětí mikrokontroléru. Tranzistor je tedy otevřený a tím se napětí 0 V dostane k inteligentním LED a na rezistoru se objeví
+úbytek napětí o velikosti napájecího napětí inteligentních LED. Napětí 0 V je logickou nulou i pro inteligentní LED. Tento převodník
+je určen pouze pro komunikaci jedním směrem. 
+
+%schéma převodníku 
+
+Tyto programovatelné LED mají maximální spotřebu 5 mA na jeden kanál. Při zapnutí všech kanálů (svícení bílou) je maximální
+spotřeba jedné LED 15 mA \cite{WS2812C_dtsh}. Pokud LED nesvítí, tak je její maximální klidový proud 0,3 mA \cite{WS2812C_dtsh}.
+Při použití 12 LED je tedy maximální odběr všech LED 180 mA.
 
 %do sekce o DPS se zmínit o jejich umístění - kruh, hodiny, proto 12 ks. (lze také rozdělit na 3 segmenty)
 
+
+
 \section{Tlačítka}
+Tlačítka jsou nezbytnými prvky pro ovládání Semaforu. Mohou sloužit pro přepínání módů, ovládání Semaforu jako takového nebo jako herní 
+součást. Ve hře mohou plnit úlohu přepínače režimů hry, zadávání kódů, určování směru apod. 
+
 Tlačítka mohou být realizována dvěma základními způsoby, mohou být elektromechanická, nebo kapacitní dotyková. 
 
 Dotyková plocha mechanického tlačítka je nevodivá, často plastová. 
@@ -57,7 +167,6 @@ nebo může být použit převodník, který má kapacitní vstupy a jeho výstu
 V návrhu Semaforu byla zvolena kapacitní dotyková tlačítka. Pro možnost použití uvnitř i venku jsou díky možnosti voděodolnosti 
 vhodnějším řešením. Také označení tlačítka může být variabilní, protože může být na DPS v místě tlačítka vyznačeno barevně, nebo 
 např. samolepkou. Odezva na dotyk se realizuje pomocí vibračního motoru. Ke čtení dotykových tlačítek je využit převodník. 
-%realizace velikosti, proč centrální tlačítko větší
 
 \subsection{Princip kapacitních dotykových tlačítek}
 Základní princip je založen na měření změny kapacity. Měď, ze které je tlačítko vytvořeno má
@@ -140,7 +249,7 @@ přes I2C. Díky tomu budou využity pouze 2 GPIO piny mikrokonroléru ESP32-C3 
 sběrnici I2C.
 
 Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči zemi, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
-R17 a R18 slouží jako pull-up rezistory při komunikaci pomocí sběrnice I2C s mikrokonrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
+R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice I2C s mikrokonrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
 dotyková tlačítka.  
 %proč je MODE na zemi
 %proč nepoužívám pin /CHANGE?
@@ -149,7 +258,10 @@ dotyková tlačítka.
 
 \section{Baterie}
 Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Požadavkem je také možnost nabíjení, protože není žádoucí, aby si uživatel
-baterie měnil. Při použití na táboře by také musely být stále nové baterie v balení a musely by se neustále doplňovat a udržovat.
+baterie měnil. Při použití na táboře by také musely být stále nové baterie v balení a musely by se neustále doplňovat a udržovat.)
+%další důvody, proč nabíjecí baterku
+
+%kapacita baterie - jak dlouho by měla vydržet
 
 Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
 
@@ -170,6 +282,7 @@ LiFePO4 baterie mají jmenovité napětí v rozsahu %xyz V + citace.
 \section{Nabíjecí obvod}
 Nabíjecí obvody jsou závislé na konkrétním typu baterií, které budou nabíjeny. Vzhledem k vybranému typu baterií LiFePO4 byly uvažovány pouze komerčně
 dostupné integrované obvody, které jsou určeny pro nabíjení tohoto typu baterií. 
+%ještě TP5000 zmínit? - zkontrolovat jestli je opravdu na pro LiFePO4
 
 Vybraný typ baterií LiFePO4 lze nabíjet pomocí obvodu CN3058E \cite{charger_dtsh}. 
 %možná vyjmenovat další obvody a napsat proč tento
@@ -200,8 +313,8 @@ z doporučení z datasheetu.
 Kladný pól nabíjené baterie je připojen na pinu BAT, záporný pól je připojen ke GND. 
 %do zkratek přidat GND
 
-Tento nabíjecí obvod má možnost indikace nabíjení baterií a dokončení nabíjení. Tato indikace je realizována pomocí 2 LED připojených přes pull-up rezistor. Hodnota
-pull-up rezistoru byla převzata z doporučení z datasheetu. Červená LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje dokončené nabíjení 
+Tento nabíjecí obvod má možnost indikace nabíjení baterií a dokončení nabíjení. Tato indikace je realizována pomocí 2 LED připojených přes pullup rezistor. Hodnota
+pullup rezistoru byla převzata z doporučení z datasheetu. Červená LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje dokončené nabíjení 
 a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu připojeny katodou. 
 
 Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač teploty. 
@@ -259,8 +372,6 @@ Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu 
 %o rezistorech 5,1k
 
 %na konci bude muset být blokové schéma konkrétních (vybraných) modulů
-
-%popsat převodník komunikačních úrovní pro LED a Mikrokontrolér
 
 %power led pro první prototyp, potom nebudou, kvůli šetření energie, protože je to na baterky a mohlo by to při hrách hráče mást
 
