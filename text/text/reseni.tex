@@ -25,13 +25,18 @@ Přes WiFi lze přenášet velké objemy dat vysokou rychlostí. Pracuje v pásm
 desítek až nižších stovek metrů \cite{Bezdrat_muni}.
 %doplnit
 
-Výhody \cite{Bezdrat_muni}:
-Pracuje v bezlicenčním pásmu %doplnit do textu
-Levná %doplnit do textu
-Velmi rozšířená
+Výhody bezdrátové technologie WiFi jsou \cite{Bezdrat_muni}:
+\begin{itemize}
+  \item pracuje v bezlicenčním pásmu, %doplnit do textu
+  \item levná, %doplnit do textu
+  \item velmi rozšířená.
+\end{itemize}
 
-Nevýhody \cite{Bezdrat_muni}:
-Omezený výkon - není možné pokrýt rozáhlejší oblasti %doplnit do textu
+Nevýhody jsou \cite{Bezdrat_muni}:
+\begin{itemize}
+  \item omezený výkon (není možné pokrýt rozáhlejší oblasti), %doplnit do textu
+  \item vyšší spotřeba energie.
+\end{itemize}
 %doplnit
 
 \subsection{Bluetooth}
@@ -43,12 +48,16 @@ metrů. Bluetooth je také technologií pro propojení pouze 2 zařízení, kde 
 Jedno zařízení je tedy nadřazeno druhému. V případě telefonu a sluchátek je telefon nadřazený sluchátkům. 
 %doplnit
 
-Výhody:
-Nízká spotřeba
+Výhody bezdrátové technologie Bluetooth jsou \cite{Bezdrat_muni}:
+\begin{itemize}
+  \item nízká spotřeba.
+\end{itemize}
 
-Nevýhody:
-Krátký dosah
-Propojení pouze 2 zařízení
+Nevýhody jsou \cite{Bezdrat_muni}:
+\begin{itemize}
+  \item krátký dosah,
+  \item možnost propojení pouze 2 zařízení.
+\end{itemize}
 %doplnit
 
 \subsection{NFC}
@@ -59,25 +68,58 @@ platbě kartou v sobě karta nemá žádný zdroj energie, ale při přiložení
 číslo karty. Díky tomu je možné zaplatit. 
 %doplnit
 
-Výhody \cite{Bezdrat_muni}
-Rychlost %doplnit do textu
-Možnost interakce se zařízeními bez vlastního zdroje elektrické energie
+Výhody bezdrátové technologie NFC jsou \cite{Bezdrat_muni}:
+\begin{itemize}
+  \item rychlost, %doplnit do textu
+  \item možnost interakce se zařízeními bez vlastního zdroje elektrické energie.
+\end{itemize}
 
-Nevýhody \cite{Bezdrat_muni}
-Velmi krátká komunikační vzdálenost
-Komunikace pouze mezi dvěma zařízeními 
-Nízká rychlost přenosu
-Malý objem přenášených dat
+Nevýhody jsou \cite{Bezdrat_muni}:
+\begin{itemize}
+  \item velmi krátká komunikační vzdálenost,
+  \item možnost komunikace pouze mezi dvěma zařízeními, 
+  \item nízká rychlost přenosu,
+  \item malý objem přenášených dat.
+\end{itemize}
 %doplnit
-%doplnit do zkratek NFC (Near Field Communication)
+%doplnit do zkratek NFC (Near Field Communication), WiFi (Wireless Fidelity)
 
-\subsection{ZigBee}
+\subsection{ZigBee} %mozna cele smazat
+ZigBee technologie je používána pro vytvoření malých sítí, kde může signál snadno přeskakovat z jednoho zařízení na druhé \cite{ZigBee_smart}.
+Není přitom zapotřebí, aby bylo každé zařízení připojeno k internetu pomocí WiFi \cite{ZigBee_smart}. Pro komunikaci je ale zapotřebí centrální 
+rozbočovač, kterž zajišťuje komunikaci mezi zařízeními \cite{ZigBee_smart}. Tato technologie je určena pro tvorbu rozsáhlejších bezdrátových sítí
+s přenosem menšího objemu dat \cite{ZigBee_smart}. Jedná se o spolehlivou technologii s nenáročnou implementací a nízkou spotřebou elektrické energie 
+\cite{ZigBee_smart}. Díky ZigBee může mít uživatel v jedné aplikaci zařízení 
+od různých značek a výrobců, protože právě ZigBee zajišťuje jejich vzájemnou komunikaci \cite{ZigBee_smart}.
+%doplnit
+
+Výhody bezdrátové technologie ZigBee jsou \cite{ZigBee_smart}:
+\begin{itemize}
+  \item nízká spotřeba elektrické energie,
+  \item spolehlivost, 
+  \item nenáročná implementace.
+\end{itemize}
+
+Nevýhody jsou \cite{ZigBee_smart}:
+\begin{itemize}
+  \item nutnost centrálního rozbočovače.
+\end{itemize}
 %doplnit
 
 %Velká přehledová tabulka s důležitými údaji od každého protokolu, aby bylo jasné, proč byla vybrána LoRa.
 
 \section{Mikrokontrolér}
-Požadavky na mikrokonrolér:
+Faktory ovlivňující výběr řídicího mikrokonroléru:
+\begin{itemize}
+  \item dostatečný počet GPIO pinů,
+  \item dostatek paměti,
+  \item WiFi,
+  \item ADC,
+  \item cena,
+  \item periferie pro připojení Lora modulu.
+\end{itemize}
+
+%do zkratek ZigBee, GPIO, ADC
 Dostatečný počet GPIO %specifikovat minimum
 Dostatek paměti %lépe specifikovat
 WiFi
@@ -89,9 +131,14 @@ Nice to have:
 USB rozhraní (nemusel by být použit převodník)
 Možnost režimu spánku %možná nepsat
 
+
+Jedním z požadavků na mikrokonrolér byla zabudování WiFi. Asi nejznámnějšími mikrokonroléry s WiFi jsou ESP32 od firmy 
+Espressif. Mikrokontroléry ESP32 jsou dostupné v různých variantách, ale všechny mají WiFi a dělají se i ve variantách 
+se zabudovanou anténou. 
 %proč jsem vybrala ESP
 %proč právě tento typ 
 %napsat přesné označení čipu - dále ž jen ESP32-C3
+
 Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}.
 %jaké má periferie
 
@@ -201,12 +248,12 @@ možné softwarově upravovat v závislosti na aktuálních dlouhodobějších s
 
 %dát do zkratek MCU, DPS, GPIO, LED, GND
 
-\begin{figure}[!h]
-    \begin{center}
-      \includegraphics[scale=0.5]{obrazky/ZlepseneWilsonovoZrcadloNPN}
-    \end{center}
-    \caption[Alenčino zrcadlo]{Zlepšené Wilsonovo proudové zrcadlo.}
-  \end{figure}
+%\begin{figure}[!h]
+%    \begin{center}
+%      \includegraphics[scale=0.5]{obrazky/ZlepseneWilsonovoZrcadloNPN}
+%    \end{center}
+%    \caption[Alenčino zrcadlo]{Zlepšené Wilsonovo proudové zrcadlo.}
+%  \end{figure}
 
 Pro odlišení tlačítek je místo označeno barevným potiskem. 
 
@@ -287,8 +334,13 @@ dostupné integrované obvody, které jsou určeny pro nabíjení tohoto typu ba
 Vybraný typ baterií LiFePO4 lze nabíjet pomocí obvodu CN3058E \cite{charger_dtsh}. 
 %možná vyjmenovat další obvody a napsat proč tento
 
+%napětí nastaveno na 3,6 V interně, ale lze jej nastavit pomocí externího odporu
+%nabíjecí proud se nastavuje externím rezistorem - není využito
+%při odpojení napájecího napětí přechází tento obvod do režimu spánku, takže je baterie vybíjena proudem menším než 3 uA
+%lze snímat teplotu na baterii
+
 Nabíjecí obvod CN3058E je určen pro nabíjení pouze LiFePO4 baterií a lze jím napájet právě 1 článek těchto baterií \cite{charger_dtsh}. Napájecí napětí tohoto 
-nabíjecího čipu se pohybuje mezi 3,8 až 6 V \cite{charger_dtsh}. Díky tomu lze použít, bez jakéhokoli napěťového převodníku, napájení z USB konektoru. 
+nabíjecího čipu se pohybuje mezi 3,8 až 6 V \cite{charger_dtsh}. Díky tomu lze přímo použít napětí z USB konektoru. 
 
 %popsat další vlastnosti 
 
@@ -328,31 +380,56 @@ tranzistor otevřen a baterie je nabíjena. Pokud napětí připojeno není, tak
 není vybíjena svodovým proudem pinu BAT. 
 
 \section{Zvyšovač napětí pro LED}
-Pro napájení vybraných inteligentních LED je zapotřebí napětí v rozsahu %xxx V proč chci vyrábět právě 5?
+Pro napájení vybraných inteligentních LED je zapotřebí napětí v rozsahu 4,5 až 5,5 V \cite{WS2812C_dtsh}. Použité baterie LiFePO4 mají napětí pouze 3,2 V, proto je 
+zapotřebí použít zvyšovač napětí. 
 
-Z komerčně dostupných integrovaných obvodů byl hledán zvyšovač napětí, který zvládne z 3,3 V vytvořit napětí 5 V a dodávat přitom alespoň 200 mA. %proč 180 mA
-Vyhovující těmto parametrům byly nalezeny obvody LT1930 a MCP1640. 
+Z komerčně dostupných integrovaných obvodů byl hledán zvyšovač napětí, který vytváří z napětí 3,3 V napětí 5 V a dodávat přitom do výstupu proud alespoň 200 mA. 
+Maximální odběr všech 12ti potřebných inteligentní LED má maximální odběr 180 mA. S rezervou je tedy zapotřebí proud alespoň 200 mA. Nalezené obvody, které vyhovují 
+těmto parametrům jsou LT1930 a MCP1640. 
 
-%schéma zapojení z datasheetu
+Obvod LT1930 v doporučeném zapojení při vstupním napětí 3,3V vytváří výstupní napětí o hodnotě 5 V s maximálním odběrem proudu 480 mA \cite{LT1930_dtsh}. Napájecí napětí 
+tohoto obvodu je v rozsahu 2,45 V až 16 V, což vyhovuje napájecímu napětí z baterií LiFePO4 \cite{LT1930_dtsh}.
 
-Obvod LT1930 v doporučeném zapojení při vstupním napětí 3,3V vytváří výstupnní napětí o hodnotě 5 V s maximálním odběrem proudu 480 mA \cite{LT1930_dtsh}. Napájecí napětí 
-tohoto obvodu je v rozsahu 2,45 až 16 V, což vyhovuje napájecímu napětí z baterií LiFePO4 \cite{LT1930_dtsh}.
-%rozsah výstupního napětí
-%další důležité parametry
-
-Pin /SHDN slouží k zapínání a vypínání obvodu. Pomocí přiloženého napětí 2,4 V a více na tento pin je obvod zapnut \cite{LT1930_dtsh}. Pin SW slouží pro  připojení cívky, 
-případně diody, aby se snížilo elektromagnetické rušení \cite{LT1930_dtsh}. Pin FB slouží  pro zapojení zpětné vazby. Jeho referenční napětí je 1,255 V \cite{LT1930_dtsh}. 
-Slouží pro připojení odbočky z odporového děliče, díky čemuž je nastaveno výstupní napětí \cite{LT1930_dtsh}.
-%napsat vzorec jako rovnici V OUT = 1.255V(1 + R1/R2) a odcitovat
-
-%zvyšovač napětí z 3V3 na 5V
-% vzorec pro výpočet odporů
+%krátký popis MCP1640
 
 %proč byl vybrán právě tento?
+%Pro realizaci Semaforu byl zvolen obvod LT1930, který XXX protože XXX
+%schéma zapojení vybraného typu
+
+Pin /SHDN slouží k zapínání a vypínání obvodu. Pomocí přiloženého napětí 2,4 V a více na tento pin je obvod zapnut \cite{LT1930_dtsh}. Pin SW slouží pro  připojení cívky, 
+případně diody, aby se snížilo elektromagnetické rušení \cite{LT1930_dtsh}. 
+
+Pin FB slouží  pro zapojení zpětné vazby. Jeho referenční napětí je musí být nastaveno v rozmezí 1,240 V až 1,270 V, typická hodnota je však 1,255 V \cite{LT1930_dtsh}. 
+Pro výstupní napětí 5 V byl zvolen rezistor R10 o hodnotě 13 k$\Omega$ z rezistorové řady E24 \cite{rezistorova_rada}. Řada E24 byla zvolena kvůli požadované přesnosti
+napětí na pinu FB obvodu LT1930. Napětí na rezistoru R10 musí být tedy 1.255 V. Na rezistoru R9 je tedy úbytek napětí 3,745 V. Pomocí trojčlenky byla dopočítána hodnota 
+rezistoru R9 dle rovnice:
+\begin{equation} 
+  R_{9}~=~\frac{R_{10}~\cdot~U_{R9}}{U_{R10}}~=~\frac{13~\cdot~3,745}{1,255}~=~38,79~\:k\Omega. 
+  \quad
+\label{eq:R9}
+\end{equation}
+
+Nejbližší hodnota rezistoru z rezistorové řady E24 je 39 k$\Omega$ \cite{rezistorova_rada}. Reálná hodnota napětí na rezistoru R10, tj. napětí na pinu FB byla dopočítána
+dle rovnice:
+\begin{equation} 
+  U_{R10}~=~\frac{U_{OUT}}{R_{9}~+~R_{10}}~\cdot~R_{10}~=~\frac{5}{39~+~13}~\cdot~13~=~1,25~V. 
+  \quad
+\label{eq:UR10}
+\end{equation}
+
+Napětí 1,25 V je v povoleném rozmezí napětí na pinu FB. 
+
+Přesné výstupní napětí se spočítá podle vzorce:
+\begin{equation} 
+  U_{OUT}~=~U_{FB}~\cdot~(1~+~\frac{R_{9}}{R_{10}})~=~1,25~\cdot~(1~+~\frac{39}{13})~=~5~V. 
+  \quad \quad \quad \quad \cite{LT1930_dtsh}
+\label{eq:VOUT_LT1930}
+\end{equation}
 
 %výběr diody
 %výběr cívky
-%schéma zapojení vybraného typu
+
+%moje schéma zapojení
 
 \section{Konektor}
 Jako nabíjecí a zároveň programovací konektor byl zvolen konektor USB typu C.
@@ -368,8 +445,10 @@ se jedná o vítaný bonus. čš
 
 Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}. %jmenuje se to USB protokol?
 
-%o transilech k USB + Shotkyny
+%o transilech k USB + Shotkyny (celkový odběr zařízení z USB - shotkyny na správný proud)
 %o rezistorech 5,1k
+
+%ke každé komponentě napsat odběr
 
 %na konci bude muset být blokové schéma konkrétních (vybraných) modulů
 
