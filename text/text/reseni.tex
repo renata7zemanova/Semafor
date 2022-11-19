@@ -91,13 +91,19 @@ rozbočovač, kterž zajišťuje komunikaci mezi zařízeními \cite{ZigBee_smar
 s přenosem menšího objemu dat \cite{ZigBee_smart}. Jedná se o spolehlivou technologii s nenáročnou implementací a nízkou spotřebou elektrické energie 
 \cite{ZigBee_smart}. Díky ZigBee může mít uživatel v jedné aplikaci zařízení 
 od různých značek a výrobců, protože právě ZigBee zajišťuje jejich vzájemnou komunikaci \cite{ZigBee_smart}.
+
+Technologie ZigBee je určeno primárně pro senzorové sítě v průmyslových aplikacích \cite{Bezdrat_muni}. Není vhodný pro práce s velkými objemy dat \cite{Bezdrat_muni}.
+Pracuje v bezlicenčním frekvenčním pásmu \cite{Bezdrat_muni}.
 %doplnit
+
+%Všechna zařízení jsou schopna komunikovat a být ovládána jedinou jednotkou.
 
 Výhody bezdrátové technologie ZigBee jsou \cite{ZigBee_smart}:
 \begin{itemize}
   \item nízká spotřeba elektrické energie,
   \item spolehlivost, 
-  \item nenáročná implementace.
+  \item nenáročná implementace,
+  \item pracuje v bezlicenčním frekvenčním pásmu. 
 \end{itemize}
 
 Nevýhody jsou \cite{ZigBee_smart}:
@@ -189,6 +195,12 @@ součást. Ve hře mohou plnit úlohu přepínače režimů hry, zadávání kó
 Tlačítka mohou být realizována dvěma základními způsoby, mohou být elektromechanická, nebo kapacitní dotyková. 
 
 Dotyková plocha mechanického tlačítka je nevodivá, často plastová. 
+
+Mechanické prvky jsou častým zdrojem problémů. Je tím omezena i životnost celého výrobku. Mechanická tlačítka zároveň generují zákmity, které 
+je nutno filtrovat nebo tvarovat do použitelné podoby. Nejjednodušším řešením je přidání kondenzátoru. Mechanická konstrukce tlačítek
+je složitá a finančně nákladná. Kapacitní tlačítka jsou bez veškerých mechanických prvků, zároveň jsou jednoduchá a mají téměř neomezenou 
+životnost. Jejich výstupní signál je bez jakýchkoli zákmitů nebo rušení. Kapacitní tlačítka lze snadno použít v mnoha aplikacích. 
+
 
 Mechanické tlačítko typu NO: %upravit
 
@@ -349,11 +361,27 @@ nabíjecího čipu se pohybuje mezi 3,8 až 6 V \cite{charger_dtsh}. Díky tomu 
 Tento nabíjecí obvod se vyrábí ve standardizovaném pouzdře SOP8 \cite{charger_dtsh}.
 
 \subsection{Zapojení nabíjecího obvodu}
-Rezistor připojený k pinu ISET slouží pro nastavení hodnoty nabíjecího proudu \cite{charger_dtsh}. V tomto zapojení byl počítán pro nabíjecí proud 1 A. 
+Rezistor připojený k pinu ISET slouží pro nastavení hodnoty nabíjecího proudu \cite{charger_dtsh}. V tomto zapojení byl počítán pro nabíjecí proud 1 A dle rovnice: 
+\begin{equation} 
+  I_{CH}~=~\frac{U_{ISET}}{R_{8}}~\cdot~1011. 
+  \quad \quad \quad \quad \quad \quad \cite{charger_dtsh}
+\label{eq:I_CH}
+\end{equation}
 
 %1218/1 = 1218 Ohm
 %rovnici + citace
 
+
+%jak zjistim napeti na tom pinu?
+Velikost rezistoru R8 byla počítána na velikost nabíjecího proudu 1 A dle následující rovnice:
+\begin{equation} 
+  R_{8}~=~\frac{U_{ISET}}{I_{CH}}~\cdot~1011~=~\frac{}{1}~\cdot~1011~=~XXX~\:k\Omega. 
+  \quad \quad \quad \quad \quad \quad \cite{charger_dtsh}
+\label{eq:I_CH}
+\end{equation}
+
+
+%tuto větu opravit
 Z výpočtu vyplývá, že rezistor by měl mít hodnotu 1218 $\Omega$. Nejbližší hodnota z rezistorové řady E12 je hodnota 1,2 k$\Omega$, proto byl také zvolen rezistor 
 o této hodnotě \cite{rezistorova_rada}. Odpovídá tomu nabíjecí proud 1015 mA, který nebude mít vliv na životnost baterií. 
 
@@ -362,19 +390,25 @@ o této hodnotě \cite{rezistorova_rada}. Odpovídá tomu nabíjecí proud 1015 
 Vstupní a výstupní kondenzátory slouží pro filtaci zákmitů napájecího napětí a také napětí, kterým je nabíjena baterie. Hodnoty kondenzátorů byly převzaty
 z doporučení z datasheetu.
 
-Kladný pól nabíjené baterie je připojen na pinu BAT, záporný pól je připojen ke GND. 
+Kladný pól nabíjené baterie je připojen na pinu BAT, záporný pól je připojen ke GND. Pin BAT poskytuje nabíjecí proud do baterie a zároveň poskytuje konstantní 
+nabíjecí napětí. V režimu spánku je svodový proud tohoto pinu 3 $\mu$A \cite{charger_dtsh}. 
 %do zkratek přidat GND
+
+Pin VIN slouží pro napájení vnitřního obvodu CN3058E. Je na něj přikládáno napájecí napětí z USB, tedy 5 V. Pokud napájecí napětí klesne na napětí o 10 mV nižší, 
+než je napětí na pinu BAT, tak vnitřní obvod přechází do režimu spánku \cite{charger_dtsh}. V tomto režimu klesá proud pinu BAT na méně než 3 $\mu$A \cite{charger_dtsh}.
 
 Tento nabíjecí obvod má možnost indikace nabíjení baterií a dokončení nabíjení. Tato indikace je realizována pomocí 2 LED připojených přes pullup rezistor. Hodnota
 pullup rezistoru byla převzata z doporučení z datasheetu. Červená LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje dokončené nabíjení 
 a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu připojeny katodou. 
 
-Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač teploty. 
-Tento snímač je připojen na baterii. V této práci není měření teploty baterií využíváno, a proto není pin obvodu TEMP nikam připojen. 
+Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu vstupní pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač 
+teploty. Tento snímač je připojen na baterii. Pokud je napětí na pinu TEMP nižší než 45 \% nebo vyšší než 80 \% úrovně napájecího napětí, tak je indikována moc nízká
+nebo moc vysoká teplota baterie a nabíjení je zastaveno \cite{charger_dtsh}. Jinak nabíjení pokračuje. Uzemněním pinu TEMP je funkce měření teploty deaktivována \cite{charger_dtsh}. 
+V této práci není měření teploty baterií využíváno, a proto je pin TEMP připojen ke GND. 
 
 %obrázek z datasheetu, kde je připojeno i meření teploty
 
-Pokud není baterie nabíjena, tak by svodový proud pinu BAT nabíjecího obvodu CN3058E vibíjel baterii. Svodový proud tohoto pinu je 3 $\mu$A \cite{charger_dtsh}. 
+Pokud není baterie nabíjena, tak by svodový proud pinu BAT nabíjecího obvodu CN3058E vybíjel baterii. Svodový proud tohoto pinu je 3 $\mu$A \cite{charger_dtsh}. 
 Aby se baterie zbytečné navybíjela, tak je do obvodu připojen tranzistor Q2, který detekuje připojené napětí k nabíjecímu obvodu. Pokud je napětí připojeno, tak je 
 tranzistor otevřen a baterie je nabíjena. Pokud napětí připojeno není, tak je tranzistor uzavřen a baterie je díky tomu odpojena od nabíjecího obodu. Díky tomu 
 není vybíjena svodovým proudem pinu BAT. 
@@ -399,7 +433,7 @@ tohoto obvodu je v rozsahu 2,45 V až 16 V, což vyhovuje napájecímu napětí 
 Pin /SHDN slouží k zapínání a vypínání obvodu. Pomocí přiloženého napětí 2,4 V a více na tento pin je obvod zapnut \cite{LT1930_dtsh}. Pin SW slouží pro  připojení cívky, 
 případně diody, aby se snížilo elektromagnetické rušení \cite{LT1930_dtsh}. 
 
-Pin FB slouží  pro zapojení zpětné vazby. Jeho referenční napětí je musí být nastaveno v rozmezí 1,240 V až 1,270 V, typická hodnota je však 1,255 V \cite{LT1930_dtsh}. 
+Pin FB slouží  pro zapojení zpětné vazby napětí na baterii. Jeho referenční napětí musí být nastaveno v rozmezí 1,240 V až 1,270 V, typická hodnota je však 1,255 V \cite{LT1930_dtsh}. 
 Pro výstupní napětí 5 V byl zvolen rezistor R10 o hodnotě 13 k$\Omega$ z rezistorové řady E24 \cite{rezistorova_rada}. Řada E24 byla zvolena kvůli požadované přesnosti
 napětí na pinu FB obvodu LT1930. Napětí na rezistoru R10 musí být tedy 1.255 V. Na rezistoru R9 je tedy úbytek napětí 3,745 V. Pomocí trojčlenky byla dopočítána hodnota 
 rezistoru R9 dle rovnice:
