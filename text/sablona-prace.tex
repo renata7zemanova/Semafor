@@ -145,23 +145,26 @@
 %% kazdopádně ale:
 %\setcounter{page}{1} %resetovaní čítače stránek -- desky do číslování nezahrnujeme
 
+\includepdf[pages=1]%    buďto generovaného informačním systémem
+  {pdf/Desky}
+
 %% Vložení titulního listu
 \includepdf[pages=1]%    buďto generovaného informačním systémem
-  {pdf/student-titulka}% název souboru nesmí obsahovat mezery!
+  {pdf/Titulni_strana_barevne}% název souboru nesmí obsahovat mezery!
 %% NEBO vytvoření titulní stránky z balíčku
 %\maketitle
 %%
-\oddpage  % při dvojstranném tisku se přidá prázdná stránka
+%\oddpage  % při dvojstranném tisku se přidá prázdná stránka
    
 %% Vložení zadání
 \includepdf[pages=1]%   buďto generovaného informačním systémem
-  {pdf/student-zadani}% název souboru nesmí obsahovat mezery!
+  {pdf/Zadani_CZ_barevne}% název souboru nesmí obsahovat mezery!
 %% NEBO lze vytvořit prázdný list příkazem ze šablony
 %\patternpage{}%
 %	{\sffamily\Huge\centering ZDE VLOŽIT LIST ZADÁNÍ}%
 %	{\sffamily\centering Z~důvodu správného číslování stránek}
 %%
-\oddpage% při dvojstranném tisku se přidá prázdná stránka
+%\oddpage% při dvojstranném tisku se přidá prázdná stránka
 
 %% Vysázení stránky s abstraktem
 \makeabstract
@@ -169,7 +172,7 @@
 % Vysázení stránky s rozšířeným abstraktem
 % (pokud píšete práci v češtině či slovenštině, vložení rozšířeného abstraktu zrušte;
 %  pro semestrální projekt také není potřeba rozšířený abstrakt uvádět)
-\input{text/rozsireny_abstrakt}
+%\input{text/rozsireny_abstrakt}
 
 %%% Vysázení citace práce
 \makecitation
@@ -182,18 +185,6 @@
 
 %%% Vysázení obsahu
 \tableofcontents
-
-%%% Vysázení seznamu obrázků
-% (vynechejte, pokud máte dva nebo méně obrázků)
-\listoffigures
-
-%%% Vysázení seznamu tabulek
-% (vynechejte, pokud máte dvě nebo méně tabulek)
-\listoftables
-
-%%% Vysázení seznamu výpisů kódu
-% (vynechejte, pokud máte dva nebo méně výpisů)
-\lstlistoflistings
 
 \cleardoublepage\pagestyle{plain}   % zapnutí číslování stránek
 
@@ -217,6 +208,18 @@
 
 %%% Vložení souboru 'text/literatura' se seznamem zdrojů
 \include{text/literatura}
+
+%%% Vysázení seznamu obrázků
+% (vynechejte, pokud máte dva nebo méně obrázků)
+\listoffigures
+
+%%% Vysázení seznamu tabulek
+% (vynechejte, pokud máte dvě nebo méně tabulek)
+\listoftables
+
+%%% Vysázení seznamu výpisů kódu
+% (vynechejte, pokud máte dva nebo méně výpisů)
+\lstlistoflistings
 
 %%% Vložení souboru 'text/zkratky' se seznam použitých symbolů, veličin a zkratek
 \include{text/zkratky}
