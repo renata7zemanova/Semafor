@@ -3,7 +3,14 @@ voděodolnost
 
 
 \chapter{Základní návrh}
-%tady musí být text
+Základní návrh se skládá především z výběru bezdrátové komunikace, která je klíčová. Díky ní budou moci Semafory komunikovat mezi 
+sebou, takže si například budou moci předávat informace o barvě, kterou svítí nebo stisku tlačítek apod. 
+
+Další nedílnou součástí je mikrokonrolér, který řídí veškerou činnost každého Semaforu. U Semaforu je také nutné řešit způsob napájení,
+takže i to je součástí návrhu.
+
+Celkový návrh obsahuje také výběr tlačítek, zvukových a vizuálních signalizací a potřebných převodníků. 
+
 %bude tady také blokové schéma
 
 \section{Bezdrátová komunikace}
@@ -17,6 +24,9 @@ musel být vybrán komunikační protokol a následně k němu přizpůsoben har
 Práce tedy započala tím, že byla udělána rešerše existujících bezdrátových komunikačních protokolů a následně byly tyto protokoly 
 mezi sebou porovnány. Vzhledem k použití na outdoorových akcí byl kladem důraz na komunikační vzdálenost a náročnost na výkon, 
 jelikož zařízení je napájeno z baterií. 
+
+Dalším požadavkem bylo bezdrátové nastavování, tedy připojení k Semaforu např. přes telefon a odeslání konfigurace. Nastavení hry,
+která se hraje a např. čas, jak dlouho se bude hrát, nebo v kolika týmech, je tedy zapotřebí také dělat bezdrátově. 
 
 \subsection{WiFi}
 Komunikace pomocí WiFi sítě je jednou z nejznámějších a nejpoužívanějších bezdrátových komunikací užívaných širokou veřejností. 
@@ -40,10 +50,10 @@ Nevýhody jsou \cite{Bezdrat_muni}:
 %doplnit
 
 \subsection{Bluetooth}
-Bluetooth je také velmi rozšířenou technologií bezdrátové komunikace. V dnešní době rozšířené WiFi komunikace je ale na ústupu. Používá 
-se na přenos dat na krátké vzdálenosti. Běžně se využívala pro přenos fotografií z jednoho zařízení do druhého apod. V dnešní době se
-spíše využívá pro připojení bezdrátových periferií jako jsou bezdrátová sluchátka, myši a klávesnice. Tato technologie je zaměřena 
-především na nízkou spotřebu, i proto je komunikační vzdálenost maximálně 100 metrů \cite{Bezdrat_muni}. V praxi jde ale o nižsí desítky
+Bluetooth je také velmi rozšířenou technologií bezdrátové komunikace. Používá se na přenos dat na krátké vzdálenosti. V dnešní době 
+rozšířené WiFi komunikace je její použití omezené. Běžně se využívala pro přenos fotografií z jednoho zařízení do druhého apod. V dnešní 
+době se spíše využívá pro připojení bezdrátových periferií jako jsou bezdrátová sluchátka, myši a klávesnice. Tato technologie je zaměřena 
+především na nízkou spotřebu, i proto je komunikační vzdálenost maximálně 100 metrů \cite{Bezdrat_muni}. V praxi jde ale o nižší desítky
 metrů. Bluetooth je také technologií pro propojení pouze 2 zařízení, kde jedno je tzv. master a druhý tzv. slave \cite{Bezdrat_muni}. 
 Jedno zařízení je tedy nadřazeno druhému. V případě telefonu a sluchátek je telefon nadřazený sluchátkům. 
 %doplnit
@@ -61,7 +71,7 @@ Nevýhody jsou \cite{Bezdrat_muni}:
 %doplnit
 
 \subsection{NFC}
-NFC je jedna z novějších technologií, která se používá převážně při platbě kartou. Jde tedy o přenos malých objemů dat na velmi krátkou 
+NFC je jedna z novějších technologií, která je známá především při použití platby kartou. Jde tedy o přenos malých objemů dat na velmi krátkou 
 vzdálenost, tj. do desítek centimetrů \cite{Bezdrat_muni}. NFC je technologií, kde stačí, aby pouze jedno zařízení mělo zdroj elektrické 
 energie \cite{Bezdrat_muni}. Druhé zařízení se chová jako anténa, ze které je možné vyčíst informace \cite{Bezdrat_muni}. Například při 
 platbě kartou v sobě karta nemá žádný zdroj energie, ale při přiložení k terminálu je pomocí elektromagnetické indukce vyčteno identifikační
@@ -112,7 +122,23 @@ Nevýhody jsou \cite{ZigBee_smart}:
 \end{itemize}
 %doplnit
 
+\subsection{LoRa}
+%co to je, 
+
+%výhody
+
 %Velká přehledová tabulka s důležitými údaji od každého protokolu, aby bylo jasné, proč byla vybrána LoRa.
+
+\subsection{Výběr bezdrátové technologie}
+Ke komunikaci Semaforů mezi sebou byla zvolena technologie LoRa. Tato technologie byla zvolena především kvůli komunikačnímu dosahu. Jedná se sice o dražší technologii, 
+ale na tolik, aby ji nebylo možné v tomto zařízení použít. Táborové hry se většinou hrají na loukách, které mají rozlohu několik stovek metrů čtverečných. LoRa je jedinou
+dostupnou technologií, která na tyto vzdálenosti spolehlivě komunikuje. Bezdrátové propojení Semaforů bude použito pro posílání informací o aktuálně svítící barvě, či 
+stisku tlačítka v závislosti na hře, která se aktuálně hraje. U některých her například může být žádoucí, aby po přepínání nesvítily všechny Semafory stejnou barvou,
+díky této komunikaci se bude moci být takovým stavům zabráněno. 
+
+K propojení Semaforu s telefonem a dalšími zařízeními byla vybrána technologie WiFi. Jedná se o rozšířenou technologii, která je v telefonech a noteboocích zabudovaná. 
+Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce. Mikrokontrolér vytvoří WiFi, ke které se pomocí telefonu připojí. Po připojení bude zobrazena
+webová stránka, kde bude seznam her, které Semafor umí. U jednotlivých her se poté budou moci nastavovat další parametry. Po nasatvení se komfigurace pošle do Semaforu. 
 
 \section{Mikrokontrolér}
 Faktory ovlivňující výběr řídicího mikrokonroléru:
@@ -149,15 +175,17 @@ Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}.
 %jaké má periferie
 
 \section{LED}
-Jendím z nejdůležitějších požadavků na Semafor je, aby mohl svítit. Čím více možností, jak svítit, tím bude využití 
-při hrách a táborových programech větší. K tomu jsou použity LED. Obyčejné LED mají pouze jednu barvu, kterou 
+Jendím z nejdůležitějších požadavků na Semafor bylo, aby mohl svítit. Čím více možností, jak svítit, tím bude využití 
+při hrách a táborových programech různorodější. K tomuto účelu jsou použity LED. Obyčejné LED mají pouze jednu barvu, kterou 
 mohou svítit. Existují také RBG LED, ale ty mají 4 vývody a každá LED tak zabírá 3 GPIO piny mikrokontroléru - jeden pin
-pro jednu barvu. K tomu by byl zapotřebí mikrokonrolér s velkým množství GPIO pinů a jeho programování by se tím značně 
-komplikovalo. Ani to není žádoucí, a proto byly použity programovatelné LED typu WS2812C.
+pro jednu barvu. K tomu by byl zapotřebí mikrokonrolér s velkým množství GPIO pinů. Takových mikrokonrolérů není mnoho a zároveň 
+by se to odrazilo na ceně. Počet GPIO pinů je jedním z hlavních limitujících faktorů při výběru MCU. Proto byly použity programovatelné 
+LED typu WS2812C.
 
 Tyto programovatelné LED WS2812C lze spojovat za sebe, takže datový výstup jedné LED je připojen k datovému vstupu další 
 LED \cite{WS2812C_dtsh}. Takto lze spojit nekonečné množství těchto programovatelných LED a připojit je na jeden GPIO pin MCU. 
-Každá LED má pin pro vstupní napětí, GND, vstupní datový pin a výstupní datový pin. 
+Každá LED má pin pro vstupní napětí, GND, vstupní datový pin a výstupní datový pin. Typ inteligentních LED WS2812C je vhodný pro 
+bateriová zařízení. Oproti častěji používanému typu WS2812B mají 3~$\times$~ menší spotřebu elektrické energie. 
 
 Napájecí napětí těchto LED by se mělo pohybovat v rozmezí 4,5 až 5,5 V \cite{WS2812C_dtsh}. Kondenzátor u každé LED slouží pro 
 filtraci napájecího napětí. 
@@ -192,49 +220,54 @@ Při použití 12 LED je tedy maximální odběr všech LED 180 mA.
 Tlačítka jsou nezbytnými prvky pro ovládání Semaforu. Mohou sloužit pro přepínání módů, ovládání Semaforu jako takového nebo jako herní 
 součást. Ve hře mohou plnit úlohu přepínače režimů hry, zadávání kódů, určování směru apod. 
 
-Tlačítka mohou být realizována dvěma základními způsoby, mohou být elektromechanická, nebo kapacitní dotyková. 
+Tlačítka mohou být realizována dvěma základními způsoby, mohou být elektromechanická, nebo dotyková kapacitní. 
 
-Dotyková plocha mechanického tlačítka je nevodivá, často plastová. 
+Stisková plocha mechanického tlačítka je nevodivá, často plastová. Mechanické prvky jsou častým zdrojem problémů. Je tím často omezena i 
+životnost celého výrobku. Mechanická konstrukce tlačítek je složitá a finančně nákladná. Mechanická tlačítka zároveň generují zákmity, které 
+je nutno filtrovat nebo tvarovat do použitelné podoby. Nejjednodušším řešením je přidání kondenzátoru. Mechanická tlačítka existují typu NO 
+a NC. 
 
-Mechanické prvky jsou častým zdrojem problémů. Je tím omezena i životnost celého výrobku. Mechanická tlačítka zároveň generují zákmity, které 
-je nutno filtrovat nebo tvarovat do použitelné podoby. Nejjednodušším řešením je přidání kondenzátoru. Mechanická konstrukce tlačítek
-je složitá a finančně nákladná. Kapacitní tlačítka jsou bez veškerých mechanických prvků, zároveň jsou jednoduchá a mají téměř neomezenou 
-životnost. Jejich výstupní signál je bez jakýchkoli zákmitů nebo rušení. Kapacitní tlačítka lze snadno použít v mnoha aplikacích. 
-
-Výhody kapacitních tlačítek jsou:
-\begin{itemize}
-  \item kompaktnost,
-  \item vysoká spolehlivost,
-  \item odolnost vůči šumu,
-  \item možnost kompenzace rušivých elementů,
-  \item cena. 
-\end{itemize}
-
-
-Mechanické tlačítko typu NO: %upravit
-
-Po zmáčknutí mechanického tlačítka jsou 2 kovové části tlačítka spojeny, tím dochází ke spojení elektrického obvodu 
-a odpor smyčky je v ideálním případě nulový. Tlačítko je tedy sepnuto. Když je tlačítko rozpojeno, tak je 
-elektrický obvod přerušen a odpor smyčky je v ideálním případě nekonečný.
-
-Mechanické tlačítko typu NC: %upravit
-
-U tlačítka NC je to přesně naopak. %upravit
+Po zmáčknutí mechanického tlačítka typu NO jsou 2 kovové části tlačítka spojeny, tím dochází ke spojení elektrického obvodu 
+a odpor smyčky je v ideálním případě nulový. Obvod je tedy sepnut. Když je tlačítko rozpojeno, tak je 
+elektrický obvod přerušen a odpor smyčky je v ideálním případě nekonečný. Obvod je tedy rozpojen. U tlačítka typu NC je to naopak. Při stisku 
+tlačítka je obvod rozepnut a při uvolnění stisku je obvod sepnut. 
 
 %sem přidat fotku vnitřku mechanického tlačítka
+
+Výhody mechanických tlačítek jsou:
+\begin{itemize}
+  \item jednoduché připojení ke každému GPIO mikrokonroléru,
+  \item odezva je samotný stisk tlačítka,
+  \item fyzické rozpojení obvodu.
+\end{itemize}
+
+Kapacitní tlačítka jsou bez veškerých mechanických prvků, zároveň jsou jednoduchá a mají téměř neomezenou 
+životnost. Jejich výstupní signál je bez jakýchkoli zákmitů nebo rušení. Kapacitní tlačítka lze snadno použít v mnoha aplikacích. 
 
 Kapacitní tlačítka jsou tvořena měděnou vrstvou a nejsou nijak mechanicky namáhána. Tlačítko může být zmáčknuto i přes 
 obal krabičky, a proto může být celé zařízení mechanicky odolné i voděodolné. 
 
 Nevýhodou kapacitních tlačítek je, že nemají žádnou odezvu na dotyk. U mechanických tlačítek je odezvou samotný fyzický 
 stisk tlačítka. U kapacitních tlačítek lze tento fakt vyřešit například rozsvícením LED nebo vibrační odezvou. Vibrační 
-odezva může být realizována pomocí vibračního motoru. Některé MCU včetně vybraného mikrokontroléru ESP32-C3 nemají kapacitní
-vstupy, to znamená, že tlačítko nelze připojit přímo k pinu MCU. Buď musí být vybrán mikrokonrolér, který kapacitní vstupy má,
-nebo může být použit převodník, který má kapacitní vstupy a jeho výstupy poté mohou být připojeny k MCU. 
+odezva může být realizována pomocí vibračního motoru. 
+
+Některé MCU včetně vybraného mikrokontroléru ESP32-C3 nemají kapacitní
+vstupy, to znamená, že tlačítko nelze připojit přímo k pinu MCU \cite{ESP_C3_dtsh}. Buď musí být vybrán mikrokonrolér, který kapacitní 
+vstupy má, nebo může být použit převodník, který má kapacitní vstupy a jeho výstupy poté mohou být připojeny k MCU. 
+
+Výhody kapacitních tlačítek jsou:
+\begin{itemize}
+  \item kompaktnost,
+  \item variabilita,
+  \item vysoká spolehlivost,
+  \item odolnost vůči šumu,
+  \item možnost kompenzace rušivých elementů,
+  \item cena. 
+\end{itemize}
 
 V návrhu Semaforu byla zvolena kapacitní dotyková tlačítka. Pro možnost použití uvnitř i venku jsou díky možnosti voděodolnosti 
-vhodnějším řešením. Také označení tlačítka může být variabilní, protože může být na DPS v místě tlačítka vyznačeno barevně, nebo 
-např. samolepkou. Odezva na dotyk se realizuje pomocí vibračního motoru. Ke čtení dotykových tlačítek je využit převodník. 
+vhodnějším řešením. Také velikost a označení tlačítka může být variabilní. Velikost může být na DPS navržena dle potřeby a potisk
+v místě tlačítka vyznačen barevně, nebo např. samolepkou. Odezva na dotyk bude realizována pomocí vibračního motoru.
 
 \subsection{Princip kapacitních dotykových tlačítek}
 Základní princip je založen na měření změny kapacity. Měď, ze které je tlačítko vytvořeno má
@@ -323,31 +356,64 @@ dotyková tlačítka.
 %proč nepoužívám pin /CHANGE?
 %obrázek - schéma
 
+\section{Napájení}
+Vzhledem k použití Semaforů při hrách na táborech byly možné pouze 2 způsoby napájení, pomocí powerbanky nebo baterií. Byla zvolena kombinace obou druhů.
 
-\section{Baterie}
-Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Požadavkem je také možnost nabíjení, protože není žádoucí, aby si uživatel
-baterie měnil. Při použití na táboře by také musely být stále nové baterie v balení a musely by se neustále doplňovat a udržovat.)
-%další důvody, proč nabíjecí baterku
+Zabudování baterie přináší kompaktnost řešení a pro použití není třeba dalších komponent. Pokud je ale na táboře větší využití, tak se baterie vybije.
+Na táborech většinou nebývá připojení k elektrické síti a proto je řešením powerbanka. Na Semaforu tedy bude napájecí vstup USB A pro nabíjení baterií
+přímo z powerbanky. Semafor musí být koncipován tak, aby se mohla baterie nabíjet a zároveň, aby při tom byly Semafory funkční.
+
+\subsection{Baterie}
+Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Požadavkem je také možnost nabíjení. Při použití na táboře by jinak musely být stále 
+nové baterie v balení a musely by se neustále doplňovat a udržovat.
+
+Moderní baterie jsou náchylné na přepólování, a proto není bezpečné, aby uživatel měnil baterie sám. Baterie budou tedy zabudované v zařízení bez možnosti 
+výměny uživatelem. 
 
 %kapacita baterie - jak dlouho by měla vydržet
 
-Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
-
-Z nabíjecích baterií je možno vybírat z nabíjecích tužkových baterií (Ni-MH), Li-Ion, Li-Pol a LiFePO4 baterií.
+Z nabíjecích baterií je možno vybírat z nabíjecích tužkových baterií (Ni-MH), olověné baterie, Li-Ion, Li-Pol a LiFePO4 baterií.
 %Ni-MH
 Baterie Ni-MH mají jmenovité napětí 1,25 V. %citace
 Proto by bylo zapotřebí alespoň 3 článků spojených sériově, u kterých by navíc musel být stabilizátor
 na 3,3 V pro napájení mikrokontroléru. % a co inteligentní LED?
-%Li-Ion
+%Olověné baterie
 
-%Li-Pol
-
-%LiFePO4
-LiFePO4 baterie mají jmenovité napětí v rozsahu %xyz V + citace.
+\subsubsection{Li-Pol}
 
 
+\subsubsection{Li-Ion}
 
-\section{Nabíjecí obvod}
+
+\subsubsection{LiFePO4}
+LiFePO4 baterie mají jmenovité napětí v rozsahu 3 až 3,3 V \cite{LiFePO4_malina}. Její minimální provozní napětí je pak 2,5 V a maximální je 3,65 V \cite{LiFePO4_malina}.
+LiFePO4 je dnes baterie známá jako nejbezpečnější, nejspolehlivější a nejstabilnější baterie obsahující lithium \cite{LiFePO4_malina}. Je to nejvhodnější baterie pro 
+přenosná zařízení díky velmi dobrému poměru valikosti (hmotnosti) a kapacity. Její životnost je až 4~$\times$ vetší než u baterie Li-Ion \cite{LiFePO4_malina}. Je také hodnocena
+jako nejbezpečnější z dosud dostupných baterií \cite{LiFePO4_malina}. Baterie LiFePO4 mohou standardně dosáhnout životnosti až 7000 cyklů, to odpovídá cca 15 letům při bežném
+používání \cite{LiFePO4_malina}. Článek LiFePO4 je teplotně stabilní, nehořlavý (ani při zkratu), netrpí samovybíjením, není toxický a nevytéká \cite{LiFePO4_malina}.
+
+LiFePO4 baterie v dnešní době nahrazují baterie typu Li-Ion nebo Li-Pol.
+Tyto bateriové články jsou vhodné především pro použití v elektromobilech, solárních a větrných elektrárnách, elektrokoloběžkách atd. 
+
+Výhody LiFePO4 baterií jsou \cite{LiFePO4_smart}:
+\begin{itemize}
+  \item vysoký jmenovitý proud,
+  \item minimální ztráty,
+  \item krátká doba dobíjení,
+  \item chemická odolnost,
+  \item vyníkající poměr výkonu ku hmotnosti,
+  \item životnost tisíce cyklů,
+  \item snadnější recyklace,
+  \item bez využití toxických prvků.
+\end{itemize}
+
+Při realizaci Semaforu byly vybrány baterie LiFePO4 právě kvůli již zmíněným vynikajícím vlastnostem. Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
+Pro funkci mikrokonroléru tedy nebude muset být použit ani převodník napětí.  
+
+
+
+\subsection{Nabíjecí obvod}
+%nastavit nabíjecí proud na 1C 
 Nabíjecí obvody jsou závislé na konkrétním typu baterií, které budou nabíjeny. Vzhledem k vybranému typu baterií LiFePO4 byly uvažovány pouze komerčně
 dostupné integrované obvody, které jsou určeny pro nabíjení tohoto typu baterií. 
 %ještě TP5000 zmínit? - zkontrolovat jestli je opravdu na pro LiFePO4
@@ -475,7 +541,7 @@ Přesné výstupní napětí se spočítá podle vzorce:
 %moje schéma zapojení
 
 \section{Konektor}
-Jako nabíjecí a zároveň programovací konektor byl zvolen konektor USB typu C.
+Jakoprogramovací konektor byl zvolen konektor USB typu C, který může být použit i jako konektor pro nabíjení baterie.
 
 Tento konektor je v dnešní době velmi rozšířený a jeho použití se v následující době stále rozšiřuje. 
 
