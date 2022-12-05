@@ -94,6 +94,12 @@ Nevýhody jsou \cite{Bezdrat_muni}:
 %doplnit
 %doplnit do zkratek NFC (Near Field Communication), WiFi (Wireless Fidelity)
 
+\subsection{LoRa}
+%co to je, 
+
+%výhody
+
+
 \subsection{ZigBee} %mozna cele smazat
 ZigBee technologie je používána pro vytvoření malých sítí, kde může signál snadno přeskakovat z jednoho zařízení na druhé \cite{ZigBee_smart}.
 Není přitom zapotřebí, aby bylo každé zařízení připojeno k internetu pomocí WiFi \cite{ZigBee_smart}. Pro komunikaci je ale zapotřebí centrální 
@@ -122,10 +128,6 @@ Nevýhody jsou \cite{ZigBee_smart}:
 \end{itemize}
 %doplnit
 
-\subsection{LoRa}
-%co to je, 
-
-%výhody
 
 %Velká přehledová tabulka s důležitými údaji od každého protokolu, aby bylo jasné, proč byla vybrána LoRa.
 
@@ -372,18 +374,64 @@ výměny uživatelem.
 
 %kapacita baterie - jak dlouho by měla vydržet
 
-Z nabíjecích baterií je možno vybírat z nabíjecích tužkových baterií (Ni-MH), olověné baterie, Li-Ion, Li-Pol a LiFePO4 baterií.
-%Ni-MH
-Baterie Ni-MH mají jmenovité napětí 1,25 V. %citace
-Proto by bylo zapotřebí alespoň 3 článků spojených sériově, u kterých by navíc musel být stabilizátor
-na 3,3 V pro napájení mikrokontroléru. % a co inteligentní LED?
-%Olověné baterie
+Z nabíjecích baterií je možno vybírat z olověnýcg baterií, Ni-MH, Li-Ion, Li-Pol a LiFePO4 baterií.
+
+\subsubsection{Olověné baterie}
+Maximální životnost olověné baterie je 300 až 400 cyklů \cite{LiFePO4_malina}. Nominální hodnota jednoho článku jsou 2 V \cite{olovene}. Jejich výroba je oproti
+lithiovým bateriím velmi nenáročná \cite{olovene}. Jejich kapacita je závislá na konkrétním typu baterie \cite{olovene}. Tyto baterie jsou schopny dodávat vysoké
+rázové proudy \cite{akumulatory}. Olověné akumulátory jsou velké a těžké a pro přenosná zařízení se tedy spíše nehodí. Hlavní nevýhodou, která je mimo jiné vyřadila 
+z výběru pro Semafor, je, že je potřeba je udržovat neustále v nabitém stavu \cite{olovene}. Její účinnost je závislá na odebíraném proudu a její životnost je závislá 
+na teplotě \cite{olovene}. Mají dlouhou dobu nabíjení a obsahují toxické olovo, které je škodlivé pro životní prostředí \cite{olovene}. Olověné baterie se používají 
+především v automobilech jako startovací baterie, v zabezpečovacích systémech atd. \cite{olovene}.
+
+Výhody olověných baterií jsou \cite{olovene}:
+\begin{itemize}
+  \item cena,
+  \item bezpečnost provozu,
+  \item možnost recyklace,
+  \item spolehlivost. 
+\end{itemize}
+
+\subsubsection{NiMH}
+Baterie NiMH mají jmenovité napětí 1,20 V a jejich životnost je cca 1000 nabíjecích cyklů \cite{akumulatory}. Tyto akumulátory je zapotřebí před prvním použití, nebo po 
+dlouhém nepoužívání, tzv. naformátovat \cite{akumulatory}. 
+Jedná se o pozvolné nabíjení s nízkým nabíjecím proudem \cite{akumulatory}. Pro optimální použití je také doporučeno baterii nabít nejpozději 2 hodiny před použitím, aby se 
+snížil vnitřní odpor NiMH baterie \cite{akumulatory}.
+
+Výhody NiHM baterií jsou \cite{akumulatory}:
+\begin{itemize}
+  \item cena,
+  \item malé samovybíjení,
+  \item vysoká mechanická odolnost.
+\end{itemize}
 
 \subsubsection{Li-Pol}
+Li-Pol baterie poskytují vysoké nabíjecí proudy a vysokou kapacitu a jejich jmenovité napětí je 3,7 V \cite{akumulatory}. Tyto baterie jsou citlivé na přesné nabití, a proto 
+je možné používat pouze nabíječky určené pro nabíjení těchto baterií \cite{akumulatory}. Tyto nabíječky mají také balancer \cite{akumulatory}. Při skladování je také nutné 
+udržovat nabití na 50 \% kapacity \cite{akumulatory}. Údržba takové baterie je proto velmi náročná a nehodí se do podobných zařízení, jako je Semafor. Při mechanickém poškození 
+také hrozí požár těchto baterií \cite{akumulatory}.
 
+Výhody Li-Pol baterií jsou \cite{akumulatory}:
+\begin{itemize}
+  \item vysoké nabíjecí proudy, 
+  \item vysoká kapacita, 
+  \item nízké samovybíjení,
+  \item cena.
+\end{itemize}
 
 \subsubsection{Li-Ion}
+Jmenovité mapětí Li-Ion baterie je 3,6 V a její životnost je cca 2000 nabíjecích cyklů \cite{Li-Ion}. Tento typ baterie trpí tzv. stárnutím. Jde o proces, kdy ztrácí 
+svoji kapacitu bez ohledu na používání \cite{Li-Ion}. Jejich kapacita je tedy závislá na reálném čase a ne frekvenci používání. Jejich velkou nevýhodou je nebezpečí 
+výbuchu při špatné manipulaci, např. zkratu apod. \cite{Li-Ion}. 
 
+Výhody Li-Ion baterií jsou \cite{Li-Ion}:
+\begin{itemize}
+  \item nízká hmotnost,
+  \item malé rozměry,
+  \item vysoká kapacita,
+  \item rychlé nabíjení,
+  \item šetrné k životnímu prostředí. 
+\end{itemize}
 
 \subsubsection{LiFePO4}
 LiFePO4 baterie mají jmenovité napětí v rozsahu 3 až 3,3 V \cite{LiFePO4_malina}. Její minimální provozní napětí je pak 2,5 V a maximální je 3,65 V \cite{LiFePO4_malina}.
@@ -407,10 +455,8 @@ Výhody LiFePO4 baterií jsou \cite{LiFePO4_smart}:
   \item bez využití toxických prvků.
 \end{itemize}
 
-Při realizaci Semaforu byly vybrány baterie LiFePO4 právě kvůli již zmíněným vynikajícím vlastnostem. Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
-Pro funkci mikrokonroléru tedy nebude muset být použit ani převodník napětí.  
-
-
+Při realizaci Semaforu byl vybrán článek baterie LiFePO4 právě kvůli již zmíněným vynikajícím vlastnostem. Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
+Pro funkci mikrokontroléru tedy nebude muset být použit ani převodník napětí.  
 
 \subsection{Nabíjecí obvod}
 %nastavit nabíjecí proud na 1C 
