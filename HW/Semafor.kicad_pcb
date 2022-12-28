@@ -3699,7 +3699,7 @@
 
   (footprint "Resistor_SMD:R_0402_1005Metric" (layer "B.Cu")
     (tedit 5F68FEEE) (tstamp e8eb6efe-638e-4962-b90d-d251ea2587b4)
-    (at -167.15 -40.575 40)
+    (at -167.35 -40.75 40)
     (descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "resistor")
     (property "Sheetfile" "Semafor.kicad_sch")
@@ -4342,6 +4342,8 @@
   (segment (start -17.55 -141.881166) (end -17.55 -112.65) (width 0.2) (layer "F.Cu") (net 25) (tstamp 8e7b3eba-07cc-4b8e-b281-f79582add011))
   (segment (start -19.497072 -143.828238) (end -17.55 -141.881166) (width 0.2) (layer "F.Cu") (net 25) (tstamp d19279a6-c5ea-4ef5-a9be-475ea3c07773))
   (segment (start -11.65 -106.75) (end -11.65 -102.6) (width 0.2) (layer "F.Cu") (net 25) (tstamp e3c9aad8-a48f-4468-bc00-e60c322dcef3))
+  (segment (start -169.73748 -38.74252) (end -169.31 -39.17) (width 0.2) (layer "B.Cu") (net 37) (tstamp 06240a40-fe40-4ecc-b764-81185ec9137a))
+  (segment (start -169.797866 -38.74252) (end -169.73748 -38.74252) (width 0.2) (layer "B.Cu") (net 37) (tstamp 54af8b84-9121-47d9-b002-ce28fe3c0044))
   (segment (start -56.8125 -174.4625) (end -55.779942 -173.429942) (width 0.5) (layer "F.Cu") (net 43) (tstamp 020bbe2d-07a0-4b12-9d82-d0959978d15d))
   (segment (start -24.9125 -142.17883) (end -24.9125 -142.1625) (width 0.5) (layer "F.Cu") (net 43) (tstamp 0a066911-311a-4103-aad6-2d3d31e66608))
   (segment (start -171.484883 -142.575) (end -171.475 -142.575) (width 0.5) (layer "F.Cu") (net 43) (tstamp 0b027a96-c6e6-4328-90e3-096bd8f3c6ef))
