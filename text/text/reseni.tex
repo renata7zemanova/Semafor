@@ -1,7 +1,3 @@
-\chapter{Požadavky}
-voděodolnost
-
-
 \chapter{Rešerše elektronických komponent}
 Základní návrh se skládá především z výběru bezdrátové komunikace, která je klíčová. Díky ní budou moci Semafory komunikovat mezi 
 sebou, takže si například budou moci předávat informace o barvě, kterou svítí nebo stisku tlačítek apod. 
@@ -9,9 +5,14 @@ sebou, takže si například budou moci předávat informace o barvě, kterou sv
 Další nedílnou součástí je mikrokontrolér, který řídí veškerou činnost každého Semaforu. U Semaforu je také nutné řešit způsob napájení,
 takže i to je součástí návrhu.
 
-Celkový návrh obsahuje také výběr tlačítek, zvukových a vizuálních signalizací a potřebných převodníků. 
+Celkový návrh obsahuje také výběr senzorů doteku, zvukových a vizuálních signalizací a případných potřebných převodníků. 
 
-%bude tady také blokové schéma
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.7]{obrazky/zakladni_blokove_schema.jpg}
+  \end{center}
+  \caption[Základní blokové schéma Semaforu]{Základní blokové schéma Semaforu.}
+\end{figure}
 
 \section{Bezdrátová komunikace}
 Použití na táborech a outdoorových akcích vyřadilo z výběru drátovou komunikaci. K DPS by muselo být ještě velké množství kabelů 
@@ -133,8 +134,8 @@ Nevýhody jsou \cite{ZigBee_smart}:
   \item nutnost centrálního rozbočovače.
 \end{itemize}
 
-\section{LED}
-LED se dělá na programovatelné a neprogramovatelné. 
+\section{Světelná signalizace}
+Pro světelnou signalizaci se nejvíce hodí použití LED. LED se výrabí programovatelné a neprogramovatelné. 
 
 Neprogramovatelné LED jsou běžné LED, které mají 2 vývody - katodu a anodu. barva LED je dána výrobou a každá LED má pouze jednu 
 barvu. Přiložením daného prahového napětí na diodu v propustném směru se LED rozsvítí danou barvou. Existují také RGB LED, které 
@@ -148,10 +149,11 @@ MCU \cite{WS2812C_dtsh}. Každá LED má pin pro vstupní napětí, GND, vstupn�
 WS2812C je vhodný pro bateriová zařízení. Oproti častěji používanému typu WS2812B mají 3~$\times$~ menší spotřebu elektrické energie. 
 Napájecí napětí těchto LED by se mělo pohybovat v rozmezí 4,5 až 5,5 V \cite{WS2812C_dtsh}. 
 
-\section{Tlačítka}
-Tlačítka jsou nezbytnými prvky pro ovládání Semaforu. Mohou sloužit pro přepínání módů, ovládání Semaforu jako takového nebo jako herní 
+\section{Senzor doteku}
+Senzory doteku jsou nezbytnými prvky pro ovládání Semaforu. Mohou sloužit pro přepínání módů, ovládání Semaforu jako takového nebo jako herní 
 součást. Ve hře mohou plnit úlohu přepínače režimů hry, zadávání kódů, určování směru apod. 
 
+Nejjednodušším senzorem doteku je tlačítko. 
 Tlačítka mohou být realizována dvěma základními způsoby, mohou být elektromechanická, nebo dotyková kapacitní. 
 
 Stisková plocha mechanického tlačítka je nevodivá, často plastová. Mechanické prvky jsou častým zdrojem problémů. Je tím často omezena i 
