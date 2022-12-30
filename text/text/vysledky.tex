@@ -12,21 +12,19 @@ Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce. 
 webová stránka, kde bude seznam her, které Semafor umí. U jednotlivých her se poté budou moci nastavovat další parametry. Po nasatvení se komfigurace pošle do Semaforu. 
 
 \section{Mikrokontrolér}
-
-WiFi modul obsahuje jako jediný mikrokontrolér z řady ESP32. Je také nabízen za cenu, která je v porovnání z ostatními nízká a v porovnání s nabízenými parametry bezkonkurenční. 
-Pro zařízení Semaforu je také se svým počtem periferií dostačující. 
-%další zajímavé parametry ESP32
-
+WiFi modul obsahuje jako jediný mikrokontrolér od firmy Espressif z řady ESP32. Konkrétně jde o typ ESP32-C3-MINI, dále již je ESP32-C3. Je také nabízen za cenu, která 
+je v porovnání s ostatními nízká a v porovnání s nabízenými parametry bezkonkurenční. Pro zařízení Semaforu je také se svým počtem periferií dostačující. ESP32-C3 má 
+384 kB ROM a 4 MB flash paměti \cite{ESP_C3_dtsh}. Dále obsahuje WiFi modul pracující na frekvenci 2,4 GHz a Bluetooth \cite{ESP_C3_dtsh}. ESP32-C3 obsahuje SPI, UART, 
+$I^2C$, USB a další \cite{ESP_C3_dtsh}. V mikrokontroléru je také zabudován krystal s vlastní frekvencí 40 MHz a v rámci pouzdra je také anténa pro WiFi \cite{ESP_C3_dtsh}.
 
 Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}. Jeho průměrný proudový odběr je XXX a jeho minimální odběr proudu v režimu spánku je XXX %dopsat
-%jaké má periferie
+Mikrokontrolér ESP32-C3 garantuje pracovní teplotu od -45 °C až do 85 °C \cite{ESP_C3_dtsh}.
 
-%napsat přesné označení čipu - dále ž jen ESP32-C3
+%napsat o strapping pins
 
+Mikrokontrolér ESP32-C3 nemá kapacitní vstupy a proto je zapotřebí pro kapacitní tlačítka použít převodník pro zpracování signálu z nich \cite{ESP_C3_dtsh}. 
 
-Jedním z požadavků na mikrokonrolér byla zabudování WiFi. Asi nejznámnějšími mikrokonroléry s WiFi jsou ESP32 od firmy 
-Espressif. Mikrokontroléry ESP32 jsou dostupné v různých variantách, ale všechny mají WiFi a dělají se i ve variantách 
-se zabudovanou anténou. 
+%schéma zapojení a připojení všech periferií
 
 \section{LED}
 Jedním z nejdůležitějších požadavků na Semafor bylo, aby mohl svítit. Čím více možností, jak svítit, tím bude využití 
@@ -35,8 +33,6 @@ při hrách a táborových programech různorodější. K tomuto účelu jsou po
 K tomu by byl zapotřebí mikrokonrolér s velkým množství GPIO pinů. Takových mikrokonrolérů není mnoho a zároveň 
 by se to odrazilo na ceně. Počet GPIO pinů je jedním z hlavních limitujících faktorů při výběru MCU. Proto byly použity programovatelné 
 LED typu WS2812C.
-
-%způsob programování (jak funguje použitá knihovna?)
 
 \begin{figure}[!h]
   \begin{center}
@@ -153,7 +149,7 @@ Velikost rezistoru R8 byla počítána na velikost nabíjecího proudu 1 A dle n
 \begin{equation} 
   R_{8}~=~\frac{U_{ISET}}{I_{CH}}~\cdot~1011~=~\frac{}{1}~\cdot~1011~=~XXX~\:k\Omega. 
   \quad \quad \quad \quad \quad \quad \cite{charger_dtsh}
-\label{eq:I_CH}
+\label{eq:R_8}
 \end{equation}
 
 
@@ -255,7 +251,7 @@ populací rozšířený a v následujících letech se bude rozšiřovat stále 
 které jsou využity pro komunikaci při programování. 
 
 Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k tak častému poškození, jak by mohlo být např. u konektoru Micro USB. Při používání běžnou veřejností
-se jedná o vítaný bonus. čš
+se jedná o vítaný bonus. 
 
 Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}. %jmenuje se to USB protokol?
 

@@ -256,7 +256,7 @@ k pinům KEY0 až KEY4. Jako výstup se používají piny OUT0 až OUT4. Každé
 nebo k nim mohou být připojeny např. LED \cite{conv_cap_but_AT42QT1070_dtsh}. 
 
 Druhý režim je využitelný pouze v případě, je-li převodník připojen k MCU. Vtomto případě může být k převodníku připojeno až 7 kapacitních tlačítek, 
-která jsou připojena na pinech KEY0 až KEY6. Převodník poté komunikuje s MCU pomocí komunikační sběrnice I2C \cite{conv_cap_but_AT42QT1070_dtsh}. 
+která jsou připojena na pinech KEY0 až KEY6. Převodník poté komunikuje s MCU pomocí komunikační sběrnice $I^2C$ \cite{conv_cap_but_AT42QT1070_dtsh}. 
 Z registru převodníku lze poté vyčíst stavy daných kapacitních dotykových tlačítek. 
 
 \section{Napájení}
@@ -360,8 +360,8 @@ Výhody LiFePO4 baterií jsou \cite{LiFePO4_smart}:
 \section{Mikrokontrolér}
 Mikrokontrolér je hlavním prvkem každého zařízení včetně Semaforu. Mikrokontrolérů existuje nespočetné množství od mnoha výrobců a při výběru je nutno brát v potaz
 množství požadovaných parametrů a požadované periferie. 
-Komunikační moduly pro bezdrátovou komunikaci se připojují nejčastěji pomocí I2C nebo UART. Převodník pro kapacitní tlačítka komunikuje po I2C sběrnici, proto je sběrnice
-I2C nutnou výbavou. Pro připojení zvukových a vibračních periferií jsou zapotřebí GPIO piny a pro připojení měření baterie je nutné GPIO pin s ADC převodníkem. 
+Komunikační moduly pro bezdrátovou komunikaci se připojují nejčastěji pomocí $I^2C$ nebo UART. Převodník pro kapacitní tlačítka komunikuje po $I^2C$ sběrnici, proto je sběrnice
+$I^2C$ nutnou výbavou. Pro připojení zvukových a vibračních periferií jsou zapotřebí GPIO piny a pro připojení měření baterie je nutné GPIO pin s ADC převodníkem. 
 
 Cenu mikrokontroléru určuje především počet periferií, počet GPIO pinů a výpočetní výkon.
 
@@ -377,34 +377,11 @@ Faktory ovlivňující výběr řídicího mikrokonroléru:
   \item nízká spotřeba,
   \item WiFi,
   \item ADC,
-  \item I2C,
+  \item $I^2C$,
   \item UART,
   \item cena.
 \end{itemize}
 
-%vyplnit tabulku
-\begin{table}[!h]
-  \caption[Přehled parametrů mikrokontrolérů od různých výrobců]{Přehled parametrů mikrokontrolérů od různých výrobců.}
-  \begin{center}
-  	\small
-	  \begin{tabular}{|c|c|c|c|}
-	    \hline
-	    \textbf{Název} & \textbf{I^2C} & \textbf{UART} & \textbf{USB} & \textbf{WiFi} & \textbf{cena}  \\
-	    \hline
-	    \textbf{ESP32} & 3368 & 3261 & 3241 \\
-	    \hline
-	    \textbf{2000}	& 2301 & 2269 & 2271 \\
-	    \hline
-	    \textbf{3000} & 1877 & 1856 & 1841 \\
-	    \hline
-	    \textbf{4000} & 1859 & 1776 & 1713 \\
-	    \hline
-	    \textbf{5000}	& 1394 & 1378 & 1370 \\
-	    \hline
-	  \end{tabular}
-  \end{center}
-\end{table}
-%tabulka srovnání mikrokontrolérů
 
 
 
