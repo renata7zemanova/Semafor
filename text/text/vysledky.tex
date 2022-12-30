@@ -1,7 +1,6 @@
 \chapter{Výběr a návrh elektroniky}
 
 \section{Bezdrátová technologie}
-%Velká přehledová tabulka s důležitými údaji od každého protokolu, aby bylo jasné, proč byla vybrána LoRa.
 Ke komunikaci Semaforů mezi sebou byla zvolena technologie LoRa. Tato technologie byla zvolena především kvůli komunikačnímu dosahu. Jedná se sice o dražší technologii, 
 ale na tolik, aby ji nebylo možné v tomto zařízení použít. Táborové hry se většinou hrají na loukách, které mají rozlohu několik stovek metrů čtverečných. LoRa je jedinou
 dostupnou technologií, která na tyto vzdálenosti spolehlivě komunikuje. Bezdrátové propojení Semaforů bude použito pro posílání informací o aktuálně svítící barvě, či 
@@ -13,33 +12,16 @@ Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce. 
 webová stránka, kde bude seznam her, které Semafor umí. U jednotlivých her se poté budou moci nastavovat další parametry. Po nasatvení se komfigurace pošle do Semaforu. 
 
 \section{Mikrokontrolér}
-Faktory ovlivňující výběr řídicího mikrokonroléru:
-\begin{itemize}
-  \item dostatečný počet GPIO pinů,
-  \item dostatek paměti,
-  \item WiFi,
-  \item ADC,
-  \item cena,
-  \item periferie pro připojení Lora modulu.
-\end{itemize}
 
-%proč právě tento typ 
+WiFi modul obsahuje jako jediný mikrokontrolér z řady ESP32. Je také nabízen za cenu, která je v porovnání z ostatními nízká a v porovnání s nabízenými parametry bezkonkurenční. 
+Pro zařízení Semaforu je také se svým počtem periferií dostačující. 
+%další zajímavé parametry ESP32
 
-Z rozepsaných typů byl vybrán mikrokontrolér od firmy Espressif 
+
+Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}. Jeho průměrný proudový odběr je XXX a jeho minimální odběr proudu v režimu spánku je XXX %dopsat
+%jaké má periferie
 
 %napsat přesné označení čipu - dále ž jen ESP32-C3
-
-%do zkratek ZigBee, GPIO, ADC
-Dostatečný počet GPIO %specifikovat minimum
-Dostatek paměti %lépe specifikovat
-WiFi
-ADC %pro senzor pro osvětlení
-Cena %rozumné hranice
-Periferie pro připojení pro LoRa modul
-
-Nice to have:
-USB rozhraní (nemusel by být použit převodník)
-Možnost režimu spánku %možná nepsat
 
 
 Jedním z požadavků na mikrokonrolér byla zabudování WiFi. Asi nejznámnějšími mikrokonroléry s WiFi jsou ESP32 od firmy 
@@ -56,7 +38,12 @@ LED typu WS2812C.
 
 %způsob programování (jak funguje použitá knihovna?)
 
-%obrázek spojení LED za sebe
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.5]{obrazky/WS2812C.png}
+  \end{center}
+  \caption[Zapojení inteligentních LED WS2812C]{Zapojení inteligentních LED WS2812C.}
+\end{figure}
 
 Komunikační napěťová úroveň logické jedničky těchto LED by měla být alespoň na úrovni 70 \% napájecího napětí \cite{WS2812C_dtsh}. 
 Protože použitý mikrokonrolér ESP32-C3 má komunikační napěťovou úroveň logické jedničky jeho napájecí napětí, což je 3 až 3,6 V, 
@@ -70,16 +57,18 @@ napájecí napětí mikrokontroléru. Tranzistor je tedy otevřený a tím se na
 úbytek napětí o velikosti napájecího napětí inteligentních LED. Napětí 0 V je logickou nulou i pro inteligentní LED. Tento převodník
 je určen pouze pro komunikaci jedním směrem. 
 
-%schéma převodníku 
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/prevodnik_urovni_pro_WS2812C.png}
+  \end{center}
+  \caption[Zapojení převodníku úrovní pro WS2812C]{Zapojení převodníku úrovní pro WS2812C.}
+\end{figure} 
 
 Tyto programovatelné LED mají maximální spotřebu 5 mA na jeden kanál. Při zapnutí všech kanálů (svícení bílou) je maximální
 spotřeba jedné LED 15 mA \cite{WS2812C_dtsh}. Pokud LED nesvítí, tak je její maximální klidový proud 0,3 mA \cite{WS2812C_dtsh}.
 Při použití 12 LED je tedy maximální odběr všech LED 180 mA.
 
-%do sekce o DPS se zmínit o jejich umístění - kruh, hodiny, proto 12 ks. (lze také rozdělit na 3 segmenty)
 Kondenzátor u každé LED slouží pro filtraci napájecího napětí. 
-
-
 
 \section{Vibrační motor}
 Vibrační motory jsou založeny na principu kmitání. Motor je připevněn k zařízení, které je kmitáním rozvibrováno. Vibrační motory jsou dnes 
@@ -101,6 +90,7 @@ Vibrační motor slouží jako odezva na dotyk kapacitního tlačítka.
 %obrázek schéma zapojení + asi fotka vybraného motoru
 
 \section{Převodník pro kapacitní tlačítka}
+%převodník AT42QT1070
 Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici I2C, tak bylo využito právě zapojení s komunikací 
 přes I2C. Díky tomu budou využity pouze 2 GPIO piny mikrokonroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
 sběrnici I2C.
@@ -110,7 +100,13 @@ R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice I2C s
 dotyková tlačítka.  
 %proč je MODE na zemi
 %proč nepoužívám pin /CHANGE?
-%obrázek - schéma
+
+\begin{figure}[!h]
+    \begin{center}
+      \includegraphics[scale=0.4]{obrazky/AT42QT1070.png}
+    \end{center}
+    \caption[Zapojení převodníku AT42QT1070 pro kapacitní tlačítka]{Zapojení převodníku AT42QT1070 pro kapacitní tlačítka.}
+\end{figure}
 
 \section{Napájení}
 Při realizaci Semaforu byl vybrán článek baterie LiFePO4 právě kvůli již zmíněným vynikajícím vlastnostem. Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
@@ -172,7 +168,6 @@ z doporučení z datasheetu.
 
 Kladný pól nabíjené baterie je připojen na pinu BAT, záporný pól je připojen ke GND. Pin BAT poskytuje nabíjecí proud do baterie a zároveň poskytuje konstantní 
 nabíjecí napětí. V režimu spánku je svodový proud tohoto pinu 3 $\mu$A \cite{charger_dtsh}. 
-%do zkratek přidat GND
 
 Pin VIN slouží pro napájení vnitřního obvodu CN3058E. Je na něj přikládáno napájecí napětí z USB, tedy 5 V. Pokud napájecí napětí klesne na napětí o 10 mV nižší, 
 než je napětí na pinu BAT, tak vnitřní obvod přechází do režimu spánku \cite{charger_dtsh}. V tomto režimu klesá proud pinu BAT na méně než 3 $\mu$A \cite{charger_dtsh}.
@@ -243,9 +238,12 @@ Přesné výstupní napětí se spočítá podle vzorce:
 %výběr diody
 %výběr cívky
 
-%moje schéma zapojení
-
-
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.7]{obrazky/LT1930.png}
+  \end{center}
+  \caption[Zapojení zvyšovače napětí LT1930]{Zapojení zvyšovače napětí LT1930.}
+\end{figure}
 
 \section{Konektor}
 Jako programovací konektor byl zvolen konektor USB typu C, který může být použit i jako konektor pro nabíjení baterie.
@@ -260,6 +258,21 @@ Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k tak
 se jedná o vítaný bonus. čš
 
 Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}. %jmenuje se to USB protokol?
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/USB_C.png}
+  \end{center}
+  \caption[Zapojení konektoru USB-C]{Zapojení konektoru USB-C.}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.8]{obrazky/USB_A.png}
+  \end{center}
+  \caption[Zapojení konektoru USB-A]{Zapojení konektoru USB-A.}
+\end{figure}
+
 
 %o transilech k USB + Shotkyny (celkový odběr zařízení z USB - shotkyny na správný proud)
 %o rezistorech 5,1k
@@ -287,6 +300,9 @@ používáno a zároveň může být stisknuto, když hráč běží, takže by 
 5~$\times$~5~cm. Ostatní tlačítka slouží například jako směrovky, nebo pro vyklikávání nějakého kódu, aby získali nějakou informaci. Slouží tedy primárně, když účastník 
 u sebaforu stojí, nebo sedí, a vyklikává. Díky tomu mohou být tlačítka menší než hlavní tlačítko, konkrétně mají 2~$\times$~2~cm. Tato tlačítka jsou proto umístěna 
 po stranách hlavního tlačítka a jsou popsána BTN\_ENTER, BTN\_UP, BTN\_DOWN, BTN\_RIGHT a BTN\_LEFT.
+
+\section{LED}
+%do sekce o DPS se zmínit o jejich umístění - kruh, hodiny, proto 12 ks. (lze také rozdělit na 3 segmenty)
 
 \section{Konektory}
 %konektor USB C

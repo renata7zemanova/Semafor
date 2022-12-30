@@ -6,7 +6,7 @@ voděodolnost
 Základní návrh se skládá především z výběru bezdrátové komunikace, která je klíčová. Díky ní budou moci Semafory komunikovat mezi 
 sebou, takže si například budou moci předávat informace o barvě, kterou svítí nebo stisku tlačítek apod. 
 
-Další nedílnou součástí je mikrokonrolér, který řídí veškerou činnost každého Semaforu. U Semaforu je také nutné řešit způsob napájení,
+Další nedílnou součástí je mikrokontrolér, který řídí veškerou činnost každého Semaforu. U Semaforu je také nutné řešit způsob napájení,
 takže i to je součástí návrhu.
 
 Celkový návrh obsahuje také výběr tlačítek, zvukových a vizuálních signalizací a potřebných převodníků. 
@@ -30,24 +30,22 @@ která se hraje a např. čas, jak dlouho se bude hrát, nebo v kolika týmech, 
 
 \subsection{WiFi}
 Komunikace pomocí WiFi sítě je jednou z nejznámějších a nejpoužívanějších bezdrátových komunikací užívaných širokou veřejností. 
-WiFi je dnes na každém pracovišti, na veřejných místech i v každé domácnosti. Využívána je především k připojení k internetu. 
+WiFi je dnes na každém pracovišti, na veřejných místech i v každé domácnosti. Využívána je především pro připojení k internetu. 
 Přes WiFi lze přenášet velké objemy dat vysokou rychlostí. Pracuje v pásmech v okolí frekvencí 2,4 GHz a 5,0 GHz s dosahem 
-desítek až nižších stovek metrů \cite{Bezdrat_muni}.
-%doplnit
+desítek až nižších stovek metrů \cite{Bezdrat_muni}. 
 
 Výhody bezdrátové technologie WiFi jsou \cite{Bezdrat_muni}:
 \begin{itemize}
-  \item pracuje v bezlicenčním pásmu, %doplnit do textu
-  \item levná, %doplnit do textu
+  \item pracuje v bezlicenčním pásmu, 
+  \item levná, 
   \item velmi rozšířená.
 \end{itemize}
 
 Nevýhody jsou \cite{Bezdrat_muni}:
 \begin{itemize}
-  \item omezený výkon (není možné pokrýt rozáhlejší oblasti), %doplnit do textu
+  \item omezený výkon (není možné pokrýt rozáhlejší oblasti), 
   \item vyšší spotřeba energie.
 \end{itemize}
-%doplnit
 
 \subsection{Bluetooth}
 Bluetooth je také velmi rozšířenou technologií bezdrátové komunikace. Používá se na přenos dat na krátké vzdálenosti. V dnešní době 
@@ -56,7 +54,6 @@ době se spíše využívá pro připojení bezdrátových periferií jako jsou 
 především na nízkou spotřebu, i proto je komunikační vzdálenost maximálně 100 metrů \cite{Bezdrat_muni}. V praxi jde ale o nižší desítky
 metrů. Bluetooth je také technologií pro propojení pouze 2 zařízení, kde jedno je tzv. master a druhý tzv. slave \cite{Bezdrat_muni}. 
 Jedno zařízení je tedy nadřazeno druhému. V případě telefonu a sluchátek je telefon nadřazený sluchátkům. 
-%doplnit
 
 Výhody bezdrátové technologie Bluetooth jsou \cite{Bezdrat_muni}:
 \begin{itemize}
@@ -68,7 +65,6 @@ Nevýhody jsou \cite{Bezdrat_muni}:
   \item krátký dosah,
   \item možnost propojení pouze 2 zařízení.
 \end{itemize}
-%doplnit
 
 \subsection{NFC}
 NFC je jedna z novějších technologií, která je známá především při použití platby kartou. Jde tedy o přenos malých objemů dat na velmi krátkou 
@@ -76,11 +72,10 @@ vzdálenost, tj. do desítek centimetrů \cite{Bezdrat_muni}. NFC je technologi�
 energie \cite{Bezdrat_muni}. Druhé zařízení se chová jako anténa, ze které je možné vyčíst informace \cite{Bezdrat_muni}. Například při 
 platbě kartou v sobě karta nemá žádný zdroj energie, ale při přiložení k terminálu je pomocí elektromagnetické indukce vyčteno identifikační
 číslo karty. Díky tomu je možné zaplatit. 
-%doplnit
 
 Výhody bezdrátové technologie NFC jsou \cite{Bezdrat_muni}:
 \begin{itemize}
-  \item rychlost, %doplnit do textu
+  \item rychlost,
   \item možnost interakce se zařízeními bez vlastního zdroje elektrické energie.
 \end{itemize}
 
@@ -91,9 +86,6 @@ Nevýhody jsou \cite{Bezdrat_muni}:
   \item nízká rychlost přenosu,
   \item malý objem přenášených dat.
 \end{itemize}
-%doplnit
-%doplnit do zkratek NFC (Near Field Communication), WiFi (Wireless Fidelity), LoRa (Long Range Radio), LoRaWAN (Long Range Wide Area Network)
-%IoT (Internet of Things)
 
 \subsection{LoRa}
 LoRa je technologie, která moduluje data do elektomagnetických vln na fyzické vrstvě (rádio) umožňující komunikaci na velké vzdálenosti \cite{LoRa_eman}. 
@@ -117,7 +109,7 @@ Výhody bezdrátové technologie LoRa jsou \cite{LoRa_IoT_PORT}:
 \end{itemize}
 
 
-\subsection{ZigBee} %mozna cele smazat
+\subsection{ZigBee}
 ZigBee technologie je používána pro vytvoření malých sítí, kde může signál snadno přeskakovat z jednoho zařízení na druhé \cite{ZigBee_smart}.
 Není přitom zapotřebí, aby bylo každé zařízení připojeno k internetu pomocí WiFi \cite{ZigBee_smart}. Pro komunikaci je ale zapotřebí centrální 
 rozbočovač, kterž zajišťuje komunikaci mezi zařízeními \cite{ZigBee_smart}. Tato technologie je určena pro tvorbu rozsáhlejších bezdrátových sítí
@@ -127,9 +119,6 @@ od různých značek a výrobců, protože právě ZigBee zajišťuje jejich vz�
 
 Technologie ZigBee je určeno primárně pro senzorové sítě v průmyslových aplikacích \cite{Bezdrat_muni}. Není vhodný pro práce s velkými objemy dat \cite{Bezdrat_muni}.
 Pracuje v bezlicenčním frekvenčním pásmu \cite{Bezdrat_muni}.
-%doplnit
-
-%Všechna zařízení jsou schopna komunikovat a být ovládána jedinou jednotkou.
 
 Výhody bezdrátové technologie ZigBee jsou \cite{ZigBee_smart}:
 \begin{itemize}
@@ -143,15 +132,6 @@ Nevýhody jsou \cite{ZigBee_smart}:
 \begin{itemize}
   \item nutnost centrálního rozbočovače.
 \end{itemize}
-%doplnit
-
-
-\section{Mikrokontrolér}
-
-%proč jsem vybrala ESP
-
-Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}.
-%jaké má periferie
 
 \section{LED}
 LED se dělá na programovatelné a neprogramovatelné. 
@@ -184,11 +164,16 @@ a odpor smyčky je v ideálním případě nulový. Obvod je tedy sepnut. Když 
 elektrický obvod přerušen a odpor smyčky je v ideálním případě nekonečný. Obvod je tedy rozpojen. U tlačítka typu NC je to naopak. Při stisku 
 tlačítka je obvod rozepnut a při uvolnění stisku je obvod sepnut. 
 
-%sem přidat fotku vnitřku mechanického tlačítka
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/tlacitka_princip.png}
+  \end{center}
+  \caption[Princip mechanického tlačítka]{Princip mechanického tlačítka \cite{Mech_tl_princip}.}
+\end{figure}
 
 Výhody mechanických tlačítek jsou:
 \begin{itemize}
-  \item jednoduché připojení ke každému GPIO mikrokonroléru,
+  \item jednoduché připojení ke každému GPIO mikrokontroléru,
   \item odezva je samotný stisk tlačítka,
   \item fyzické rozpojení obvodu.
 \end{itemize}
@@ -204,7 +189,7 @@ stisk tlačítka. U kapacitních tlačítek lze tento fakt vyřešit například
 odezva může být realizována pomocí vibračního motoru. 
 
 Některé MCU včetně vybraného mikrokontroléru ESP32-C3 nemají kapacitní
-vstupy, to znamená, že tlačítko nelze připojit přímo k pinu MCU \cite{ESP_C3_dtsh}. Buď musí být vybrán mikrokonrolér, který kapacitní 
+vstupy, to znamená, že tlačítko nelze připojit přímo k pinu MCU \cite{ESP_C3_dtsh}. Buď musí být vybrán mikrokontrolér, který kapacitní 
 vstupy má, nebo může být použit převodník, který má kapacitní vstupy a jeho výstupy poté mohou být připojeny k MCU. 
 
 Výhody kapacitních tlačítek jsou:
@@ -230,6 +215,13 @@ Prst se tedy chová jako druhá uzemněná elektroda \cite{PrincipKapTl}.
 Kapacita snímače se tedy volí co nejmenší, aby přiložený prst vyvolal co nejvetší změnu kapacity. Ve snímači se vyskytuje
 RC článek, kterého se mění doba nabíjení kondenzátoru a tím je možné detekovat stisk tlačítka \cite{PrincipKapTl}. 
 
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=1]{obrazky/kapacitni_princip.png}
+  \end{center}
+  \caption[Princip kapacitního tlačítka]{Princip kapacitního tlačítka \cite{PrincipKapTl}.}
+\end{figure}
+
 \subsection{Návrh kapacitního dotykového tlačítka}
 Tvar tlačítka nemá vliv na schopnost detekce dotyku \cite{PrincipKapTl}. Naopak velký vliv má plocha tlačítka, tloušťka
 izolační vrstvy, a také vzdálenost jednotlivých tlačítek od sebe \cite{PrincipKapTl}. 
@@ -242,8 +234,6 @@ detekci dotyku špatného tlačítka, nebo k falešné detekci dotyku. Z doporu�
 plochu pro prst 13~$\times$~13 mm a jejich vzdálenost alespoň 5 mm od sebe \cite{PrincipKapTl}. Proti vzájemnému ovlivňování tlačítek
 se používají uzemňovací meziplošky \cite{PrincipKapTl}. 
 
-%sem dát obrázek, kde je ukázán návrh GND meziplošek
-
 U kapacitních dotykových tlačítek je zapotřebí dbát na správné připojení k MCU. U vícevrstvých DPS nesmí pod tlačítky, ani pod přívody
 k MCU, vést jiné dráhy, ani se zde nesmí vyskytovat jiné součástky \cite{PrincipKapTl}. Součástky nesmí být ani z vrchní, ani ze spodní 
 strany DPS \cite{PrincipKapTl}. Přívody kapacitních tlačítek k MCU by měly být odstíněny pomocí GND signálu.
@@ -252,19 +242,10 @@ Voda a další nečistoty mění vlastní kapacitu tlačítka a může tak doch�
 Lze využít faktu, že nečistoty působí dlouhodobě, ale stisk je krátkodobý \cite{PrincipKapTl}. Hodnotu vlastní kapacity tlačítka je tedy
 možné softwarově upravovat v závislosti na aktuálních dlouhodobějších stavech a detekovat tak přesněji krátkodobý stisk tlačítka.
 
-%dát do zkratek MCU, DPS, GPIO, LED, GND
-
-%\begin{figure}[!h]
-%    \begin{center}
-%      \includegraphics[scale=0.5]{obrazky/ZlepseneWilsonovoZrcadloNPN}
-%    \end{center}
-%    \caption[Alenčino zrcadlo]{Zlepšené Wilsonovo proudové zrcadlo.}
-%  \end{figure}
-
 Pro odlišení tlačítek je místo označeno barevným potiskem. 
 
 \section{Převodník pro kapacitní tlačítka}
-Vybraný mikrokonrolér ESP32-C3 nemá kapacitní vstupy, proto je zapotřebí kapacitní dotyková tlačítka připojit přes převodník. Je zapotřebí připojit 
+Vybraný mikrokontrolér ESP32-C3 nemá kapacitní vstupy, proto je zapotřebí kapacitní dotyková tlačítka připojit přes převodník. Je zapotřebí připojit 
 5 tlačítek. 
 %jaké byly možnosti 
 %zmínit se i o TTP224?
@@ -374,5 +355,59 @@ Výhody LiFePO4 baterií jsou \cite{LiFePO4_smart}:
   \item snadnější recyklace,
   \item bez využití toxických prvků.
 \end{itemize}
+
+
+\section{Mikrokontrolér}
+Mikrokontrolér je hlavním prvkem každého zařízení včetně Semaforu. Mikrokontrolérů existuje nespočetné množství od mnoha výrobců a při výběru je nutno brát v potaz
+množství požadovaných parametrů a požadované periferie. 
+Komunikační moduly pro bezdrátovou komunikaci se připojují nejčastěji pomocí I2C nebo UART. Převodník pro kapacitní tlačítka komunikuje po I2C sběrnici, proto je sběrnice
+I2C nutnou výbavou. Pro připojení zvukových a vibračních periferií jsou zapotřebí GPIO piny a pro připojení měření baterie je nutné GPIO pin s ADC převodníkem. 
+
+Cenu mikrokontroléru určuje především počet periferií, počet GPIO pinů a výpočetní výkon.
+
+Výhodou je možnost připojení USB, aby nebylo nutné používat převodník pro komunikaci při programování. 
+
+Existují mikrokontroléry, které již WiFi modul obsahují. Jsou to mikrokontroléry z řady ESP32 od firmy Espressif. Dalšími známými výrobci mikrokontrolérů jsou Microchip,
+Motorola, NXP nebo STMicroelectronics. 
+
+Faktory ovlivňující výběr řídicího mikrokonroléru:
+\begin{itemize}
+  \item dostatečný počet GPIO pinů,
+  \item dostatek paměti,
+  \item nízká spotřeba,
+  \item WiFi,
+  \item ADC,
+  \item I2C,
+  \item UART,
+  \item cena.
+\end{itemize}
+
+%vyplnit tabulku
+\begin{table}[!h]
+  \caption[Přehled parametrů mikrokontrolérů od různých výrobců]{Přehled parametrů mikrokontrolérů od různých výrobců.}
+  \begin{center}
+  	\small
+	  \begin{tabular}{|c|c|c|c|}
+	    \hline
+	    \textbf{Název} & \textbf{I^2C} & \textbf{UART} & \textbf{USB} & \textbf{WiFi} & \textbf{cena}  \\
+	    \hline
+	    \textbf{ESP32} & 3368 & 3261 & 3241 \\
+	    \hline
+	    \textbf{2000}	& 2301 & 2269 & 2271 \\
+	    \hline
+	    \textbf{3000} & 1877 & 1856 & 1841 \\
+	    \hline
+	    \textbf{4000} & 1859 & 1776 & 1713 \\
+	    \hline
+	    \textbf{5000}	& 1394 & 1378 & 1370 \\
+	    \hline
+	  \end{tabular}
+  \end{center}
+\end{table}
+%tabulka srovnání mikrokontrolérů
+
+
+
+
 
 
