@@ -184,9 +184,14 @@ Aby se baterie zbytečné navybíjela, tak je do obvodu připojen tranzistor Q2,
 tranzistor otevřen a baterie je nabíjena. Pokud napětí připojeno není, tak je tranzistor uzavřen a baterie je díky tomu odpojena od nabíjecího obodu. Díky tomu 
 není vybíjena svodovým proudem pinu BAT. 
 
-\section{Zvyšovač napětí pro LED}
-Pro napájení vybraných inteligentních LED je zapotřebí napětí v rozsahu 4,5 až 5,5 V \cite{WS2812C_dtsh}. Použité baterie LiFePO4 mají napětí pouze 3,2 V, proto je 
-zapotřebí použít zvyšovač napětí. 
+\section{Světelná signalizace}
+Pro realizaci světelné signalizace pro hry byly vybrány inteligentní programovatelné LED typu WS2812C.
+Pro napájení těchto inteligentních LED je zapotřebí napětí v rozsahu 4,5 až 5,5 V \cite{WS2812C_dtsh}. 
+Použité baterie LiFePO4 mají napětí pouze 3,2 V, proto je zapotřebí použít zvyšovač napětí na 5 V. 
+
+Pro realizaci signalizace přítomnosti napájecího napětí byly vybrány neprogramovatelné LED. Zelená LED byly vybrány 2, jedna pro indikaci přítomnosti napětí 5 V a druhá
+pro indikaci přítomnosti napětí 3,3 V z baterií. Tyto LED budou použity pouze na prototypu pro ulehčení oživování. Dále budou odstraněny kvůli šetření energie, protože jde
+o bateriově napájené zařízení. Přítomnost svitu tzv. power LED by také mohla mást při hře nebo různých úkolech.
 
 Z komerčně dostupných integrovaných obvodů byl hledán zvyšovač napětí, který vytváří z napětí 3,3 V napětí 5 V a dodávat přitom do výstupu proud alespoň 200 mA. 
 Maximální odběr všech 12ti potřebných inteligentní LED má maximální odběr 180 mA. S rezervou je tedy zapotřebí proud alespoň 200 mA. Nalezené obvody, které vyhovují 
@@ -241,6 +246,11 @@ Přesné výstupní napětí se spočítá podle vzorce:
   \caption[Zapojení zvyšovače napětí LT1930]{Zapojení zvyšovače napětí LT1930.}
 \end{figure}
 
+\section{Zvuková signalizace}
+Jako zvuková signalizace bylo vybráno piezo s vlastním oscilátorem. %doplnit, typ, parametry
+Zvuková signalizace může sloužit například pro potvrzení správnosti hesla, možnosti odejít na další stanoviště, vypršení času pro daný úkol a mnoho dalších. 
+
+
 \section{Konektor}
 Jako programovací konektor byl zvolen konektor USB typu C, který může být použit i jako konektor pro nabíjení baterie.
 
@@ -275,17 +285,18 @@ Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu 
 
 %ke každé komponentě napsat odběr
 
-%na konci bude muset být blokové schéma konkrétních (vybraných) modulů
+\section{Výsledné zapojení}
+Pro realizaci Semaforu byly vybrány následující komponenty: mikrokontrolér ESP32-C3, baterie LiFePO4, nabíjecí obvod CN3056E, konektory USB-C a USB-A,
+kapacitní tlačítka s převodníkem AT42QT1070, inteligentní LED WS2812C s převodníkem napětí LT1930, piezo, vibrační motor a LoRa modul. LoRa modul komunikuje 
+s mikrokontrolérem pomocí sběrnice UART, převodník pro kapacitní tlačítka pomocí sběrnice $I^2C$ a programování bude probíhat pomocí USB. Vše he zapojeno 
+dle následujícího blokového schématu. 
 
-%power led pro první prototyp, potom nebudou, kvůli šetření energie, protože je to na baterky a mohlo by to při hrách hráče mást
-
-%zvukova sinalizace - piezo
-
-
-
-
-
-
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.7]{obrazky/vysledne_blokove_schema.jpg}
+  \end{center}
+  \caption[Výsledné blokové schéma Semaforu]{Výsledné blokové schéma Semaforu.}
+\end{figure}
 
 \chapter{Návrh DPS}
 %kulatá DPS - proč?
