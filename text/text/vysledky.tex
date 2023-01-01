@@ -86,15 +86,17 @@ Vibrační motor slouží jako odezva na dotyk kapacitního tlačítka.
 %obrázek schéma zapojení + asi fotka vybraného motoru
 
 \section{Převodník pro kapacitní tlačítka}
-%převodník AT42QT1070
-Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici I2C, tak bylo využito právě zapojení s komunikací 
-přes I2C. Díky tomu budou využity pouze 2 GPIO piny mikrokonroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
-sběrnici I2C.
+Byl vybrán převodník pro kapacitní tlačítka AT42QT1070.
+Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito právě zapojení s komunikací 
+přes $I^2C$. Díky tomu budou využity pouze 2 GPIO piny mikrokonroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
+sběrnici $I^2C$.
 
 Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči zemi, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
-R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice I2C s mikrokonrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
+R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice $I^2C$ s mikrokonrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
 dotyková tlačítka.  
-%proč je MODE na zemi
+
+Pin MODE je připojen k signálu GND, protože převodník je provozován v režimu komunikujícím přes $I^2C$ sběrnici \cite{conv_cap_but_AT42QT1070_dtsh}.
+
 %proč nepoužívám pin /CHANGE?
 
 \begin{figure}[!h]
@@ -105,7 +107,8 @@ dotyková tlačítka.
 \end{figure}
 
 \section{Napájení}
-Při realizaci Semaforu byl vybrán článek baterie LiFePO4 právě kvůli již zmíněným vynikajícím vlastnostem. Vybraný mikrokonrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
+Při realizaci Semaforu byl vybrán článek baterie LiFePO4 právě kvůli již zmíněným vynikajícím vlastnostem. Vybraný mikrokonrolér má napájecí napětí 
+v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
 Pro funkci mikrokontroléru tedy nebude muset být použit ani převodník napětí.  
 
 
@@ -113,22 +116,24 @@ Pro funkci mikrokontroléru tedy nebude muset být použit ani převodník napě
 %nastavit nabíjecí proud na 1C 
 Nabíjecí obvody jsou závislé na konkrétním typu baterií, které budou nabíjeny. Vzhledem k vybranému typu baterií LiFePO4 byly uvažovány pouze komerčně
 dostupné integrované obvody, které jsou určeny pro nabíjení tohoto typu baterií. 
-%ještě TP5000 zmínit? - zkontrolovat jestli je opravdu na pro LiFePO4
 
 Vybraný typ baterií LiFePO4 lze nabíjet pomocí obvodu CN3058E \cite{charger_dtsh}. 
 %možná vyjmenovat další obvody a napsat proč tento
 
 %napětí nastaveno na 3,6 V interně, ale lze jej nastavit pomocí externího odporu
 %nabíjecí proud se nastavuje externím rezistorem - není využito
-%při odpojení napájecího napětí přechází tento obvod do režimu spánku, takže je baterie vybíjena proudem menším než 3 uA
-%lze snímat teplotu na baterii
 
 Nabíjecí obvod CN3058E je určen pro nabíjení pouze LiFePO4 baterií a lze jím napájet právě 1 článek těchto baterií \cite{charger_dtsh}. Napájecí napětí tohoto 
 nabíjecího čipu se pohybuje mezi 3,8 až 6 V \cite{charger_dtsh}. Díky tomu lze přímo použít napětí z USB konektoru. 
 
-%popsat další vlastnosti 
+Když je nabíjecí obvod odpojen od napájecího napětí, tak přejde do režimu spánku \cite{charger_dtsh}. V tomto režimu je baterie vybíjena proudem menším než 
+3 $\mu$A \cite{charger_dtsh}. Tento proud je oproti klidovým proudům jiných součástek zanedbatelný, a proto nemusí být baterie od nabíjecího obvodu odpojována,
+když není nabíjena. 
 
-%doporučené schéma zapojení čipu - z datasheetu
+Nabíjecí obvod CN3058E umí také vyhodnocovat teplotu baterie a v závislosti na tom přestávat baterii nabíjet \cite{charger_dtsh}. Tato funkce není v zapojení využita,
+proto je pin TEMP připojen k signálu GND \cite{charger_dtsh}.
+
+%popsat další vlastnosti 
 
 Tento nabíjecí obvod se vyrábí ve standardizovaném pouzdře SOP8 \cite{charger_dtsh}.
 
@@ -174,10 +179,9 @@ a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu připoje
 
 Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu vstupní pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač 
 teploty. Tento snímač je připojen na baterii. Pokud je napětí na pinu TEMP nižší než 45 \% nebo vyšší než 80 \% úrovně napájecího napětí, tak je indikována moc nízká
-nebo moc vysoká teplota baterie a nabíjení je zastaveno \cite{charger_dtsh}. Jinak nabíjení pokračuje. Uzemněním pinu TEMP je funkce měření teploty deaktivována \cite{charger_dtsh}. 
-V této práci není měření teploty baterií využíváno, a proto je pin TEMP připojen ke GND. 
+nebo moc vysoká teplota baterie a nabíjení je zastaveno \cite{charger_dtsh}. Jinak nabíjení pokračuje. Uzemněním pinu TEMP je funkce měření teploty deaktivována 
+\cite{charger_dtsh}. V této práci není měření teploty baterií využíváno, a proto je pin TEMP připojen ke GND. 
 
-%obrázek z datasheetu, kde je připojeno i meření teploty
 
 Pokud není baterie nabíjena, tak by svodový proud pinu BAT nabíjecího obvodu CN3058E vybíjel baterii. Svodový proud tohoto pinu je 3 $\mu$A \cite{charger_dtsh}. 
 Aby se baterie zbytečné navybíjela, tak je do obvodu připojen tranzistor Q2, který detekuje připojené napětí k nabíjecímu obvodu. Pokud je napětí připojeno, tak je 
@@ -200,11 +204,9 @@ těmto parametrům jsou LT1930 a MCP1640.
 Obvod LT1930 v doporučeném zapojení při vstupním napětí 3,3V vytváří výstupní napětí o hodnotě 5 V s maximálním odběrem proudu 480 mA \cite{LT1930_dtsh}. Napájecí napětí 
 tohoto obvodu je v rozsahu 2,45 V až 16 V, což vyhovuje napájecímu napětí z baterií LiFePO4 \cite{LT1930_dtsh}.
 
-%krátký popis MCP1640
+Obvod MCP1640 v doporučeném zapojení s rozsahem vstupního napětí 3 až 4,2 V vytváří výstupní napětí o hodnotě 5 V s manimálním odběrem proudu 300 mA \cite{MCP1640_dtsh}.
 
-%proč byl vybrán právě tento?
-%Pro realizaci Semaforu byl zvolen obvod LT1930, který XXX protože XXX
-%schéma zapojení vybraného typu
+Byl vybrán zvyšovač napětí LT1930, díky své lepší dostupnosti v této době nedostatku čipů, a také dokáže do výstupu dodat vyšší proud. Zapojení obou čipů je téměř totožné. 
 
 Pin /SHDN slouží k zapínání a vypínání obvodu. Pomocí přiloženého napětí 2,4 V a více na tento pin je obvod zapnut \cite{LT1930_dtsh}. Pin SW slouží pro  připojení cívky, 
 případně diody, aby se snížilo elektromagnetické rušení \cite{LT1930_dtsh}. 
@@ -236,6 +238,7 @@ Přesné výstupní napětí se spočítá podle vzorce:
 \label{eq:VOUT_LT1930}
 \end{equation}
 
+Shottkyho dioda byla vybrána dle doporučení z dokumentace. Byla vybrána dioda typu MBR0520
 %výběr diody
 %výběr cívky
 
