@@ -238,9 +238,13 @@ Přesné výstupní napětí se spočítá podle vzorce:
 \label{eq:VOUT_LT1930}
 \end{equation}
 
-Shottkyho dioda byla vybrána dle doporučení z dokumentace. Byla vybrána dioda typu MBR0520
-%výběr diody
-%výběr cívky
+Shottkyho dioda byla vybrána dle doporučení z dokumentace. Byla vybrána dioda typu MBR0520, protože maximální napětí na diodě nepřekročí 20 V a protékající proud nepřesáhne 
+0,5 A \cite{LT1930_dtsh}.
+
+Byla vybrána cívka, která odpovídá doporučení z dokumentace. Přesný typ, který byl v dokumentaci zmíněn nebyl k dispozici, a proto byl vybrán typ velmi podobný a vlastnostmi 
+odpovídající. Cívka CDRH3D18NP-4R7NC má feritové jádro, které je pro funkci požadováno \cite{LT1930_dtsh}. Pro typ LT1930 by měl být proud, který cívkou může protékat, alespoň
+1A a její indukčnost by měla být 4,7 $\mu$H nebo 10 $\mu$H \cite{LT1930_dtsh}. Vybraná cívka má indukčnost 4,7 $\mu$H, proud, který jí může protékat je 1,35 A a její rozměry 
+jsou 3,8 $\times$ 3,8 $\times$ 2 mm \cite{civka_dtsh}.
 
 \begin{figure}[!h]
   \begin{center}
@@ -250,9 +254,10 @@ Shottkyho dioda byla vybrána dle doporučení z dokumentace. Byla vybrána diod
 \end{figure}
 
 \section{Zvuková signalizace}
-Jako zvuková signalizace bylo vybráno piezo s vlastním oscilátorem. %doplnit, typ, parametry
 Zvuková signalizace může sloužit například pro potvrzení správnosti hesla, možnosti odejít na další stanoviště, vypršení času pro daný úkol a mnoho dalších. 
 
+Jako zvuková signalizace bylo vybráno piezo s vlastním oscilátorem typu \\BMT1205XH7.5 \cite{piezo_dtsh}. Maximální odebíraný proud vybraného pieza je 30 mA a rezonanční frekvence 
+je 2,3 kHz \cite{piezo_dtsh}. Intenzita zvuku pieza je ve vzdálenosti 10 cm od něj minimálně 83 dB \cite{piezo_dtsh}.
 
 \section{Konektor}
 Jako programovací konektor byl zvolen konektor USB typu C, který může být použit i jako konektor pro nabíjení baterie.
@@ -301,20 +306,23 @@ dle následujícího blokového schématu.
   \caption[Výsledné blokové schéma Semaforu]{Výsledné blokové schéma Semaforu.}
 \end{figure}
 
-\chapter{Návrh DPS}
+
+
+
+%\chapter{Návrh DPS}
 %kulatá DPS - proč?
 
-\section{Kapacitní tlačítka} 
-Byl požadavek na 5 tlačítek. Jedno tlačítko je uprostřed a slouží jako hlavní tlačítko. U her bude používáno např. jako registrace průchodu místem apod. Bude tedy nejčastěji
-používáno a zároveň může být stisknuto, když hráč běží, takže by mělo být co nejjednodušeji stisknutelné. Proto bylo navrženo větší než zbylá tlačítka. Konkrétně má 
-5~$\times$~5~cm. Ostatní tlačítka slouží například jako směrovky, nebo pro vyklikávání nějakého kódu, aby získali nějakou informaci. Slouží tedy primárně, když účastník 
-u sebaforu stojí, nebo sedí, a vyklikává. Díky tomu mohou být tlačítka menší než hlavní tlačítko, konkrétně mají 2~$\times$~2~cm. Tato tlačítka jsou proto umístěna 
-po stranách hlavního tlačítka a jsou popsána BTN\_ENTER, BTN\_UP, BTN\_DOWN, BTN\_RIGHT a BTN\_LEFT.
+%\section{Kapacitní tlačítka} 
+%Byl požadavek na 5 tlačítek. Jedno tlačítko je uprostřed a slouží jako hlavní tlačítko. U her bude používáno např. jako registrace průchodu místem apod. Bude tedy nejčastěji
+%používáno a zároveň může být stisknuto, když hráč běží, takže by mělo být co nejjednodušeji stisknutelné. Proto bylo navrženo větší než zbylá tlačítka. Konkrétně má 
+%5~$\times$~5~cm. Ostatní tlačítka slouží například jako směrovky, nebo pro vyklikávání nějakého kódu, aby získali nějakou informaci. Slouží tedy primárně, když účastník 
+%u sebaforu stojí, nebo sedí, a vyklikává. Díky tomu mohou být tlačítka menší než hlavní tlačítko, konkrétně mají 2~$\times$~2~cm. Tato tlačítka jsou proto umístěna 
+%po stranách hlavního tlačítka a jsou popsána BTN\_ENTER, BTN\_UP, BTN\_DOWN, BTN\_RIGHT a BTN\_LEFT.
 
-\section{LED}
+%\section{LED}
 %do sekce o DPS se zmínit o jejich umístění - kruh, hodiny, proto 12 ks. (lze také rozdělit na 3 segmenty)
 
-\section{Konektory}
+%\section{Konektory}
 %konektor USB C
 %konektor USB A
 %na kraji DPS
