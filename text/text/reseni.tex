@@ -1,6 +1,6 @@
 \chapter{Rešerše elektronických komponent}
-Základní návrh se skládá především z výběru bezdrátové komunikace, která je klíčová. Díky ní budou moci Semafory komunikovat mezi 
-sebou, takže si například budou moci předávat informace o barvě, kterou svítí nebo stisku tlačítek apod. 
+Základní návrh se skládá především z výběru bezdrátové komunikace, která je důležitou součástí Semaforu. Díky ní budou moci Semafory 
+komunikovat mezi sebou, takže si například budou moci předávat informace o barvě, kterou svítí, nebo o stisku tlačítek apod. 
 
 Další nedílnou součástí je mikrokontrolér, který řídí veškerou činnost každého Semaforu. U Semaforu je také nutné řešit způsob napájení,
 takže i to je součástí návrhu.
@@ -16,15 +16,15 @@ Celkový návrh obsahuje také výběr senzorů doteku, zvukových a vizuálníc
 
 \section{Bezdrátová komunikace}
 Použití na táborech a outdoorových akcích vyřadilo z výběru drátovou komunikaci. K DPS by muselo být ještě velké množství kabelů 
-o délce několika stovek metrů minimálně. Bezdrátová komunikace je z tohoto hlediska velmi praktická. Je to také moderní řešení 
+o délce několika stovek metrů. Bezdrátová komunikace je z tohoto hlediska velmi praktická. Je to také moderní řešení 
 náležící dnešní době. 
 
-Jedním ze základních požadavků bylo, že jednotlivé DPS mezi sebou musí být schopny komunikovat. Vzhledem k použití na táborech 
-musel být vybrán komunikační protokol a následně k němu přizpůsoben hardware. 
+Jedním ze základních požadavků bylo, že jednotlivé DPS mezi sebou musí být schopny komunikovat. Proto byl nejdříve vybrán komunikační 
+protokol a následně k němu přizpůsoben hardware. 
 
 Práce tedy započala tím, že byla udělána rešerše existujících bezdrátových komunikačních protokolů a následně byly tyto protokoly 
-mezi sebou porovnány. Vzhledem k použití na outdoorových akcí byl kladem důraz na komunikační vzdálenost a náročnost na výkon, 
-jelikož zařízení je napájeno z baterií. 
+mezi sebou porovnány. Vzhledem k použití na outdoorových akcích byl kladem důraz na komunikační vzdálenost, náročnost na výkon 
+a také na dostupnost. 
 
 Dalším požadavkem bylo bezdrátové nastavování, tedy připojení k Semaforu např. přes telefon a odeslání konfigurace. Nastavení hry,
 která se hraje a např. čas, jak dlouho se bude hrát, nebo v kolika týmech, je tedy zapotřebí také dělat bezdrátově. 
@@ -44,7 +44,7 @@ Výhody bezdrátové technologie WiFi jsou \cite{Bezdrat_muni}:
 
 Nevýhody jsou \cite{Bezdrat_muni}:
 \begin{itemize}
-  \item omezený výkon (není možné pokrýt rozáhlejší oblasti), 
+  \item omezený výkon (není možné pokrýt rozsáhlejší oblasti), 
   \item vyšší spotřeba energie.
 \end{itemize}
 
@@ -113,7 +113,7 @@ Výhody bezdrátové technologie LoRa jsou \cite{LoRa_IoT_PORT}:
 \subsection{ZigBee}
 ZigBee technologie je používána pro vytvoření malých sítí, kde může signál snadno přeskakovat z jednoho zařízení na druhé \cite{ZigBee_smart}.
 Není přitom zapotřebí, aby bylo každé zařízení připojeno k internetu pomocí WiFi \cite{ZigBee_smart}. Pro komunikaci je ale zapotřebí centrální 
-rozbočovač, kterž zajišťuje komunikaci mezi zařízeními \cite{ZigBee_smart}. Tato technologie je určena pro tvorbu rozsáhlejších bezdrátových sítí
+rozbočovač, který zajišťuje komunikaci mezi zařízeními \cite{ZigBee_smart}. Tato technologie je určena pro tvorbu rozsáhlejších bezdrátových sítí
 s přenosem menšího objemu dat \cite{ZigBee_smart}. Jedná se o spolehlivou technologii s nenáročnou implementací a nízkou spotřebou elektrické energie 
 \cite{ZigBee_smart}. Díky ZigBee může mít uživatel v jedné aplikaci zařízení 
 od různých značek a výrobců, protože právě ZigBee zajišťuje jejich vzájemnou komunikaci \cite{ZigBee_smart}.
@@ -129,18 +129,17 @@ Výhody bezdrátové technologie ZigBee jsou \cite{ZigBee_smart}:
   \item pracuje v bezlicenčním frekvenčním pásmu. 
 \end{itemize}
 
-Nevýhody jsou \cite{ZigBee_smart}:
-\begin{itemize}
-  \item nutnost centrálního rozbočovače.
-\end{itemize}
+Nevýhodou je nutnost centrálního rozbočovače \cite{ZigBee_smart}.
 
 \section{Světelná signalizace}
-Pro světelnou signalizaci se nejvíce hodí použití LED. LED se výrabí programovatelné a neprogramovatelné. 
+Jedním z nejdůležitějších požadavků na Semafor bylo, aby mohl svítit. Čím více možností jak svítit, tím bude využití při hrách a táborových 
+programech různorodější. Pro světelnou signalizaci se nejvíce hodí použití LED. LED se výrabí programovatelné a neprogramovatelné. 
 
-Neprogramovatelné LED jsou běžné LED, které mají 2 vývody - katodu a anodu. barva LED je dána výrobou a každá LED má pouze jednu 
-barvu. Přiložením daného prahového napětí na diodu v propustném směru se LED rozsvítí danou barvou. Existují také RGB LED, které 
-mají 4 vývody - 3 katody a společnou anodu. Přiložením napětí na konkrétní anodu je rozsvícena konkrétní barva. Při různě nastavené
-velikosti proudu lze regulovat jas LED a přiložením napětí na více LED lze svítit různými barvami a jejich odstíny. 
+Neprogramovatelné LED jsou běžné LED, které mají 2 vývody - katodu a anodu. Barva LED je dána výrobou a každá LED má pouze jednu 
+barvu. Přiložením daného prahového napětí na diodu v propustném směru se LED rozsvítí danou barvou. Velikost prahového napětí je dána
+právě barvou LED. Běžně se pohybuje v rozmezí 1 až 2,5 V. Existují také RGB LED, které mají 4 vývody - 3 katody a společnou anodu. 
+Přiložením napětí na konkrétní anodu je rozsvícena konkrétní barva. Při různě nastavené velikosti proudu lze regulovat jas LED 
+a přiložením napětí na více LED lze svítit různými barvami a jejich odstíny. 
 
 Programovatelné LED mají datový vstup a napájecí napětí není závislé na barvě LED. 
 Barva je určována programem, taktéž její jas. To tedy znamená, že je zapotřebí je řídit 
@@ -153,7 +152,7 @@ Napájecí napětí těchto LED by se mělo pohybovat v rozmezí 4,5 až 5,5 V \
 Senzory doteku jsou nezbytnými prvky pro ovládání Semaforu. Mohou sloužit pro přepínání módů, ovládání Semaforu jako takového nebo jako herní 
 součást. Ve hře mohou plnit úlohu přepínače režimů hry, zadávání kódů, určování směru apod. 
 
-Nejjednodušším senzorem doteku je tlačítko. 
+Nejjednodušším a nejpoužívanějším senzorem doteku je tlačítko. 
 Tlačítka mohou být realizována dvěma základními způsoby, mohou být elektromechanická, nebo dotyková kapacitní. 
 
 Stisková plocha mechanického tlačítka je nevodivá, často plastová. Mechanické prvky jsou častým zdrojem problémů. Je tím často omezena i 
@@ -190,9 +189,9 @@ Nevýhodou kapacitních tlačítek je, že nemají žádnou odezvu na dotyk. U m
 stisk tlačítka. U kapacitních tlačítek lze tento fakt vyřešit například rozsvícením LED nebo vibrační odezvou. Vibrační 
 odezva může být realizována pomocí vibračního motoru. 
 
-Některé MCU včetně vybraného mikrokontroléru ESP32-C3 nemají kapacitní
-vstupy, to znamená, že tlačítko nelze připojit přímo k pinu MCU \cite{ESP_C3_dtsh}. Buď musí být vybrán mikrokontrolér, který kapacitní 
-vstupy má, nebo může být použit převodník, který má kapacitní vstupy a jeho výstupy poté mohou být připojeny k MCU. 
+Některé mikrokontroléry nemají kapacitní vstupy, to znamená, že tlačítko nelze připojit přímo k GPIO pinu MCU \cite{ESP_C3_dtsh}. 
+Buď musí být vybrán mikrokontrolér, který kapacitní vstupy má, nebo může být použit převodník, který má kapacitní vstupy a jeho 
+výstupy poté mohou být připojeny k MCU. 
 
 Výhody kapacitních tlačítek jsou:
 \begin{itemize}
@@ -203,10 +202,6 @@ Výhody kapacitních tlačítek jsou:
   \item možnost kompenzace rušivých elementů,
   \item cena. 
 \end{itemize}
-
-V návrhu Semaforu byla zvolena kapacitní dotyková tlačítka. Pro možnost použití uvnitř i venku jsou díky možnosti voděodolnosti 
-vhodnějším řešením. Také velikost a označení tlačítka může být variabilní. Velikost může být na DPS navržena dle potřeby a potisk
-v místě tlačítka vyznačen barevně, nebo např. samolepkou. Odezva na dotyk bude realizována pomocí vibračního motoru.
 
 \subsection{Princip kapacitních dotykových tlačítek}
 Základní princip je založen na měření změny kapacity. Měď, ze které je tlačítko vytvořeno má
@@ -244,48 +239,28 @@ Voda a další nečistoty mění vlastní kapacitu tlačítka a může tak doch�
 Lze využít faktu, že nečistoty působí dlouhodobě, ale stisk je krátkodobý \cite{PrincipKapTl}. Hodnotu vlastní kapacity tlačítka je tedy
 možné softwarově upravovat v závislosti na aktuálních dlouhodobějších stavech a detekovat tak přesněji krátkodobý stisk tlačítka.
 
-Pro odlišení tlačítek je místo označeno barevným potiskem. 
-
-\section{Převodník pro kapacitní tlačítka}
-Vybraný mikrokontrolér ESP32-C3 nemá kapacitní vstupy, proto je zapotřebí kapacitní dotyková tlačítka připojit přes převodník. Je zapotřebí připojit 
-5 tlačítek. 
-%jaké byly možnosti 
-%zmínit se i o TTP224?
-%má 4 vstupy, ale já potřebuji 5 tlačítek
-
-Použitý převodník AT42QT1070 dokáže pracovat ve 2 režimech. V prvním režimu může být zapojeno maximálně 5 kapacitních tlačítek, která jsou připojena
-k pinům KEY0 až KEY4. Jako výstup se používají piny OUT0 až OUT4. Každé tlačítko má tedy svůj výstup, který může být připojen k GPIO pinům MCU 
-nebo k nim mohou být připojeny např. LED \cite{conv_cap_but_AT42QT1070_dtsh}. 
-
-Druhý režim je využitelný pouze v případě, je-li převodník připojen k MCU. Vtomto případě může být k převodníku připojeno až 7 kapacitních tlačítek, 
-která jsou připojena na pinech KEY0 až KEY6. Převodník poté komunikuje s MCU pomocí komunikační sběrnice $I^2C$ \cite{conv_cap_but_AT42QT1070_dtsh}. 
-Z registru převodníku lze poté vyčíst stavy daných kapacitních dotykových tlačítek. 
+Pro odlišení tlačítek může být místo označeno například barevným potiskem. 
 
 \section{Napájení}
-Vzhledem k použití Semaforů při hrách na táborech byly možné pouze 2 způsoby napájení, pomocí powerbanky nebo baterií. Byla zvolena kombinace obou druhů.
+Vzhledem k použití Semaforů při hrách na táborech byly možné pouze 2 způsoby napájení, pomocí powerbanky nebo baterií. 
 
-Zabudování baterie přináší kompaktnost řešení a pro použití není třeba dalších komponent. Pokud je ale na táboře větší využití, tak se baterie vybije.
-Na táborech většinou nebývá připojení k elektrické síti a proto je řešením powerbanka. Na Semaforu tedy bude napájecí vstup USB A pro nabíjení baterií
-přímo z powerbanky. Semafor musí být koncipován tak, aby se mohla baterie nabíjet a zároveň, aby při tom byly Semafory funkční.
-
-\subsection{Baterie}
 Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Požadavkem je také možnost nabíjení. Při použití na táboře by jinak musely být stále 
 nové baterie v balení a musely by se neustále doplňovat a udržovat.
 
-Moderní baterie jsou náchylné na přepólování, a proto není bezpečné, aby uživatel měnil baterie sám. Baterie budou tedy zabudované v zařízení bez možnosti 
-výměny uživatelem. 
+Moderní baterie jsou náchylné na přepólování, a proto není bezpečné, aby uživatel měnil baterie sám. Baterie by tedy musely být zabudované v zařízení 
+bez možnosti výměny uživatelem. 
 
 %kapacita baterie - jak dlouho by měla vydržet
 
 Z nabíjecích baterií je možno vybírat z olověných baterií, Ni-MH, Li-Ion, Li-Pol a LiFePO4 baterií.
 
-\subsubsection{Olověné baterie}
+\subsection{Olověné baterie}
 Maximální životnost olověné baterie je 300 až 400 cyklů \cite{LiFePO4_malina}. Nominální hodnota jednoho článku jsou 2 V \cite{olovene}. Jejich výroba je oproti
 lithiovým bateriím velmi nenáročná \cite{olovene}. Jejich kapacita je závislá na konkrétním typu baterie \cite{olovene}. Tyto baterie jsou schopny dodávat vysoké
-rázové proudy \cite{akumulatory}. Olověné akumulátory jsou velké a těžké a pro přenosná zařízení se tedy spíše nehodí. Hlavní nevýhodou, která je mimo jiné vyřadila 
-z výběru pro Semafor, je, že je potřeba je udržovat neustále v nabitém stavu \cite{olovene}. Její účinnost je závislá na odebíraném proudu a její životnost je závislá 
-na teplotě \cite{olovene}. Mají dlouhou dobu nabíjení a obsahují toxické olovo, které je škodlivé pro životní prostředí \cite{olovene}. Olověné baterie se používají 
-především v automobilech jako startovací baterie, v zabezpečovacích systémech atd. \cite{olovene}.
+rázové proudy \cite{akumulatory}. Olověné akumulátory jsou velké a těžké a pro přenosná zařízení se tedy spíše nehodí. Hlavní nevýhodou je, že je potřeba je udržovat 
+neustále v nabitém stavu \cite{olovene}. Její účinnost je závislá na odebíraném proudu a její životnost je závislá na teplotě \cite{olovene}. Mají dlouhou dobu 
+nabíjení a obsahují toxické olovo, které je škodlivé pro životní prostředí \cite{olovene}. Olověné baterie se používají především v automobilech jako startovací 
+baterie, v zabezpečovacích systémech atd. \cite{olovene}.
 
 Výhody olověných baterií jsou \cite{olovene}:
 \begin{itemize}
@@ -295,20 +270,20 @@ Výhody olověných baterií jsou \cite{olovene}:
   \item spolehlivost. 
 \end{itemize}
 
-\subsubsection{NiMH}
-Baterie NiMH mají jmenovité napětí 1,20 V a jejich životnost je cca 1000 nabíjecích cyklů \cite{akumulatory}. Tyto akumulátory je zapotřebí před prvním použití, nebo po 
+\subsection{Ni-MH}
+Baterie Ni-MH mají jmenovité napětí 1,2 V a jejich životnost je cca 1000 nabíjecích cyklů \cite{akumulatory}. Tyto akumulátory je zapotřebí před prvním použití, nebo po 
 dlouhém nepoužívání, tzv. naformátovat \cite{akumulatory}. 
 Jedná se o pozvolné nabíjení s nízkým nabíjecím proudem \cite{akumulatory}. Pro optimální použití je také doporučeno baterii nabít nejpozději 2 hodiny před použitím, aby se 
-snížil vnitřní odpor NiMH baterie \cite{akumulatory}.
+snížil vnitřní odpor Ni-MH baterie \cite{akumulatory}.
 
-Výhody NiHM baterií jsou \cite{akumulatory}:
+Výhody Ni-MH baterií jsou \cite{akumulatory}:
 \begin{itemize}
   \item cena,
   \item malé samovybíjení,
   \item vysoká mechanická odolnost.
 \end{itemize}
 
-\subsubsection{Li-Pol}
+\subsection{Li-Pol}
 Li-Pol baterie poskytují vysoké nabíjecí proudy a vysokou kapacitu a jejich jmenovité napětí je 3,7 V \cite{akumulatory}. Tyto baterie jsou citlivé na přesné nabití, a proto 
 je možné používat pouze nabíječky určené pro nabíjení těchto baterií \cite{akumulatory}. Tyto nabíječky mají také balancer \cite{akumulatory}. Při skladování je také nutné 
 udržovat nabití na 50 \% kapacity \cite{akumulatory}. Údržba takové baterie je proto velmi náročná a nehodí se do podobných zařízení, jako je Semafor. Při mechanickém poškození 
@@ -322,9 +297,9 @@ Výhody Li-Pol baterií jsou \cite{akumulatory}:
   \item cena.
 \end{itemize}
 
-\subsubsection{Li-Ion}
-Jmenovité mapětí Li-Ion baterie je 3,6 V a její životnost je cca 2000 nabíjecích cyklů \cite{Li-Ion}. Tento typ baterie trpí tzv. stárnutím. Jde o proces, kdy ztrácí 
-svoji kapacitu bez ohledu na používání \cite{Li-Ion}. Jejich kapacita je tedy závislá na reálném čase a ne frekvenci používání. Jejich velkou nevýhodou je nebezpečí 
+\subsection{Li-Ion}
+Jmenovité napětí Li-Ion baterie je 3,6 V a její životnost je cca 2000 nabíjecích cyklů \cite{Li-Ion}. Tento typ baterie trpí tzv. stárnutím. Jde o proces, kdy ztrácí 
+svoji kapacitu bez ohledu na používání \cite{Li-Ion}. Jejich kapacita je tedy závislá na reálném čase a na frekvenci používání. Jejich velkou nevýhodou je nebezpečí 
 výbuchu při špatné manipulaci, např. zkratu apod. \cite{Li-Ion}. 
 
 Výhody Li-Ion baterií jsou \cite{Li-Ion}:
@@ -336,10 +311,10 @@ Výhody Li-Ion baterií jsou \cite{Li-Ion}:
   \item šetrné k životnímu prostředí. 
 \end{itemize}
 
-\subsubsection{LiFePO4}
+\subsection{LiFePO4}
 LiFePO4 baterie mají jmenovité napětí v rozsahu 3 až 3,3 V \cite{LiFePO4_malina}. Její minimální provozní napětí je pak 2,5 V a maximální je 3,65 V \cite{LiFePO4_malina}.
 LiFePO4 je dnes baterie známá jako nejbezpečnější, nejspolehlivější a nejstabilnější baterie obsahující lithium \cite{LiFePO4_malina}. Je to nejvhodnější baterie pro 
-přenosná zařízení díky velmi dobrému poměru valikosti (hmotnosti) a kapacity. Její životnost je až 4~$\times$ vetší než u baterie Li-Ion \cite{LiFePO4_malina}. Je také hodnocena
+přenosná zařízení díky velmi dobrému poměru velikosti (hmotnosti) a kapacity. Její životnost je až 4$\times$ vetší než u baterie Li-Ion \cite{LiFePO4_malina}. Je také hodnocena
 jako nejbezpečnější z dosud dostupných baterií \cite{LiFePO4_malina}. Baterie LiFePO4 mohou standardně dosáhnout životnosti až 7000 cyklů, to odpovídá cca 15 letům při bežném
 používání \cite{LiFePO4_malina}. Článek LiFePO4 je teplotně stabilní, nehořlavý (ani při zkratu), netrpí samovybíjením, není toxický a nevytéká \cite{LiFePO4_malina}.
 
@@ -362,17 +337,14 @@ Výhody LiFePO4 baterií jsou \cite{LiFePO4_smart}:
 \section{Mikrokontrolér}
 Mikrokontrolér je hlavním prvkem každého zařízení včetně Semaforu. Mikrokontrolérů existuje nespočetné množství od mnoha výrobců a při výběru je nutno brát v potaz
 množství požadovaných parametrů a požadované periferie. 
-Komunikační moduly pro bezdrátovou komunikaci se připojují nejčastěji pomocí $I^2C$ nebo UART. Převodník pro kapacitní tlačítka komunikuje po $I^2C$ sběrnici, proto je sběrnice
-$I^2C$ nutnou výbavou. Pro připojení zvukových a vibračních periferií jsou zapotřebí GPIO piny a pro připojení měření baterie je nutné GPIO pin s ADC převodníkem. 
+Komunikační moduly pro bezdrátovou komunikaci se připojují nejčastěji pomocí $I^2C$ nebo UART rozhraní. Pro připojení zvukových a vibračních periferií jsou zapotřebí 
+GPIO piny.
 
 Cenu mikrokontroléru určuje především počet periferií, počet GPIO pinů a výpočetní výkon.
 
-Výhodou je možnost připojení USB, aby nebylo nutné používat převodník pro komunikaci při programování. 
+Známými výrobci mikrokontrolérů jsou Microchip, Motorola, NXP nebo \\STMicroelectronics. 
 
-Existují mikrokontroléry, které již WiFi modul obsahují. Jsou to mikrokontroléry z řady ESP32 od firmy Espressif. Dalšími známými výrobci mikrokontrolérů jsou Microchip,
-Motorola, NXP nebo STMicroelectronics. 
-
-Faktory ovlivňující výběr řídicího mikrokonroléru:
+Faktory ovlivňující výběr řídicího mikrokontroléru:
 \begin{itemize}
   \item dostatečný počet GPIO pinů,
   \item dostatek paměti,

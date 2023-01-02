@@ -1,123 +1,84 @@
 \chapter{Výběr a návrh elektroniky}
+Výběr elektronických součástek probíhal dle jejich parametrů, využití, dostupnosti a ceny. Nejdříve byla vybrána bezdrátová technologie a mikrokontrolér a v závislosti 
+na tom vše ostatní. 
 
 \section{Bezdrátová technologie}
 Ke komunikaci Semaforů mezi sebou byla zvolena technologie LoRa. Tato technologie byla zvolena především kvůli komunikačnímu dosahu. Jedná se sice o dražší technologii, 
 ale na tolik, aby ji nebylo možné v tomto zařízení použít. Táborové hry se většinou hrají na loukách, které mají rozlohu několik stovek metrů čtverečných. LoRa je jedinou
 dostupnou technologií, která na tyto vzdálenosti spolehlivě komunikuje. Bezdrátové propojení Semaforů bude použito pro posílání informací o aktuálně svítící barvě, či 
-stisku tlačítka v závislosti na hře, která se aktuálně hraje. U některých her například může být žádoucí, aby po přepínání nesvítily všechny Semafory stejnou barvou,
-díky této komunikaci se bude moci být takovým stavům zabráněno. 
+stisku tlačítka v závislosti na hře, která se aktuálně hraje. U některých her například může být žádoucí, aby po přepínání nesvítily všechny Semafory stejnou barvou 
+a díky této komunikaci bude moci být takovým stavům zabráněno. 
+
+%text o konkrétní m vybraném LoRa modulu
 
 K propojení Semaforu s telefonem a dalšími zařízeními byla vybrána technologie WiFi. Jedná se o rozšířenou technologii, která je v telefonech a noteboocích zabudovaná. 
-Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce. Mikrokontrolér vytvoří WiFi, ke které se pomocí telefonu připojí. Po připojení bude zobrazena
-webová stránka, kde bude seznam her, které Semafor umí. U jednotlivých her se poté budou moci nastavovat další parametry. Po nasatvení se komfigurace pošle do Semaforu. 
+Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce, kde bude seznam her, které Semafor umí. U jednotlivých her se poté budou moci nastavovat 
+další parametry. Po nastavení se konfigurace pošle do Semaforu. 
 
 \section{Mikrokontrolér}
 WiFi modul obsahuje jako jediný mikrokontrolér od firmy Espressif z řady ESP32. Konkrétně jde o typ ESP32-C3-MINI, dále již je ESP32-C3. Je také nabízen za cenu, která 
 je v porovnání s ostatními nízká a v porovnání s nabízenými parametry bezkonkurenční. Pro zařízení Semaforu je také se svým počtem periferií dostačující. ESP32-C3 má 
-384 kB ROM a 4 MB flash paměti \cite{ESP_C3_dtsh}. Dále obsahuje WiFi modul pracující na frekvenci 2,4 GHz a Bluetooth \cite{ESP_C3_dtsh}. ESP32-C3 obsahuje SPI, UART, 
-$I^2C$, USB a další \cite{ESP_C3_dtsh}. V mikrokontroléru je také zabudován krystal s vlastní frekvencí 40 MHz a v rámci pouzdra je také anténa pro WiFi \cite{ESP_C3_dtsh}.
+384 kB ROM a 4 MB flash paměti \cite{ESP_C3_dtsh}. Dále obsahuje WiFi modul pracující na frekvenci 2,4 GHz a Bluetooth \cite{ESP_C3_dtsh}. ESP32-C3 obsahuje mnoho periferií
+jako je SPI, UART, $I^2C$, USB a další \cite{ESP_C3_dtsh}. Mikrokontrolér má vyvedeno 13 GPIO pinů, které je možno softwarově nastavit jako vstupní nebo výstupní. Tyto piny
+slouží pro připojení senzorů, díky kterým je zprostředkována komunikace mezi mikrokontrolérem a okolním světem. V mikrokontroléru je také zabudován krystal s vlastní frekvencí 
+40 MHz a v rámci pouzdra je také anténa pro WiFi \cite{ESP_C3_dtsh}.
 
-Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}. Jeho průměrný proudový odběr je XXX a jeho minimální odběr proudu v režimu spánku je XXX %dopsat
-Mikrokontrolér ESP32-C3 garantuje pracovní teplotu od -45 °C až do 85 °C \cite{ESP_C3_dtsh}.
+Rozsah napájecího napětí je 3 až 3,6 V \cite{ESP_C3_dtsh}. Jeho maximální proudový odběr je 0,5 A \cite{ESP_C3_dtsh}. Mikrokontrolér ESP32-C3 garantuje pracovní teplotu 
+od -45 °C až do 85 °C \cite{ESP_C3_dtsh}.
 
-%napsat o strapping pins
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.8]{obrazky/blokove_schema_MCU.jpg}
+  \end{center}
+  \caption[Blokové schéma mikrokontroléru ESP32-C3]{Blokové schéma mikrokontroléru ESP32-C3 \cite{ESP_C3_dtsh}.}
+\end{figure}
 
-Mikrokontrolér ESP32-C3 nemá kapacitní vstupy a proto je zapotřebí pro kapacitní tlačítka použít převodník pro zpracování signálu z nich \cite{ESP_C3_dtsh}. 
+K pinu 3V3, který slouží pro připojení napájecího napětí jsou také připojeny kondenzátory o hodnotě 10 $\mu$F a 100 nF dle doporučení z dokumentace \cite{ESP_C3_dtsh}. Tyto 
+kondenzátory slouží pro filtraci napájecího napětí, aby bylo vyfiltrováno případné rušení o různých frekvencích.
+
+Pin EN slouží pro povolení funkce mikrokontroléru. Tento pin nesmí zůstat nezapojený, tzv. floating. Jeho zapojení je převzato z dokumentace, tj. pullup rezistor 10 k$\Omega$
+a ke GND je připojen přes kondenzátor o hodnotě 1 $\mu$F \cite{ESP_C3_dtsh}.
 
 %schéma zapojení a připojení všech periferií
 
-\section{LED}
-Jedním z nejdůležitějších požadavků na Semafor bylo, aby mohl svítit. Čím více možností, jak svítit, tím bude využití 
-při hrách a táborových programech různorodější. K tomuto účelu jsou použity LED. 
+ESP32-C3 má konfigurační piny, které slouží pro správné nastavení mikrokontroléru po restartu. Tyto piny musí být při restartu v daném nastavení. Konfiguračními piny jsou 
+GPIO2, GPIO8 a GPIO9. Piny GPIO8 a GPIO9 nesmí být nikdy současně v logické nule. 
+%napsat další info o strapping pins
 
-K tomu by byl zapotřebí mikrokonrolér s velkým množství GPIO pinů. Takových mikrokonrolérů není mnoho a zároveň 
-by se to odrazilo na ceně. Počet GPIO pinů je jedním z hlavních limitujících faktorů při výběru MCU. Proto byly použity programovatelné 
-LED typu WS2812C.
-
-\begin{figure}[!h]
+\begin{table}[!h]
+  \caption[Konfigurační piny ESP32-C3]{Konfigurační piny ESP32-C3 \cite{ESP_C3_dtsh}}
   \begin{center}
-    \includegraphics[scale=0.5]{obrazky/WS2812C.png}
+  	\small
+	  \begin{tabular}{|c|c|c|c|}
+	    \hline
+	    \textbf{Pin}	& \textbf{Výchozí}	& \textbf{Načtení programu} & \textbf{Načtení programu} \\
+      \textbf{}	& \textbf{}	& \textbf{z SPI} & \textbf{z interní paměti} \\
+	    \hline
+	    \textbf{GPIO2}	& N/A & 1 & 1 \\ %co znamená N/A
+	    \hline
+	    \textbf{GPIO8}	& N/A & Nezáleží & 1 \\ %co znamená N/A
+	    \hline
+	    \textbf{GPIO9} & Interní měkký pullup & 1 & 0 \\
+	    \hline
+	  \end{tabular}
   \end{center}
-  \caption[Zapojení inteligentních LED WS2812C]{Zapojení inteligentních LED WS2812C.}
-\end{figure}
-
-Komunikační napěťová úroveň logické jedničky těchto LED by měla být alespoň na úrovni 70 \% napájecího napětí \cite{WS2812C_dtsh}. 
-Protože použitý mikrokonrolér ESP32-C3 má komunikační napěťovou úroveň logické jedničky jeho napájecí napětí, což je 3 až 3,6 V, 
-tak je zapotřebí využít převodník napěťové úrovně \cite{ESP_C3_dtsh}. Komunikace je v tomto případě pouze jednosměrná, 
-to znamená, že MCU posílá data do LED, ale LED neposílají žádná data do MCU. Převodník je realizován unipolárním tranzistorem 
-a jedním pullup rezistorem. Rezistor je připojen pro k napájecímu napětí inteligentních LED WS2812C. 
-Tranzistor Q1 má gate připojený k napájecímu napětí MCU. Pokud bude mikrokonrolér do LED posílat logickou jedničku, tak bude rozdíl
-mezi gate a source 0 V. Tím pádem bude tranzistor uzavřený a tím se přes rezistor R4 připojí k LED jejich napájecí napětí. Toto napětí 
-je pro inteligentní LED logickou jedničkou. Pokud bude MCU posílat logickou nulu, tedy 0 V, tak je rozdíl napětí mezi gate a source 
-napájecí napětí mikrokontroléru. Tranzistor je tedy otevřený a tím se napětí 0 V dostane k inteligentním LED a na rezistoru se objeví
-úbytek napětí o velikosti napájecího napětí inteligentních LED. Napětí 0 V je logickou nulou i pro inteligentní LED. Tento převodník
-je určen pouze pro komunikaci jedním směrem. 
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.6]{obrazky/prevodnik_urovni_pro_WS2812C.png}
-  \end{center}
-  \caption[Zapojení převodníku úrovní pro WS2812C]{Zapojení převodníku úrovní pro WS2812C.}
-\end{figure} 
-
-Tyto programovatelné LED mají maximální spotřebu 5 mA na jeden kanál. Při zapnutí všech kanálů (svícení bílou) je maximální
-spotřeba jedné LED 15 mA \cite{WS2812C_dtsh}. Pokud LED nesvítí, tak je její maximální klidový proud 0,3 mA \cite{WS2812C_dtsh}.
-Při použití 12 LED je tedy maximální odběr všech LED 180 mA.
-
-Kondenzátor u každé LED slouží pro filtraci napájecího napětí. 
-
-\section{Vibrační motor}
-Vibrační motory jsou založeny na principu kmitání. Motor je připevněn k zařízení, které je kmitáním rozvibrováno. Vibrační motory jsou dnes 
-nedílnou součástí mnoha elektronických zařízení včetně mobilního telefonu nebo dětských hraček. 
-
-Dioda slouží jako ochrana proti přepětí, protože motor je indukční zátěž, takže vytváří napěťové špičky. Díky diodě je mikrokonrolér chráněn 
-proti špičkovému napětí, které by se na něj mohlo dostat. Kondenzátor slouží k tomu, aby napěťové špičky eliminovat, nebo alespoň zmenšoval. 
-
-Vibrační motor je připojen k mikrokontroléru přes tranzistor, protože maximální výstupní proud z pinu MCU není dostatečně velký na to, aby 
-motor roztočil. Tranzistor je tedy připojen na gate tranzistoru, který se při logické jedničce na pinu sepne a motorem protéká proud, který 
-nedodává MCU, ale zdroj 3.3 V (v tomto případě baterie LiFePO4). Baterie tak dokáže dodat dostatek proudu, aby se motor roztočil. 
-
-Pro Semafor byl vybrán vibrační motor LCM1020A2945F. Tento motor má maximální požadovaný proud 120 mA \cite{vib_motor_dtsh}. Maximální proud, 
-který lze odebírat z pinu mikrokontroléru ESP32-C3, je 40 mA \cite{ESP_C3_dtsh}. Vibrační motor lze pouze spínat, nebo je možné jej připojit 
-k pinu, který dokáže generovat PWM a lze tím regulovat jeho otáčky. 
-
-Vibrační motor slouží jako odezva na dotyk kapacitního tlačítka. 
-
-%obrázek schéma zapojení + asi fotka vybraného motoru
-
-\section{Převodník pro kapacitní tlačítka}
-Byl vybrán převodník pro kapacitní tlačítka AT42QT1070.
-Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito právě zapojení s komunikací 
-přes $I^2C$. Díky tomu budou využity pouze 2 GPIO piny mikrokonroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
-sběrnici $I^2C$.
-
-Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči zemi, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
-R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice $I^2C$ s mikrokonrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
-dotyková tlačítka.  
-
-Pin MODE je připojen k signálu GND, protože převodník je provozován v režimu komunikujícím přes $I^2C$ sběrnici \cite{conv_cap_but_AT42QT1070_dtsh}.
-
-%proč nepoužívám pin /CHANGE?
-
-\begin{figure}[!h]
-    \begin{center}
-      \includegraphics[scale=0.4]{obrazky/AT42QT1070.png}
-    \end{center}
-    \caption[Zapojení převodníku AT42QT1070 pro kapacitní tlačítka]{Zapojení převodníku AT42QT1070 pro kapacitní tlačítka.}
-\end{figure}
+\end{table}
 
 \section{Napájení}
-Při realizaci Semaforu byl vybrán článek baterie LiFePO4 právě kvůli již zmíněným vynikajícím vlastnostem. Vybraný mikrokonrolér má napájecí napětí 
-v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. 
-Pro funkci mikrokontroléru tedy nebude muset být použit ani převodník napětí.  
+Zabudování baterie přináší kompaktnost řešení a pro použití není třeba dalších komponent. Pokud je ale na táboře větší využití, tak se baterie vybije.
+Na táborech většinou nebývá k dispozici připojení k elektrické síti, a proto je řešením powerbanka. Na Semaforu tedy bude napájecí vstup USB-A pro nabíjení baterií
+přímo z powerbanky bez nutnosti kabelu. Semafor musí být koncipován tak, aby se mohla baterie nabíjet a zároveň, aby při tom byly Semafory funkční.
 
+Při realizaci Semaforu byla tedy zvolena kombinace napájení pomocí baterií o pomocí powerbanky. Článek baterie LiFePO4 byl vybrán právě kvůli již zmíněným vynikajícím 
+vlastnostem. Vybraný mikrokontrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. Pro funkci mikrokontroléru tedy nebude muset být použit ani 
+převodník napětí.  
 
 \subsection{Nabíjecí obvod}
 %nastavit nabíjecí proud na 1C 
 Nabíjecí obvody jsou závislé na konkrétním typu baterií, které budou nabíjeny. Vzhledem k vybranému typu baterií LiFePO4 byly uvažovány pouze komerčně
 dostupné integrované obvody, které jsou určeny pro nabíjení tohoto typu baterií. 
 
-Vybraný typ baterií LiFePO4 lze nabíjet pomocí obvodu CN3058E \cite{charger_dtsh}. 
+Vybraný typ baterií LiFePO4 lze nabíjet pomocí obvodu CN3058E. 
 %možná vyjmenovat další obvody a napsat proč tento
 
 %napětí nastaveno na 3,6 V interně, ale lze jej nastavit pomocí externího odporu
@@ -130,10 +91,8 @@ Když je nabíjecí obvod odpojen od napájecího napětí, tak přejde do reži
 3 $\mu$A \cite{charger_dtsh}. Tento proud je oproti klidovým proudům jiných součástek zanedbatelný, a proto nemusí být baterie od nabíjecího obvodu odpojována,
 když není nabíjena. 
 
-Nabíjecí obvod CN3058E umí také vyhodnocovat teplotu baterie a v závislosti na tom přestávat baterii nabíjet \cite{charger_dtsh}. Tato funkce není v zapojení využita,
-proto je pin TEMP připojen k signálu GND \cite{charger_dtsh}.
-
-%popsat další vlastnosti 
+Nabíjecí obvod CN3058E umí také vyhodnocovat teplotu baterie a v závislosti na tom přestávat baterii nabíjet \cite{charger_dtsh}. Tato funkce není v zapojení
+Semaforu využita, proto je pin TEMP připojen k signálu GND \cite{charger_dtsh}.
 
 Tento nabíjecí obvod se vyrábí ve standardizovaném pouzdře SOP8 \cite{charger_dtsh}.
 
@@ -150,6 +109,7 @@ Rezistor připojený k pinu ISET slouží pro nastavení hodnoty nabíjecího pr
 
 
 %jak zjistim napeti na tom pinu?
+%opravit
 Velikost rezistoru R8 byla počítána na velikost nabíjecího proudu 1 A dle následující rovnice:
 \begin{equation} 
   R_{8}~=~\frac{U_{ISET}}{I_{CH}}~\cdot~1011~=~\frac{}{1}~\cdot~1011~=~XXX~\:k\Omega. 
@@ -165,7 +125,7 @@ o této hodnotě \cite{rezistorova_rada}. Odpovídá tomu nabíjecí proud 1015 
 %rovnice 1218/1200 = 1.015 A = 1015 mA
 
 Vstupní a výstupní kondenzátory slouží pro filtaci zákmitů napájecího napětí a také napětí, kterým je nabíjena baterie. Hodnoty kondenzátorů byly převzaty
-z doporučení z datasheetu.
+z doporučení z dokumentace.
 
 Kladný pól nabíjené baterie je připojen na pinu BAT, záporný pól je připojen ke GND. Pin BAT poskytuje nabíjecí proud do baterie a zároveň poskytuje konstantní 
 nabíjecí napětí. V režimu spánku je svodový proud tohoto pinu 3 $\mu$A \cite{charger_dtsh}. 
@@ -174,37 +134,122 @@ Pin VIN slouží pro napájení vnitřního obvodu CN3058E. Je na něj přiklád
 než je napětí na pinu BAT, tak vnitřní obvod přechází do režimu spánku \cite{charger_dtsh}. V tomto režimu klesá proud pinu BAT na méně než 3 $\mu$A \cite{charger_dtsh}.
 
 Tento nabíjecí obvod má možnost indikace nabíjení baterií a dokončení nabíjení. Tato indikace je realizována pomocí 2 LED připojených přes pullup rezistor. Hodnota
-pullup rezistoru byla převzata z doporučení z datasheetu. Červená LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje dokončené nabíjení 
-a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu připojeny katodou. 
+pullup rezistoru byla převzata z doporučení z dokumentace, tj. 330 $\Omega$. Červená LED indikuje nabíjení baterií a je připojena na pin /CHRG a zelená LED indikuje 
+dokončené nabíjení a je připojena na pin /DONE. Obě LED jsou k pinům nabíjecího čipu připojeny katodou. 
 
 Obvod CN3058E může také měřit teplotu na nabíjené baterii. Slouží k tomu vstupní pin TEMP. Měření probíhá pomocí odporového děliče, jehož střed je připojen na snímač 
 teploty. Tento snímač je připojen na baterii. Pokud je napětí na pinu TEMP nižší než 45 \% nebo vyšší než 80 \% úrovně napájecího napětí, tak je indikována moc nízká
 nebo moc vysoká teplota baterie a nabíjení je zastaveno \cite{charger_dtsh}. Jinak nabíjení pokračuje. Uzemněním pinu TEMP je funkce měření teploty deaktivována 
 \cite{charger_dtsh}. V této práci není měření teploty baterií využíváno, a proto je pin TEMP připojen ke GND. 
 
+\section{Senzory doteku}
+V návrhu Semaforu byla zvolena kapacitní dotyková tlačítka. Pro možnost použití uvnitř i venku jsou díky možnosti voděodolnosti 
+vhodnějším řešením. Také velikost a označení tlačítka může být variabilní. Velikost může být na DPS navržena dle potřeby a potisk
+v místě tlačítka vyznačen barevně, nebo např. samolepkou. Odezva na dotyk bude realizována pomocí vibračního motoru.
 
-Pokud není baterie nabíjena, tak by svodový proud pinu BAT nabíjecího obvodu CN3058E vybíjel baterii. Svodový proud tohoto pinu je 3 $\mu$A \cite{charger_dtsh}. 
-Aby se baterie zbytečné navybíjela, tak je do obvodu připojen tranzistor Q2, který detekuje připojené napětí k nabíjecímu obvodu. Pokud je napětí připojeno, tak je 
-tranzistor otevřen a baterie je nabíjena. Pokud napětí připojeno není, tak je tranzistor uzavřen a baterie je díky tomu odpojena od nabíjecího obodu. Díky tomu 
-není vybíjena svodovým proudem pinu BAT. 
+\section{Vibrační motor}
+Vibrační motory jsou založeny na principu kmitání. Motor je připevněn k zařízení, které je kmitáním rozvibrováno. Vibrační motory jsou dnes 
+nedílnou součástí mnoha elektronických zařízení včetně mobilního telefonu nebo dětských hraček. 
+
+Dioda slouží jako ochrana proti přepětí, protože motor je indukční zátěž, takže vytváří napěťové špičky. Díky diodě je mikrokontrolér chráněn 
+proti špičkovému napětí, které by se na něj mohlo dostat. Kondenzátor slouží k tomu, aby napěťové špičky eliminoval, nebo alespoň zmenšoval. 
+
+Vibrační motor je připojen k mikrokontroléru přes tranzistor, protože maximální výstupní proud z pinu MCU není dostatečně velký na to, aby 
+motor roztočil. Tranzistor je tedy připojen na gate tranzistoru, který se při logické jedničce na pinu sepne a motorem protéká proud, který 
+nedodává MCU, ale zdroj 3.3 V (v tomto případě baterie LiFePO4). Baterie tak dokáže dodat dostatek proudu, aby se motor roztočil. 
+
+Pro Semafor byl vybrán vibrační motor LCM1020A2945F. Tento motor má maximální požadovaný proud 120 mA \cite{vib_motor_dtsh}. Maximální proud, 
+který lze odebírat z pinu mikrokontroléru ESP32-C3, je 40 mA \cite{ESP_C3_dtsh}. Vibrační motor lze pouze spínat, nebo je možné jej připojit 
+k pinu, který dokáže generovat PWM a lze tím regulovat jeho otáčky. 
+
+Vibrační motor slouží jako odezva na dotyk kapacitního tlačítka. 
+
+%obrázek schéma zapojení + asi fotka vybraného motoru
+
+\section{Převodník pro kapacitní tlačítka}
+Mikrokontrolér ESP32-C3 nemá kapacitní vstupy, proto je zapotřebí kapacitní dotyková tlačítka připojit přes převodník. Je zapotřebí připojit 
+5 tlačítek. 
+
+Vybraný převodník AT42QT1070 dokáže pracovat ve 2 režimech. V prvním režimu může být zapojeno maximálně 5 kapacitních tlačítek, která jsou připojena
+k pinům KEY0 až KEY4. Jako výstup se používají piny OUT0 až OUT4. Každé tlačítko má tedy svůj výstup, který může být připojen k GPIO pinům MCU 
+nebo k nim mohou být připojeny např. LED \cite{conv_cap_but_AT42QT1070_dtsh}. 
+
+Druhý režim je využitelný pouze v případě, je-li převodník připojen k MCU. V tomto případě může být k převodníku připojeno až 7 kapacitních tlačítek, 
+která jsou připojena na pinech KEY0 až KEY6. Převodník poté komunikuje s MCU pomocí komunikační sběrnice $I^2C$ \cite{conv_cap_but_AT42QT1070_dtsh}. 
+Z registru převodníku lze poté vyčíst stavy daných kapacitních dotykových tlačítek. 
+
+Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito právě zapojení s komunikací 
+přes $I^2C$. Díky tomu budou využity pouze 2 GPIO piny mikrokontroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
+sběrnici $I^2C$.
+
+Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči GND, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
+R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice $I^2C$ s mikrokontrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
+dotyková tlačítka.  
+
+Pin MODE je připojen k signálu GND, protože převodník je provozován v režimu komunikujícím přes $I^2C$ sběrnici \cite{conv_cap_but_AT42QT1070_dtsh}.
+
+%proč nepoužívám pin /CHANGE?
+
+\begin{figure}[!h]
+    \begin{center}
+      \includegraphics[scale=0.4]{obrazky/AT42QT1070.png}
+    \end{center}
+    \caption[Zapojení převodníku AT42QT1070 pro kapacitní tlačítka]{Zapojení převodníku AT42QT1070 pro kapacitní tlačítka.}
+\end{figure}
 
 \section{Světelná signalizace}
-Pro realizaci světelné signalizace pro hry byly vybrány inteligentní programovatelné LED typu WS2812C.
+Pro realizaci signalizace přítomnosti napájecího napětí byly vybrány neprogramovatelné LED. Zelené LED byly vybrány dvě, jedna pro 
+indikaci přítomnosti napětí 5 V a druhá pro indikaci přítomnosti napětí 3,3 V z baterií. Tyto LED budou použity pouze na prototypu 
+pro ulehčení oživování. Dále budou odstraněny kvůli šetření energie, protože jde o bateriově napájené zařízení. Přítomnost svitu 
+tzv. power LED by také mohla mást při hře nebo různých úkolech.
+
+Pro realizaci světelné signalizace pro hry byly vybrány inteligentní programovatelné LED typu WS2812C. Bylo jich použito 12, protože 
+z dvanácti LED lze jednoduše zhotovit ciferník pro odpočítávání času a také je lze rozdělit na segmenty na třetiny nebo čtvrtiny. 
+
+Komunikační napěťová úroveň logické jedničky těchto LED by měla být alespoň na úrovni 70 \% napájecího napětí \cite{WS2812C_dtsh}. 
+Protože použitý mikrokontrolér ESP32-C3 má komunikační napěťovou úroveň logické jedničky jeho napájecí napětí, což je 3 až 3,6 V, 
+tak je zapotřebí využít převodník napěťové úrovně \cite{ESP_C3_dtsh}. Komunikace je v tomto případě pouze jednosměrná, 
+to znamená, že MCU posílá data do LED, ale LED neposílají žádná data do MCU. Převodník je realizován unipolárním tranzistorem 
+a jedním pullup rezistorem. Rezistor je připojen k napájecímu napětí inteligentních LED WS2812C. 
+Tranzistor Q1 má gate připojený k napájecímu napětí MCU. Pokud bude mikrokontrolér do LED posílat logickou jedničku, tak bude rozdíl
+mezi gate a source 0 V. Tím pádem bude tranzistor uzavřený a tím se přes rezistor R4 připojí k LED jejich napájecí napětí. Toto napětí 
+je pro inteligentní LED logickou jedničkou. Pokud bude MCU posílat logickou nulu, tedy 0 V, tak je rozdíl napětí mezi gate a source 
+napájecí napětí mikrokontroléru. Tranzistor je tedy otevřený a tím se napětí 0 V dostane k inteligentním LED a na rezistoru se objeví
+úbytek napětí o velikosti napájecího napětí inteligentních LED. Napětí 0 V je logickou nulou i pro inteligentní LED. Tento převodník
+je určen pouze pro komunikaci jedním směrem. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/prevodnik_urovni_pro_WS2812C.png}
+  \end{center}
+  \caption[Zapojení převodníku úrovní pro WS2812C]{Zapojení převodníku úrovní pro WS2812C.}
+\end{figure} 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.5]{obrazky/WS2812C.png}
+  \end{center}
+  \caption[Zapojení inteligentních LED WS2812C]{Zapojení inteligentních LED WS2812C.}
+\end{figure}
+
+Kondenzátor u každé LED slouží pro filtraci napájecího napětí. 
+
+Tyto programovatelné LED mají maximální spotřebu 5 mA na jeden kanál. Při zapnutí všech kanálů (svícení bílou) je maximální
+spotřeba jedné LED 15 mA \cite{WS2812C_dtsh}. Pokud LED nesvítí, tak je její maximální klidový proud 0,3 mA \cite{WS2812C_dtsh}.
+Při použití 12 LED je tedy maximální odběr všech LED 180 mA.
+
 Pro napájení těchto inteligentních LED je zapotřebí napětí v rozsahu 4,5 až 5,5 V \cite{WS2812C_dtsh}. 
 Použité baterie LiFePO4 mají napětí pouze 3,2 V, proto je zapotřebí použít zvyšovač napětí na 5 V. 
 
-Pro realizaci signalizace přítomnosti napájecího napětí byly vybrány neprogramovatelné LED. Zelená LED byly vybrány 2, jedna pro indikaci přítomnosti napětí 5 V a druhá
-pro indikaci přítomnosti napětí 3,3 V z baterií. Tyto LED budou použity pouze na prototypu pro ulehčení oživování. Dále budou odstraněny kvůli šetření energie, protože jde
-o bateriově napájené zařízení. Přítomnost svitu tzv. power LED by také mohla mást při hře nebo různých úkolech.
-
-Z komerčně dostupných integrovaných obvodů byl hledán zvyšovač napětí, který vytváří z napětí 3,3 V napětí 5 V a dodávat přitom do výstupu proud alespoň 200 mA. 
-Maximální odběr všech 12ti potřebných inteligentní LED má maximální odběr 180 mA. S rezervou je tedy zapotřebí proud alespoň 200 mA. Nalezené obvody, které vyhovují 
+\subsection{Zvyšovač napětí pro programovatelné LED}
+Z komerčně dostupných integrovaných obvodů byl hledán zvyšovač napětí, který vytváří z napětí 3,3 V napětí 5 V a může přitom dodávat do výstupu proud alespoň 200 mA. 
+Maximální odběr všech dvanácti potřebných inteligentní LED má maximální odběr 180 mA. S rezervou je tedy zapotřebí proud alespoň 200 mA. Nalezené obvody, které vyhovují 
 těmto parametrům jsou LT1930 a MCP1640. 
 
 Obvod LT1930 v doporučeném zapojení při vstupním napětí 3,3V vytváří výstupní napětí o hodnotě 5 V s maximálním odběrem proudu 480 mA \cite{LT1930_dtsh}. Napájecí napětí 
 tohoto obvodu je v rozsahu 2,45 V až 16 V, což vyhovuje napájecímu napětí z baterií LiFePO4 \cite{LT1930_dtsh}.
 
-Obvod MCP1640 v doporučeném zapojení s rozsahem vstupního napětí 3 až 4,2 V vytváří výstupní napětí o hodnotě 5 V s manimálním odběrem proudu 300 mA \cite{MCP1640_dtsh}.
+Obvod MCP1640 v doporučeném zapojení s rozsahem vstupního napětí 3 až 4,2 V vytváří výstupní napětí o hodnotě 5 V s maximálním odběrem proudu 300 mA \cite{MCP1640_dtsh}.
 
 Byl vybrán zvyšovač napětí LT1930, díky své lepší dostupnosti v této době nedostatku čipů, a také dokáže do výstupu dodat vyšší proud. Zapojení obou čipů je téměř totožné. 
 
@@ -242,7 +287,7 @@ Shottkyho dioda byla vybrána dle doporučení z dokumentace. Byla vybrána diod
 0,5 A \cite{LT1930_dtsh}.
 
 Byla vybrána cívka, která odpovídá doporučení z dokumentace. Přesný typ, který byl v dokumentaci zmíněn nebyl k dispozici, a proto byl vybrán typ velmi podobný a vlastnostmi 
-odpovídající. Cívka CDRH3D18NP-4R7NC má feritové jádro, které je pro funkci požadováno \cite{LT1930_dtsh}. Pro typ LT1930 by měl být proud, který cívkou může protékat, alespoň
+srovnatelný. Cívka CDRH3D18NP-4R7NC má feritové jádro, které je pro funkci požadováno \cite{LT1930_dtsh}. Pro typ LT1930 by měl být proud, který cívkou může protékat, alespoň
 1A a její indukčnost by měla být 4,7 $\mu$H nebo 10 $\mu$H \cite{LT1930_dtsh}. Vybraná cívka má indukčnost 4,7 $\mu$H, proud, který jí může protékat je 1,35 A a její rozměry 
 jsou 3,8 $\times$ 3,8 $\times$ 2 mm \cite{civka_dtsh}.
 
@@ -260,18 +305,16 @@ Jako zvuková signalizace bylo vybráno piezo s vlastním oscilátorem typu \\BM
 je 2,3 kHz \cite{piezo_dtsh}. Intenzita zvuku pieza je ve vzdálenosti 10 cm od něj minimálně 83 dB \cite{piezo_dtsh}.
 
 \section{Konektor}
-Jako programovací konektor byl zvolen konektor USB typu C, který může být použit i jako konektor pro nabíjení baterie.
+Jako programovací konektor byl zvolen konektor USB-C. Tento konektor je v dnešní době velmi rozšířený a jeho použití se v následující době stále rozšiřuje. 
 
-Tento konektor je v dnešní době velmi rozšířený a jeho použití se v následující době stále rozšiřuje. 
-
-Není využíváno žádných výhod konektoru USB-C, jako je např. možnost power delivery apod. Je využíván pouze jako standardní a dostupný konektor, který je mezi běžnou
+Konektoru USB-C je využíván pouze jako standardní a dostupný konektor, který je mezi běžnou
 populací rozšířený a v následujících letech se bude rozšiřovat stále více. Je využito standardního jmenovitého napětí 5 V pro nabíjení baterií a nadále pinů D+ a D-, 
 které jsou využity pro komunikaci při programování. 
 
 Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k tak častému poškození, jak by mohlo být např. u konektoru Micro USB. Při používání běžnou veřejností
 se jedná o vítaný bonus. 
 
-Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}. %jmenuje se to USB protokol?
+Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}. %jmenuje se to USB protokol?
 
 \begin{figure}[!h]
   \begin{center}
@@ -287,8 +330,13 @@ Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu 
   \caption[Zapojení konektoru USB-A]{Zapojení konektoru USB-A.}
 \end{figure}
 
+Připojené Shottkyho diody k napájecímu napětí slouží pro zadržení případného zpětného proudu. Shottkyho diody jsou dimenzovány na proud, který odebírá celé zařízení. Vybrané 
+Shottkyho diody  B5819W mají maximální napětí 20 V, jmenovitý proud 1 A a maximální špičkový proud 9 A \cite{shotky_dtsh}.
 
-%o transilech k USB + Shotkyny (celkový odběr zařízení z USB - shotkyny na správný proud)
+Transily připojené k napájecímu pinu a ke komunikačním pinům D+ a D- slouží k ochraně proti přepětí a elektrostatickým výbojům o velikosti až 30 kV. 
+
+Pro napájení pomocí powerbanky bez potřeby kabelu slouží konektor USB-A. 
+
 %o rezistorech 5,1k
 
 %ke každé komponentě napsat odběr
@@ -296,8 +344,8 @@ Vybraný mikrokonrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu 
 \section{Výsledné zapojení}
 Pro realizaci Semaforu byly vybrány následující komponenty: mikrokontrolér ESP32-C3, baterie LiFePO4, nabíjecí obvod CN3056E, konektory USB-C a USB-A,
 kapacitní tlačítka s převodníkem AT42QT1070, inteligentní LED WS2812C s převodníkem napětí LT1930, piezo, vibrační motor a LoRa modul. LoRa modul komunikuje 
-s mikrokontrolérem pomocí sběrnice UART, převodník pro kapacitní tlačítka pomocí sběrnice $I^2C$ a programování bude probíhat pomocí USB. Vše he zapojeno 
-dle následujícího blokového schématu. 
+s mikrokontrolérem pomocí sběrnice UART, převodník pro kapacitní tlačítka pomocí sběrnice $I^2C$ a programování bude probíhat pomocí USB sběrnice. Vše je 
+zapojeno dle následujícího blokového schématu. 
 
 \begin{figure}[!h]
   \begin{center}
