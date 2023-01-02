@@ -939,11 +939,6 @@
     (uuid f9a151a3-4991-4a72-a895-c04905fa1686)
   )
 
-  (text "prevodnik staci takto\njednosmerny\n" (at 30.48 63.5 0)
-    (effects (font (size 1.27 1.27)) (justify left bottom))
-    (uuid 3991b478-1a9a-4285-959c-99b54e4707ee)
-  )
-
   (global_label "DATA_LED" (shape input) (at 52.705 101.6 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 26584c78-d23f-4fe6-bc81-5b7864df2f94)
