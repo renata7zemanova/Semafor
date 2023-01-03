@@ -1,6 +1,10 @@
 # For PCBs designed using KiCad: http://www.kicad-pcb.org/
 # Format documentation: http://kicad-pcb.org/help/file-formats/
 
+vlna32.exe
+pouziti_programu_vlna.txt
+
+
 # Temporary files
 *.000
 *.bak
