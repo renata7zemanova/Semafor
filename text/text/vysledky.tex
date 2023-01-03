@@ -36,8 +36,8 @@ od -45 °C až do 85 °C \cite{ESP_C3_dtsh}.
 K pinu 3V3, který slouží pro připojení napájecího napětí jsou také připojeny kondenzátory o hodnotě 10 $\mu$F a 100 nF dle doporučení z dokumentace \cite{ESP_C3_dtsh}. Tyto 
 kondenzátory slouží pro filtraci napájecího napětí, aby bylo vyfiltrováno případné rušení o různých frekvencích.
 
-Pin EN slouží pro povolení funkce mikrokontroléru. Tento pin nesmí zůstat nezapojený, tzv. floating. Jeho zapojení je převzato z dokumentace, tj. pullup rezistor 10 k$\Omega$
-a ke GND je připojen přes kondenzátor o hodnotě 1 $\mu$F \cite{ESP_C3_dtsh}.
+Pin EN slouží pro povolení funkce mikrokontroléru. Tento pin nesmí zůstat nezapojený, tzv. floating. Jeho zapojení je převzato z dokumentace, tj. pullup rezistor o hodnotě 
+10 k$\Omega$ a ke GND je připojen přes kondenzátor o hodnotě 1 $\mu$F \cite{ESP_C3_dtsh}.
 
 \begin{figure}[!h]
   \begin{center}
@@ -77,15 +77,15 @@ Zabudování baterie přináší kompaktnost řešení a pro použití není tř
 Na táborech většinou nebývá k dispozici připojení k elektrické síti, a proto je řešením powerbanka. Na Semaforu tedy bude napájecí vstup USB-A pro nabíjení baterií
 přímo z powerbanky bez nutnosti kabelu. Semafor musí být koncipován tak, aby se mohla baterie nabíjet a zároveň, aby při tom byly Semafory funkční.
 
-Při realizaci Semaforu byla tedy zvolena kombinace napájení pomocí baterií o pomocí powerbanky. Článek baterie LiFePO4 byl vybrán právě kvůli již zmíněným vynikajícím 
+Při realizaci Semaforu byla tedy zvolena kombinace napájení pomocí baterií i pomocí powerbanky. Článek baterie LiFePO4 byl vybrán právě kvůli již zmíněným vynikajícím 
 vlastnostem. Vybraný mikrokontrolér má napájecí napětí v rozsahu 3 až 3,6 V \cite{ESP_C3_dtsh}. Pro funkci mikrokontroléru tedy nebude muset být použit ani 
 převodník napětí. 
 
 Napětí na baterii je měřeno pomocí děliče a připojeno na pin GPIO4, který má k dispozici AD převodník \cite{ESP_C3_dtsh}. V softwaru bude nastaven útlum na 0 dB, to 
 odpovídá rozsahu měřeného napětí od 0 do 700 mV \cite{ESP_C3_tech_ref}.
-Proto je napětí z baterie pomocí rezistorového děliče převedeno na rozsah 0 až 600 mV. Zde je pomocí AD převodníku napětí na baterii měřeno. Spodní rezistor děliče byl
-zvolen o hodnotě 10 k$\Omega$ a druhý byl dopočítán na hodnotu 50 k$\Omega$ podle maximálního napětí baterií LiFePO4 3,6 V. Nejbližší hodnota rezistoru je 47 k$\Omega$. 
-Tomu odpovídá maximální napětí na AD převodníku 0,63 V, což je stále v možném měřeném rozsahu. 
+Proto je napětí z baterie pomocí rezistorového děliče převedeno na rozsah od 0 do 600 mV. Zde je pomocí AD převodníku napětí na baterii měřeno. Spodní rezistor děliče byl
+zvolen o hodnotě 10 k$\Omega$ a druhý byl dopočítán na hodnotu 50 k$\Omega$ podle maximálního napětí baterií LiFePO4 3,6 V. Nejbližší hodnota rezistoru je 47 k$\Omega$
+\cite{rezistorova_rada}. Tomu odpovídá maximální napětí na AD převodníku 0,63 V, což je stále v možném měřeném rozsahu. 
 
 Při nízkém napětí baterie jsou softwarově odpojovány periferie a senzory od jejich napájecího napětí. Děje se tak pomocí pinu GPIO5, na který je připojen spínací 
 tranzistor.
@@ -117,11 +117,11 @@ z dokumentace:
 \label{eq:I_CH}
 \end{equation}
 
-Z výpočtu vyplývá, že rezistor by měl mít hodnotu 1218 $\Omega$. Nejbližší hodnota z rezistorové řady E12 je hodnota 1,2 k$\Omega$, proto byl také zvolen rezistor 
+Z výpočtu vyplývá, že rezistor by měl mít hodnotu 1,218 k$\Omega$. Nejbližší hodnota z rezistorové řady E12 je hodnota 1,2 k$\Omega$, proto byl také zvolen rezistor 
 o této hodnotě \cite{rezistorova_rada}. Odpovídá tomu nabíjecí proud 1015 mA, který nebude mít vliv na životnost baterií. 
 
-Vstupní a výstupní kondenzátory slouží pro filtaci zákmitů napájecího napětí a také napětí, kterým je nabíjena baterie. Hodnoty kondenzátorů byly převzaty
-z doporučení z dokumentace.
+Vstupní a výstupní kondenzátory slouží pro filtraci zákmitů napájecího napětí a také napětí, kterým je nabíjena baterie. Hodnoty kondenzátorů byly převzaty
+z doporučení z dokumentace, tj. 4,7 $\mu$F \cite{charger_dtsh}.
 
 Kladný pól nabíjené baterie je připojen na pinu BAT, záporný pól je připojen ke GND. Pin BAT poskytuje nabíjecí proud do baterie a zároveň poskytuje konstantní 
 nabíjecí napětí. V režimu spánku je svodový proud tohoto pinu 3 $\mu$A \cite{charger_dtsh}. 
@@ -188,8 +188,8 @@ Druhý režim je využitelný pouze v případě, je-li převodník připojen k 
 která jsou připojena na pinech KEY0 až KEY6. Převodník poté komunikuje s MCU pomocí komunikační sběrnice $I^2C$ \cite{conv_cap_but_AT42QT1070_dtsh}. 
 Z registru převodníku lze poté vyčíst stavy daných kapacitních dotykových tlačítek. 
 
-Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito právě zapojení s komunikací 
-přes $I^2C$. Díky tomu budou využity pouze 2 GPIO piny mikrokontroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
+Jelikož je v tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito zapojení právě s tímto typem 
+komunikace. Díky tomu budou využity pouze 2 GPIO piny mikrokontroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
 sběrnici $I^2C$.
 
 Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči GND, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
@@ -267,6 +267,14 @@ Byl vybrán zvyšovač napětí LT1930, díky své lepší dostupnosti v této d
 Pin /SHDN slouží k zapínání a vypínání obvodu. Pomocí přiloženého napětí 2,4 V a více na tento pin je obvod zapnut \cite{LT1930_dtsh}. Pin SW slouží pro  připojení cívky, 
 případně diody, aby se snížilo elektromagnetické rušení \cite{LT1930_dtsh}. 
 
+Shottkyho dioda byla vybrána dle doporučení z dokumentace. Byla vybrána dioda typu MBR0520, protože maximální napětí na diodě nepřekročí 20 V a protékající proud nepřesáhne 
+0,5 A \cite{LT1930_dtsh}.
+
+Byla vybrána cívka, která odpovídá doporučení z dokumentace. Přesný typ, který byl v dokumentaci zmíněn nebyl k dispozici, a proto byl vybrán typ velmi podobný a vlastnostmi 
+srovnatelný. Cívka CDRH3D18NP-4R7NC má feritové jádro, které je pro funkci požadováno \cite{LT1930_dtsh}. Pro typ LT1930 by měl být proud, který cívkou může protékat, alespoň
+1A a její indukčnost by měla být 4,7 $\mu$H nebo 10 $\mu$H \cite{LT1930_dtsh}. Vybraná cívka má indukčnost 4,7 $\mu$H, proud, který jí může protékat, je 1,35 A a její rozměry 
+jsou 3,8 $\times$ 3,8 $\times$ 2 mm \cite{civka_dtsh}.
+
 Pin FB slouží  pro zapojení zpětné vazby napětí na baterii. Jeho referenční napětí musí být nastaveno v rozmezí 1,240 V až 1,270 V, typická hodnota je však 1,255 V \cite{LT1930_dtsh}. 
 Pro výstupní napětí 5 V byl zvolen rezistor R10 o hodnotě 13 k$\Omega$ z rezistorové řady E24 \cite{rezistorova_rada}. Řada E24 byla zvolena kvůli požadované přesnosti
 napětí na pinu FB obvodu LT1930. Napětí na rezistoru R10 musí být tedy 1.255 V. Na rezistoru R9 je tedy úbytek napětí 3,745 V. Pomocí trojčlenky byla dopočítána hodnota 
@@ -293,14 +301,6 @@ Přesné výstupní napětí se spočítá podle vzorce:
   \quad \quad \quad \quad \cite{LT1930_dtsh}
 \label{eq:VOUT_LT1930}
 \end{equation}
-
-Shottkyho dioda byla vybrána dle doporučení z dokumentace. Byla vybrána dioda typu MBR0520, protože maximální napětí na diodě nepřekročí 20 V a protékající proud nepřesáhne 
-0,5 A \cite{LT1930_dtsh}.
-
-Byla vybrána cívka, která odpovídá doporučení z dokumentace. Přesný typ, který byl v dokumentaci zmíněn nebyl k dispozici, a proto byl vybrán typ velmi podobný a vlastnostmi 
-srovnatelný. Cívka CDRH3D18NP-4R7NC má feritové jádro, které je pro funkci požadováno \cite{LT1930_dtsh}. Pro typ LT1930 by měl být proud, který cívkou může protékat, alespoň
-1A a její indukčnost by měla být 4,7 $\mu$H nebo 10 $\mu$H \cite{LT1930_dtsh}. Vybraná cívka má indukčnost 4,7 $\mu$H, proud, který jí může protékat je 1,35 A a její rozměry 
-jsou 3,8 $\times$ 3,8 $\times$ 2 mm \cite{civka_dtsh}.
 
 \begin{figure}[!h]
   \begin{center}
@@ -343,7 +343,7 @@ Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.8]{obrazky/USB_A.png}
+    \includegraphics[scale=0.7]{obrazky/USB_A.png}
   \end{center}
   \caption[Zapojení konektoru USB-A]{Zapojení konektoru USB-A.}
 \end{figure}
@@ -356,7 +356,7 @@ Transily připojené k napájecímu pinu a ke komunikačním pinům D+ a D- slou
 Pro napájení pomocí powerbanky bez potřeby kabelu slouží konektor USB-A. 
 
 Rezistory o hodnotě 5,1 k$\Omega$ na pinech CC1 a CC2 slouží pro signalizaci, že je k USB-C připojeno zařízení. Dle standardu USB-C totiž nabíječka bez 
-připojení těchto rezistorů nesmí připojit napájecí napětí 5 V \cite{USB-C}. 
+připojení těchto rezistorů nesmí připojit napájecí napětí 5 V na pin VBUS \cite{USB-C}. 
 
 %ke každé komponentě napsat odběr
 
