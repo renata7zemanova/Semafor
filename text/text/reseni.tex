@@ -88,6 +88,29 @@ Nevýhody jsou \cite{Bezdrat_muni}:
   \item malý objem přenášených dat.
 \end{itemize}
 
+\subsection{Sigfox}
+Sigfox je prvním celorepublikovým mobilním operátorem v České republice určený především pro IoT \cite{Sigfox_cz}. Využívá vysílače mobilního operátora T-Mobile, 
+díky čemuž má pokrytí více než 90 \% území ČR \cite{Sigfox_Zooco}. Sigfox vysílá v nelicencovaném pásmu o frekvenci 868 MHz \cite{Sigfox_cz}. Jedná se o síť 
+s velkým dosahem, 50 km na volném prostranství a až 5 km v zastavěných oblastech \cite{Sigfox_Zooco}.  
+
+Jedná se o placenou službu, kdy až po zaplacení poplatku je poskytnuto připojení do sítě Sigfox \cite{Sigfox_Zooco}. Komunikace probíhá po 12 bajtových 
+blocích s omezením na maximální počet 140 zpráv \cite{Sigfox_Zooco}. Síť je tedy určená především pro malý přenos dat např. pro dálkový odečet elektroměru 
+nebo pro posílání dat ze senzorů. 
+
+Výhody bezdrátové sítě Sigfox jsou \cite{Sigfox_cz} \cite{Sigfox_Zooco}:
+\begin{itemize}
+  \item nízké pořizovací náklady,
+  \item nízká spotřeba energie (na baterie vydrží až 10 let),
+  \item vysoké pokrytí území ČR,
+  \item spolehlivost.
+\end{itemize}
+
+Nevýhody jsou \cite{Sigfox_cz}:
+\begin{itemize}
+  \item placená služba,
+  \item omezený počet zpráv na den.
+\end{itemize}
+
 \subsection{LoRa}
 LoRa je technologie, která moduluje data do elektomagnetických vln na fyzické vrstvě (rádio) umožňující komunikaci na velké vzdálenosti \cite{LoRa_eman}. 
 
@@ -344,6 +367,7 @@ Cenu mikrokontroléru určuje především počet periferií, počet GPIO pinů 
 
 Známými výrobci mikrokontrolérů jsou Microchip, Motorola, NXP nebo \\STMicroelectronics. 
 
+\newpage
 Faktory ovlivňující výběr řídicího mikrokontroléru:
 \begin{itemize}
   \item dostatečný počet GPIO pinů,
