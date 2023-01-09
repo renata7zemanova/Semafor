@@ -86,65 +86,177 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1. snímek s cíli (zadaním) práce
 \begin{frame} 
-	% nadpis snímku
+	\frametitle{Základní informace}
+	\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
+		\begin{column}{0.5\textwidth}		% první sloupec
+			Co je to Semafor?
+			\begin{itemize}
+				\item Outdoorová aplikace
+				\item Edukační účely, táborové hry
+				\item Zástupná funkce organizátora
+				\item Dotykové senzory
+				\item Světelné a zvukové signalizace
+			\end{itemize}
+		\end{column}
+		%
+		\begin{column}{0.5\textwidth}		% druhý sloupec
+				Požadavky:
+					\begin{itemize}
+						\item Kompaktnost
+						\item Bezpečnost
+						\item Široké využití
+						\item Voděodolnost
+						\item Nízkou cenu
+						\item Jednoduchost
+						\item Možnost komunikace mezi jednotlivými Semafory
+						\item Bezdrátová konfigurovatelnost
+					\end{itemize}
+				%\includegraphics[width=0.8\columnwidth]{obrazky/soucastky}
+				%lze vložit popisek, ale povetšinou je to v prezentaci zbytečné
+				%\caption{Popisek obrázku}%
+				%\label{obr:ukazka}
+		\end{column}
+	\end{columns}	
+\end{frame}
+
+\begin{frame} 
 	\frametitle{Cíle práce}
-	\begin{itemize}
-			\item Nastudovat
-			\item Popsat
+
+	\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
+		\begin{column}{0.25\textwidth}		% první sloupec
+			\begin{itemize}
+				\item Nastudovat
+				\item Porovnat
+				\item Vybrat
+				\item Navrhnout 
+		\end{itemize}
+		\end{column}
+		%
+		\begin{column}{0.65\textwidth}		% druhý sloupec
+			\begin{figure}%	
+				\centering
+				\vspace{0.4cm}	              % horizontální mezera
+				\includegraphics[width=1\columnwidth]{obrazky/zakladni_blokove_schema_prezentace.jpg}
+				%\includegraphics[width=0.8\columnwidth]{obrazky/soucastky}
+				%lze vložit popisek, ale povetšinou je to v prezentaci zbytečné
+				%\caption{Popisek obrázku}%
+				%\label{obr:ukazka}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.1\textwidth}		% druhý sloupec
+		\end{column}
+	\end{columns}	
+		
+	\end{frame}
+
+
+%%%%%%%%%%%%%
+\begin{frame} 
+	\frametitle{Základní prvky}
+	
+	\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
+		\begin{column}{0.5\textwidth}		% první sloupec
+			%Obrázek znázorňuje model:\\[2ex]
+			%
+			Bezdrátová komunikace
+			\begin{itemize}
+				\item LoRa
 				\begin{itemize}
-					\item nastudované
+					\item Dosah až 20 km 
+					\item Bezlicenční pásmo
+					\item Topologie hvězdy 
+					\item Obousměrná komunikace
 				\end{itemize}
-			\item Implementovat
+				\item WiFi
 				\begin{itemize}
-					\item nastudované
-					\item nové
+					\item Bezlicenční pásmo
+					\item Rozšířená 
+					\item V každém mobilním telefonu
 				\end{itemize}
-			\item Porovnat a vyhodnotit
-				\begin{itemize}
-						\item výsledky
-				\end{itemize}
-	\end{itemize}
+			\end{itemize}
+		\end{column}
+		%
+		\begin{column}{0.5\textwidth}		% druhý sloupec
+			Mikrokontrolér
+			\begin{itemize}
+				\item ESP32-C3-MINI-1
+				\item WiFi s anténou 
+				\item SPI, UART, $I^2C$, USB
+				\item 13 GPIO pinů
+			\end{itemize}
+		\end{column}
+	\end{columns}											% ukončení prostředí sloupce
 \end{frame}
 
 
-%%%%%%%%%%%%%
 \begin{frame} 
-	\frametitle{Klíčové nástroje}
-
-	% prostředí 'alertblock', které slouží pro zdůraznění informace
-	\begin{alertblock}{Pro práci je klíčový Eulerův vzorec}
-		$$\eul^{\jmag x}=\cos x + \jmag\sin x$$
-	\end{alertblock}
-
-	\vspace{4ex}
-	Eulerova identita je speciálním případem tohoto vzorce, jestliže dosadíme $x=\uppi$\,:
-
-	% prostředí 'block', které slouží jako informativní
-	\begin{block}{Eulerova identita}
-		$$\eul^{\jmag \uppi}=\cos \uppi + \jmag\sin \uppi,$$\\
-		odkud vyplývá
-		$$\eul^{\jmag \uppi}+1=0.$$
-	\end{block}
-\end{frame} 
-
-
-%%%%%%%%%%%%%
-\begin{frame} 
-	\frametitle{Plošný spoj}
+	\frametitle{Napájení}
 	
 	\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
 		\begin{column}{0.4\textwidth}		% první sloupec
-			Obrázek znázorňuje model:\\[2ex]
+			%Obrázek znázorňuje model:\\[2ex]
 			%
 			\begin{itemize}
-				\item Deska
-				\item Součástky
-				\item Signály
-				\item Napájení
+				\item Baterie LiFePO4
+				\begin{itemize}
+					\item 3 až 3,6 V
+					\item Nejbezpečnější
+					\item Životnost až 7000 cyklů 
+					\item Teplotně stabilní
+					\item Nehořlavé
+					\item Netoxické
+				\end{itemize}
+				\item Nabíjecí obvod CN3058E
+				\begin{itemize}
+					\item Určený pro LiFePO4
+					\item Nastavitelný nabíjecí proud
+					\item Signalizace stavu nabíjení 
+				\end{itemize}
+				\item Měření napětí na baterii 
 			\end{itemize}
 		\end{column}
 		%
 		\begin{column}{0.6\textwidth}		% druhý sloupec
+			\begin{figure}%	
+				\centering
+				\vspace{1cm}	              % horizontální mezera
+				\includegraphics[width=1\columnwidth]{obrazky/CN3058E.png}
+			\end{figure}
+		\end{column}
+	\end{columns}											% ukončení prostředí sloupce
+\end{frame}
+
+\begin{frame} 
+	\frametitle{Komunikace s okolím}
+	
+	\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
+		\begin{column}{0.5\textwidth}		% první sloupec
+			%Obrázek znázorňuje model:\\[2ex]
+			Světelná signalizace
+			\begin{itemize}
+				\item Programovatelné LED WS2812C
+				\item Možnost spojení za sebou
+				\item Převodník úrovní
+				\item Zvyšovač napětí LT1930
+			\end{itemize}
+			\begin{figure}%	
+				\centering	          
+				\includegraphics[width=1\columnwidth]{obrazky/WS2812C_prezentace.png}
+			\end{figure}
+		\end{column}
+		%
+		\begin{column}{0.5\textwidth}		% druhý sloupec
+			Senzory doteku
+			\begin{itemize}
+				\item Kapacitní tlačítka
+				\item Mechanická odolnost
+				\item Životnost
+				\item Převodník
+				\begin{itemize}
+					\item Komunikace po  $I^2C$
+					\item Až 7 tlačítek
+				\end{itemize}
+			\end{itemize}
 			\begin{figure}%	
 				\centering
 				\vspace{1cm}	              % horizontální mezera
@@ -157,33 +269,44 @@
 	\end{columns}											% ukončení prostředí sloupce
 \end{frame}
 
-
-%%%%%%%%%%%%%
 \begin{frame} 
-	\frametitle{Výsledky}
-	\vspace{1cm}
-	\begin{table}[]
-		\centering
-		\caption{Výsledky měření mobilních sítí}
-		\label{tab:tabulka}
-			\begin{tabular}{lcc}
-				\toprule
-					Technologie  & Rychlost stahování [kB/s] & Rychlost nahrávání [kB/s] \\
-				\midrule
-					GPRS (2,5G)	& 7,2 	& 3,6\\
-					UMTS 3G     & 48 		& 48\\
-					HSPA (3,5G)	&	1\,706	&	720\\
-					LTE (4G) 		& 40\,750 & 10\,750\\
-				\bottomrule                                       
-			\end{tabular}
-	\end{table}
+	\frametitle{Budoucnost}
+	\begin{itemize}
+		\item Návrh DPS
+		\item Výroba a oživení DPS
+		\item Vytvoření her 
+		\item Webová stránka pro konfiguraci
+	\end{itemize}
 \end{frame}
 
 
 %%%%%%%%%%%%%
 \begin{frame} 
 	\frametitle{Závěr}
-	\dots
+
+	\begin{center}
+		\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
+			\begin{column}{0.3\textwidth}		% první sloupec
+				\begin{itemize}
+					\item Bezdrátový modul
+					\item Mikrokontrolér
+					\item Napájení 
+					\item Senzory doteku
+					\item Signalizační prvky 
+					\item Návrh kompletní elektroniky
+				\end{itemize}
+			\end{column}
+			%
+			\begin{column}{0.7\textwidth}		% druhý sloupec
+				\begin{figure}
+					\centering
+					\vspace{0.5cm}
+					\includegraphics[width=0.9\columnwidth]{obrazky/vysledne_blokove_schema_prezentace.jpg}
+				\end{figure}
+			\end{column}
+		\end{columns}	
+	\end{center}
+	
 \end{frame}
 
 
@@ -192,16 +315,37 @@
 % bez nadpisu snímku
 	\frametitle{\mbox{ }}
 	\begin{center}
-		{\Huge Děkuji za pozornost!}
+		\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
+			\begin{column}{0.3\textwidth}		% první sloupec
+				{\Huge Děkuji za pozornost!}
+				\vspace{1cm}
+				\begin{itemize}
+					\item Bezdrátový modul
+					\item Mikrokontrolér
+					\item Napájení 
+					\item Senzory doteku
+					\item Signalizační prvky 
+					\item Návrh kompletní elektroniky
+				\end{itemize}
+			\end{column}
+			%
+			\begin{column}{0.7\textwidth}		% druhý sloupec
+				\begin{figure}
+					\centering
+					\vspace{0.5cm}
+					\includegraphics[width=0.9\columnwidth]{obrazky/vysledne_blokove_schema_prezentace.jpg}
+				\end{figure}
+			\end{column}
+		\end{columns}	
 	\end{center}
 \end{frame}
 
 % otázky oponenta
-\frame{
-\frametitle{Otázky oponenta}
-	\emph{Jaká je souvislost Vašeho vzorce (1.2) s~Maxwellovými rovnicemi v~integrálním tvaru?}\\[2ex]
+%\frame{
+%\frametitle{Budoucnost}
+%	\emph{Jaká je souvislost Vašeho vzorce (1.2) s~Maxwellovými rovnicemi v~integrálním tvaru?}\\[2ex]
 	%
-	Již staří Římané\,\dots
-}
+%	Již staří Římané\,\dots
+%}
 
 \end{document}
