@@ -1,8 +1,8 @@
-#include <Arduino.h>
+//#include <Arduino.h>
 #include <SmartLeds.h>
 #include <Color.h>
-#include <cstdlib>
-#include <map>
+//#include <cstdlib>
+//#include <map>
 
 #include "lib.h"
 
