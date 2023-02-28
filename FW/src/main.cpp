@@ -1,4 +1,4 @@
-//#include <Arduino.h>
+#include <Arduino.h>
 #include <SmartLeds.h>
 #include <Color.h>
 //#include <cstdlib>

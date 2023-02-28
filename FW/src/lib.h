@@ -1,19 +1,26 @@
-//#include <Arduino.h>
+#include <Arduino.h>
+#include <Wire.h>
+
 #include <SmartLeds.h>
 #include <Color.h>
 //#include <cstdlib>
 //#include <map>
 
-#define SET_POWER_LEDS_TOP 13 
+
+#define CHANGE_OF_CAP_BTN 3
+#define ADC_BATTERY_PIN 4
+#define SWITCH_VOLTAGE_PERIFERIES 5
+#define MOTOR_PIN 6
+#define PIEZO_PIN 7
+#define SCL_CAP_BTN 8
+#define SDA_CAP_BTN 9
 #define LED_PIN_TOP 10
 
-//#define SET_POWER_LEDS_SIDE 4
-//#define LED_PIN_SIDE 3
 
 #define NUM_OF_COLORS 11
 
-#define POWER_OFF 0
-#define POWER_ON 1
+#define ST_OFF 0
+#define ST_ON 1
 
 enum Colors {RED = 0, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 
@@ -37,30 +44,36 @@ struct leds_t{
 };
 
 void _init_ (){
-  //pinMode(LED_PIN_TOP, OUTPUT);
+  pinMode(CHANGE_OF_CAP_BTN, INPUT);
+  pinMode(ADC_BATTERY_PIN, INPUT);
+  pinMode(SWITCH_VOLTAGE_PERIFERIES, OUTPUT);
+  pinMode(MOTOR_PIN, OUTPUT);
+  pinMode(PIEZO_PIN, OUTPUT);
+  pinMode(LED_PIN_TOP, OUTPUT);
 
-  //pinMode(SET_POWER_LEDS_TOP, OUTPUT);
 
-
-  //digitalWrite(SET_POWER_LEDS_TOP, POWER_OFF); 
+  digitalWrite(SWITCH_VOLTAGE_PERIFERIES, ST_ON); 
+  digitalWrite(MOTOR_PIN, ST_OFF); 
+  digitalWrite(PIEZO_PIN, ST_OFF); 
+  digitalWrite(LED_PIN_TOP, ST_OFF); 
 }
 
-void LED_leght(const int TYPE, const int COLOR, const int FIRST_LED, const int LAST_LED){
+void LED_light(const int TYPE, const int COLOR, const int FIRST_LED, const int LAST_LED){
 
 }
 
 //zjistit, jak udelat v C++ delay
 void LED_toggle(const int TYPE, const int COLOR, const int FIRST_LED, const int LAST_LED, const int NUM_OF_REPEAT = 1){
   for(int i = 0; i < NUM_OF_REPEAT; ++i){
-    LED_leght(TYPE, COLOR, FIRST_LED, LAST_LED);
-    //delay(200);
-    LED_leght(TYPE, BLACK, FIRST_LED, LAST_LED);
-    //delay(200);
+    LED_light(TYPE, COLOR, FIRST_LED, LAST_LED);
+    delay(200);
+    LED_light(TYPE, BLACK, FIRST_LED, LAST_LED);
+    delay(200);
   }
 }
   
 void LED_off(const int TYPE, const int COLOR, const int FIRST_LED, const int LAST_LED){
-  LED_leght(TYPE, BLACK, FIRST_LED, LAST_LED);
+  LED_light(TYPE, BLACK, FIRST_LED, LAST_LED);
 }
 
 Rgb colors(Colors COLOR){
@@ -89,3 +102,41 @@ Rgb colors(Colors COLOR){
       return Rgb{255, 255, 255};
   }
 }
+
+int measure_battery_voltage(){
+  
+  return float(ADC_BATTERY_PIN); //vzorec
+}
+
+bool is_battery_voltage_ok(){
+  if(measure_battery_voltage() < 10) //vymyslet konstantu
+    return true;
+  return false;
+}
+
+void switch_off_voltage_periferies(){
+  if(!is_battery_voltage_ok()){
+    //SWITCH_VOLTAGE_PERIFERIES //vypnout napajeni LEDkam 
+  }
+}
+
+bool is_some_btn_press(){
+  if(digitalRead(CHANGE_OF_CAP_BTN))
+    return true;
+  return false; 
+}
+
+//zkusit najit knihovnu pro ten cip
+void read_cap_btn(){ //komunikace po I2C s prevodnikem pro kapacitni tlacitka - pouze hruby naznak struktury
+  if(is_some_btn_press()){
+    Wire.begin();
+    Wire.requestFrom(8, 6); //request 6 bytes from peripheral device #8
+    while(Wire.available()){
+      int x = Wire.read();
+      delay(200);
+    }
+    Wire.end();
+  }
+}
+
+//LoRa - UART 
