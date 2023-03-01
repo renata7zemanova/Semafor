@@ -8,6 +8,9 @@
 #include "lib.h"
 
 void setup() {
+  AtTouch CapBtn; 
+
+
   _init_();
 
   
