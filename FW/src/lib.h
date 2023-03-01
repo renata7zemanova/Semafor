@@ -3,11 +3,13 @@
 
 #include <SmartLeds.h>
 #include <Color.h>
+#include <AtTouch.h>
+
 //#include <cstdlib>
 //#include <map>
 
 
-#define CHANGE_OF_CAP_BTN 3
+#define INTERRUPT_CAP_BTN 3
 #define ADC_BATTERY_PIN 4
 #define SWITCH_VOLTAGE_PERIFERIES 5
 #define MOTOR_PIN 6
@@ -43,8 +45,10 @@ struct leds_t{
     Colors eval_array;
 };
 
+AtTouch CapBtn; 
+
 void _init_ (){
-  pinMode(CHANGE_OF_CAP_BTN, INPUT);
+  pinMode(INTERRUPT_CAP_BTN, INPUT);
   pinMode(ADC_BATTERY_PIN, INPUT);
   pinMode(SWITCH_VOLTAGE_PERIFERIES, OUTPUT);
   pinMode(MOTOR_PIN, OUTPUT);
@@ -121,7 +125,7 @@ void switch_off_voltage_periferies(){
 }
 
 bool is_some_btn_press(){
-  if(digitalRead(CHANGE_OF_CAP_BTN))
+  if(digitalRead(INTERRUPT_CAP_BTN))
     return true;
   return false; 
 }
@@ -140,3 +144,35 @@ void read_cap_btn(){ //komunikace po I2C s prevodnikem pro kapacitni tlacitka - 
 }
 
 //LoRa - UART 
+void LoRa_write(){
+  Serial.begin(9600);
+  if(Serial.availableForWrite()){
+    Serial.write("abcd"); //zprava
+  }
+  Serial.end();
+}
+
+char LoRa_read_bit(){
+  char c = 'x';
+  //const int LENGTH = 8;
+  //int array[LENGTH] = {0};
+  Serial.begin(9600);
+  if(Serial.available()){
+    c = Serial.read();
+    //Serial.readBytes(array, 8);
+  }
+  Serial.end();
+  return c;
+}
+
+void read_cap_but(){ // otestovat, jestli funguje
+  CapBtn.begin(INTERRUPT_CAP_BTN);
+  if(CapBtn.hit()){ //dotyk
+    int hit_button = CapBtn.readActiveKey(); //asi vraci cislo tlacitka 0 az 4 asi 
+  }
+  if(CapBtn.hold()){
+    int hold_button = CapBtn.getKey(); // zjistit, co to dela
+  }
+}
+
+
