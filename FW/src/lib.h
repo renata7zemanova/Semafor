@@ -24,7 +24,8 @@
 #define ST_OFF 0
 #define ST_ON 1
 
-enum Colors {RED = 0, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
+enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
+enum States {CONFIGURATION, PLAY};
 
 //enum Direct {RIGHT, LEFT};
 
@@ -150,6 +151,22 @@ void read_cap_but(AtTouch &CapBtn){ // otestovat, jestli funguje (cist jednou za
   if(!CapBtn.hit() || !CapBtn.hold()){
     vibrate_motor_off();
   } 
+}
+
+bool is_configuration_on(){
+  //if(){
+    //stisk kombinace tlacitek
+    return true;
+  //}
+  //return false; 
+}
+
+bool is_configuration_end(){
+  //if(){
+    //kontrola ulozeni konfigurace a nastaveni hry
+    return true;
+  //}
+  //return false; 
 }
 
 void _init_ (){

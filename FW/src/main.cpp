@@ -13,7 +13,22 @@ void setup() {
 
   _init_();
 
-  
+ States state = PLAY;
+  while(true){
+    switch(state){
+      case PLAY:
+        break;
+      case CONFIGURATION:
+        break;
+    }
+  }
+  //nachystat prechod do modu configuration
+  if(is_configuration_on()){
+    state = CONFIGURATION;
+  }
+  if(is_configuration_end()){
+    state = PLAY;
+  }
 }
 
 void loop() {}
