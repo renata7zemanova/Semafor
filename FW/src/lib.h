@@ -5,6 +5,8 @@
 #include <Color.h>
 #include <AtTouch.h>
 
+#include <LoRa_E22.h>
+
 //#include <cstdlib>
 //#include <map>
 
@@ -24,10 +26,20 @@
 #define ST_OFF 0
 #define ST_ON 1
 
+//#define RX_LORA 20
+//#define TX_LORA 21
+
+HardwareSerial RX_LORA = 20;
+HardwareSerial TX_LORA = 21;
+
+//byte RX_LORA = 20;
+//byte TX_LORA = 21;
+
+LoRa_E22 LoRa(); //projit zaklady programovani
+
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION, PLAY};
 
-//enum Direct {RIGHT, LEFT};
 
 struct led_t {
   led_t(const int COUNT, const int PIN, const int CHANNEL) : leds(LED_WS2812, COUNT, PIN, CHANNEL) {}
@@ -100,26 +112,22 @@ void switch_off_voltage_periferies(){
   digitalWrite(SWITCH_VOLTAGE_PERIFERIES, ST_OFF);
 }
 
-//LoRa - UART 
-void LoRa_write(){
-  Serial.begin(9600);
-  if(Serial.availableForWrite()){
-    Serial.write("abcd"); //zprava
-  }
-  Serial.end();
+void LoRa_on(){
+  LoRa.begin();
 }
 
-char LoRa_read_bit(){
-  char c = 'x';
-  //const int LENGTH = 8;
-  //int array[LENGTH] = {0};
-  Serial.begin(9600);
-  if(Serial.available()){
-    c = Serial.read();
-    //Serial.readBytes(array, 8);
+void LoRa_write(const String msg){
+  LoRa.sendMessage(msg);
+}
+
+ResponseContainer LoRa_read(){
+  ResponseContainer msg;
+  if(LoRa.available()){
+    //oboje jde zkompilovat
+    //msg = LoRa.receiveMessageComplete(true);
+    msg = LoRa.receiveMessage();
   }
-  Serial.end();
-  return c;
+  return msg; 
 }
 
 void vibrate_motor_on(){
@@ -182,4 +190,5 @@ void _init_ (){
   vibrate_motor_off(); 
   piezo_off(); 
   digitalWrite(LED_PIN_TOP, ST_OFF); 
+
 }
