@@ -20,26 +20,15 @@
 #define SDA_CAP_BTN 9
 #define LED_PIN_TOP 10
 
-
 #define NUM_OF_COLORS 11
 
 #define ST_OFF 0
 #define ST_ON 1
 
-//#define RX_LORA 20
-//#define TX_LORA 21
-
-HardwareSerial RX_LORA = 20;
-HardwareSerial TX_LORA = 21;
-
-//byte RX_LORA = 20;
-//byte TX_LORA = 21;
-
-LoRa_E22 LoRa(); //projit zaklady programovani
+LoRa_E22 LoRa = LoRa_E22(&Serial1); //mozna Serial0
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION, PLAY};
-
 
 struct led_t {
   led_t(const int COUNT, const int PIN, const int CHANNEL) : leds(LED_WS2812, COUNT, PIN, CHANNEL) {}
