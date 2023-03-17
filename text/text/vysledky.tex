@@ -3,17 +3,60 @@ Výběr elektronických součástek probíhal dle jejich parametrů, využití, 
 na tom vše ostatní. 
 
 \section{Bezdrátová technologie}
-Ke komunikaci Semaforů mezi sebou byla zvolena technologie LoRa. Tato technologie byla zvolena především kvůli komunikačnímu dosahu. Jedná se sice o~dražší technologii, 
+Ke komunikaci Semaforů mezi sebou byla zvolena technologie LoRa a pro bezdrátovou konfiguraci Semaforů byla zvolena technologie WiFi. 
+
+\subsection{LoRa}
+ Tato technologie byla zvolena především kvůli komunikačnímu dosahu. Jedná se sice o~dražší technologii, 
 ale na tolik, aby ji nebylo možné v~tomto zařízení použít. Táborové hry se většinou hrají na loukách, které mají rozlohu několik stovek metrů čtverečných. LoRa je jedinou
 dostupnou technologií, která na tyto vzdálenosti spolehlivě komunikuje. Bezdrátové propojení Semaforů bude použito pro posílání informací o~aktuálně svítící barvě, či 
 stisku tlačítka v~závislosti na hře, která se aktuálně hraje. U~některých her například může být žádoucí, aby po přepínání nesvítily všechny Semafory stejnou barvou 
 a díky této komunikaci bude moci být takovým stavům zabráněno. 
 
-%text o konkrétním vybraném LoRa modulu
+Byl vybrán bezdrátový LoRa modul E22-900T22D od firmy EBYTE. Tento modul komunikuje s mikrokontrolérem pomocí UART sběrnice \cite{LoRa_ebyte}. Jeho napájecí napětí je od 
+2,1 V do 5,5 V a komunikační napětí je 3,3 V \cite{LoRa_ebyte}. Rozsah komunikačních frekvencí bezdrátového modulu E22-900T22D je 850,125 MHz až 930,125 MHz a ve výchozím 
+stavu je nastavena na 868,125 MHz \cite{LoRa_ebyte}. Toto je frekvence, na které je v ČR povoleno komunikovat a to s maximálním vyzařovaným výkonem 25 mW \cite{CTU}. 
+Maximální povolený klíčovací poměr je 1 \% \cite{CTU}. %klíčovací poměr = max duty cycle 
+V běžném režimu je spotřeba přibližně 151 mA a v režimu spánku 2 $\mu$A \cite{LoRa_ebyte}. Tento bezdrátový modul má externě připojitelnou anténu typu SMA-K s 50 $\Omega$ 
+impedancí \cite{LoRa_ebyte}.
 
+LoRa modul E22-900T22D je připojen k mikrokontroléru pomocí komunikačních pinů RX a TX sběrnice UART. Napájecí napětí tohoto modulu je spínáno mikrokontrolérem, aby jej 
+šlo v případě nůzkého napětí baterie odpojit. Pin AUX slouží k indikaci funkčního stavu modulu. Při specifických aplikacích slouží pro probuzení externího mikrokontroléru. 
+Pin AUX není v této aplikaci využíván, a proto není nikam připojen. Pomocí pinů M0 a M1 lze přepínat bezdrátový modul do různých režimů. Pokud jsou oba piny v logické 1, 
+tak je modul přepnut do režimu spánku \cite{LoRa_ebyte}. Pokud jsou oba piny v logické 0, tak je modul v normálním režimu \cite{LoRa_ebyte}. V této aplikaci je modul 
+provozován pouze v normálním režimu, a proto jsou piny M0 a M1 připojeny k signálu GND. 
+
+\begin{table}[!h]
+  \caption[Konfigurační piny LoRa modulu E22-900T22D]{Konfigurační piny LoRa modulu E22-900T22D \cite{LoRa_ebyte}}
+  \begin{center}
+  	\small
+	  \begin{tabular}{|c|c|c|c|}
+	    \hline
+	    \textbf{M0}	& \textbf{M1}	& \textbf{Mód} & \textbf{Popis} \\
+	    \hline
+	    0	& 0 & Normální & UART a bezdrátový kanál otevřený, \\ 
+      & & &transparentní přenos zapnutý \\ 
+	    \hline
+	    0	& 1 & Režim WOR & Lze definovat jako vysílač WOR \\
+      & & & a přijímač WOR \\ 
+	    \hline
+	    1 & 0 & Konfigurační mód & Přistup k registru přes sériový port \\
+      & & & a ovládání pacovního stavu \\
+	    \hline
+      1 & 1 & Režim hlubokého & Režim spánku \\
+      & & spánku & \\
+	    \hline
+	  \end{tabular}
+  \end{center}
+\end{table}
+
+%obrazek se zapojenim LoRa modulu
+
+\subsection{WiFi}
 K~propojení Semaforu s~telefonem a dalšími zařízeními byla vybrána technologie WiFi. Jedná se o~rozšířenou technologii, která je v~telefonech a noteboocích zabudovaná. 
 Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce, kde bude seznam her, které Semafor umí. U~jednotlivých her se poté budou moci nastavovat 
 další parametry. Po nastavení se konfigurace pošle do Semaforu. 
+
+%více rozepsat info o WiFi
 
 \section{Mikrokontrolér}
 WiFi modul obsahuje jako jediný mikrokontrolér od firmy Espressif z~řady ESP32. Konkrétně jde o~typ ESP32-C3-MINI-1, dále již jen ESP32-C3. Je také nabízen za cenu, která 
@@ -376,20 +419,52 @@ zapojeno dle následujícího blokového schématu.
 
 
 
-%\chapter{Návrh DPS}
-%kulatá DPS - proč?
+\chapter{Návrh DPS}
+Byl zvolen kruhový tvar desky s průměrem téměř 15 cm a s výběžkem pro připojení powerbanky. Deska plošného spoje byla navržena v programu KiCad 6.0 a má 2 vrstvy mědi. 
+Některé součástky jsou natočeny tak, aby byly co nejvíce na kraji kulaté DPS.
 
-%\section{Kapacitní tlačítka} 
-%Byl požadavek na 5 tlačítek. Jedno tlačítko je uprostřed a slouží jako hlavní tlačítko. U her bude používáno např. jako registrace průchodu místem apod. Bude tedy nejčastěji
-%používáno a zároveň může být stisknuto, když hráč běží, takže by mělo být co nejjednodušeji stisknutelné. Proto bylo navrženo větší než zbylá tlačítka. Konkrétně má 
-%5~$\times$~5~cm. Ostatní tlačítka slouží například jako směrovky, nebo pro vyklikávání nějakého kódu, aby získali nějakou informaci. Slouží tedy primárně, když účastník 
-%u sebaforu stojí, nebo sedí, a vyklikává. Díky tomu mohou být tlačítka menší než hlavní tlačítko, konkrétně mají 2~$\times$~2~cm. Tato tlačítka jsou proto umístěna 
-%po stranách hlavního tlačítka a jsou popsána BTN\_ENTER, BTN\_UP, BTN\_DOWN, BTN\_RIGHT a BTN\_LEFT.
+Komunikační dráhy jsou vedeny o tloušťce 0,150 mm a napájecí dráhy jsou vedeny o tloušťce 0,5 mm. 
 
-%\section{LED}
-%do sekce o DPS se zmínit o jejich umístění - kruh, hodiny, proto 12 ks. (lze také rozdělit na 3 segmenty)
+Výrobní podklady byly vygenerovány pomocí programu Kikit. Deska byla vyrobena u firmy JLCPCB, protože je bezkonkurenčně nejlevnější a její dodání je rychlé a bezproblémové. 
+Jejich výrobky také dosahují vysoké kvality. 
 
-%\section{Konektory}
-%konektor USB C
-%konektor USB A
-%na kraji DPS
+\section{Kapacitní tlačítka} 
+Byl požadavek na 5 tlačítek. Jedno tlačítko je uprostřed a slouží jako hlavní tlačítko. U her bude používáno např. jako registrace průchodu místem apod. Bude tedy nejčastěji
+používáno a zároveň může být stisknuto, když hráč běží, takže by mělo být co nejjednodušeji stisknutelné. Proto bylo navrženo větší než zbylá tlačítka. Konkrétně má 
+čtvercový tvar se zaoblenými rohy s rozměry 5~$\times$~5~cm. Ostatní tlačítka slouží například jako směrovky, nebo pro vyklikávání nějakého kódu, aby získali nějakou informaci. 
+Slouží tedy primárně, když účastník u Semaforu stojí, nebo sedí, a vyklikává. Díky tomu mohou být tlačítka menší než hlavní tlačítko, konkrétně mají 2~$\times$~2~cm a jsou taktéž 
+čtvercová se zaoblenými rohy. Tato tlačítka jsou proto umístěna po stranách hlavního tlačítka a jsou popsána BTN\_ENTER, BTN\_UP, BTN\_DOWN, BTN\_RIGHT a BTN\_LEFT.
+
+V oblastech kapacitních tlačítek nejsou umístěny žádné další součástky a v jejich okolí je rozmístěna země kvůli odstínění. 
+
+Pod spodním tlačítkem je ze spodní strany umístěno pouzdro na baterii. Kdyby bylo pouzdro až pod tlačítkem, musel by se ještě hodně zvětšit průměr DPS. Pokud by se při testování 
+prototypu ukázalo, že kvůli umístění pouzdra baterie dochází k rušení tlačítka, tak dojde při výsledné verzi DPS k posunutí pouzdra baterie. 
+
+\section{LED}
+Po obvodu DPS je poté rovnoměrně rozmístěno do kruhu všech 12 programovatelných LED. Takto rozmístěné LED mohou zobrazovat např. podíl uběhnutého času. 12 LED bylo zvoleno z důvodu 
+možnosti rozdělení na 2, 3 nebo i 4 segmenty. Na 12ti LED v kruhu lze také zobrazovat čas.
+
+\section{Ostatní součáskty}
+Ze zadní strany DPS je umístěna veškerá řídicí elektronika. Ve spodní straně je umístěno pouzdro s baterií LiFePO4 a v jeho blízkosti je umístěn nabíjecí obvod. V levém 
+spodním rohu je poté umístěn konektor USB-C, který slouží pro nabíjení baterie a zároveň pro programování. Nad pouzdrem pro baterii je umístěn zvyšovač napětí pro programovatelné 
+LED a nedaleko jsou LED diody indikující přítomnost napájecího napětí 3,3 V a 5 V. Ze zadní strany je v levé horní části umístěn mikrokontrolér ESP32-C3 a v pravé horní části 
+LoRa modul. Nad tlačítky je umístěn převodník pro kapacitní tlačítka AT42QT1070-S.
+
+Otvory pro připojení vypínače jsou umístěny u konektoru USB-C a otvory pro připojení vibračního motoru jsou umístěny mezi LoRa modulem a vrchním tlačítkem BTN2\_UP1. 
+
+Z přední strany DPS je také umístěn bzučák. 
+
+\section{Průběh návrhu}
+Při návrhu DPS byla dodržována pravidla a dobré způsoby správného návrhu. %upravit tuto větu
+
+V oblasti antény od ESP32-C3 mikrokontroléru nejsou taženy žádné dráhy, ani pod ní není rozlitá žádná měď. Je to z důvodu zaručení většího dosahu signálu a pro snížení rušení. 
+
+Filtrační kondenzátory jsou vždy umístěny co nejblíže pouzdrům daných čipů. Shottkyho diody jsou umístěny v blízkosti USB konektorů. Rozmístění součástek kolem zvyšovače napětí 
+je provedeno dle doporučení z dokumentace. 
+
+Komunikační piny D+ a D- pro programování jsou taženy jako diferenciální pár.
+
+\section{Osazení DPS}
+DPS byla taktéž strojově osazena u firmy JLCPCB. Z důvodu nedostupnosti některých součástek byly některé komponenty zakoupeny v jiných obchodních řetězcích a doosazeny ručně. 
+Jednalo se o %doplnit součástky, které jsem osazovala ručně 
+
