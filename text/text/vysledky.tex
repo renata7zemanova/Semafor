@@ -468,3 +468,44 @@ Komunikační piny D+ a D- pro programování jsou taženy jako diferenciální 
 DPS byla taktéž strojově osazena u firmy JLCPCB. Z důvodu nedostupnosti některých součástek byly některé komponenty zakoupeny v jiných obchodních řetězcích a doosazeny ručně. 
 Jednalo se o %doplnit součástky, které jsem osazovala ručně 
 
+\chapter{Hry a jejich metodika}
+
+\section{Odpočítávadlo}
+%o hře - k čemu je možno využít
+\underline{Funkce Semaforu ve hře:}
+
+V konfiguraci je nastavena délka časového limitu. Poté je vysvícena dvanáctina času, který zbývá do konce časového limitu. Stisknutím prostředního tlačítka je odpočet zastaven. 
+Zastavení času je signalizováno blikáním daného počtu LED červenou barvou. Opětovným stiskem prostředního tlačítka odpočet pokračuje. 
+
+\section{Vábnička}
+%o hře
+\underline{Funkce Semaforu ve hře:}
+
+Hru Vábnička lze hrát ve třech režimech. Nastavení režimu probíhá v konfiguračním menu. Režimy jsou popsány níže. 
+\begin{itemize} %lepší by byly čísla
+  \item Boční tlačítka mají charakter barev jednotlivých týmů. Po zmáčknutí daného tlačítka se Semafor rozsvítí danou barvou. 
+  \item Středové tlačítko slouží pro přepnutí barvy na náhodnou jinou barvu, než kterou Semafor svítil do teď.  
+  \item Středové tlačítko slouží pro přepnutí barvy na následující barvu, která je aktuálně v pořadí. 
+\end{itemize}	
+V konfiguraci lze také zapnout probíhání kontroly, aby jednotlivé Semafory nikdy nesvítily všechny stejnou barvou. Alespoň jeden Semafor musí svítit jinou barvou než ostatní. 
+K tomu slouží komunikace mezi jednotlivými Semafory.
+
+\section{Pán hory}
+Hra Pán hory spočívá v délce času, jak dlouho který tým na hoře panuje. Každý tým musí doběhnout na horu a stisknout tlačítko svého týmu. Poté se počítá čas jeho týmu na úkor 
+ostatních. Cílem je držet horu co nejdéle v rámci herního času. Hra je pro 2 až 4 týmy. 
+
+Na počátku hry je čas všech týmů držení hory stejný. 
+
+\underline{Funkce Semaforu ve hře:}
+
+Jednotlivá boční tlačítka reprezentují barvy jednotlivých týmů a po stisku daného tlačítka se zahajuje přidávání času pro daný tým na úkor ostatních týmů. Kruh LED vždy svítí celý 
+a barvy v něm jsou rozděleny právě v poměru časů držení hory daných týmů. Středové tlačítko slouží pro zastavení času. Žádný tým se nikam neposouvá. Boční LED slouží pro zobrazení 
+barvy týmu, který je aktuálně pánem hory. Počet týmů je nastavován v konfiguračním menu. 
+
+\section{Semafor}
+Jde o naprogramování funkce klasického dopravního semaforu. 
+
+\underline{Funkce Semaforu ve hře:}
+Kruh je rozdělen na třetiny a každá třetina svítí jednou z barev klasického dopravního semaforu. Délka trvání jednotlivých stavů je náhodná v rozsahu 10 – 60 sekund. 
+
+
