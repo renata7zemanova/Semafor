@@ -1,7 +1,4 @@
 #include <Arduino.h>
-#include <SmartLeds.h>
-#include <Color.h>
-#include <AtTouch.h>
 
 //#include <cstdlib>
 //#include <map>
