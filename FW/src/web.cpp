@@ -2,11 +2,11 @@
 #include <WiFi.h>
 #include <Arduino.h>
 
-void wifi_enable_connect() {
+void wifi_enable_connect(){
     WiFi.begin(wifi_ssid, wifi_password);
 }
 
-void wifi_disable() {
+void wifi_disable(){
     WiFi.disconnect(true);
 }
 

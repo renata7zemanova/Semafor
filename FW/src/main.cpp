@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
-//#include <cstdlib>
-//#include <map>
+#include <iostream>
 
 #include "lib.h"
 
@@ -17,6 +16,8 @@ void setup() {
   _init_();
 
  States state = PLAY;
+ Games game = VABNICKA;
+ 
   while(true){
     switch(state){
       case PLAY:
@@ -26,7 +27,13 @@ void setup() {
     }
   }
   if(state = PLAY){
-    LoRa_on();
+    switch(game){
+      case VABNICKA:
+        break;
+      case PAN_HORY:
+        break;
+
+    }
   }
 
   //nachystat prechod do modu configuration

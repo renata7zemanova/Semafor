@@ -23,6 +23,7 @@
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION, PLAY};
+enum Games {VABNICKA, PAN_HORY};
 
 struct led_t {
   led_t(const int COUNT, const int PIN) : leds(COUNT, PIN/*, LED_WS2812*/), pos(0) {} //typ LEDek? jak nastavit a co nastavit?
