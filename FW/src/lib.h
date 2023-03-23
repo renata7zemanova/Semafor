@@ -20,10 +20,9 @@
 #define ST_OFF 0
 #define ST_ON 1
 
-
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION, PLAY};
-enum Games {VABNICKA, PAN_HORY};
+enum Games {VABNICKA, PAN_HORY, SEMAFOR, ODPOCITAVADLO};
 
 struct led_t {
   led_t(const int COUNT, const int PIN) : leds(COUNT, PIN/*, LED_WS2812*/), pos(0) {} //typ LEDek? jak nastavit a co nastavit?
@@ -36,6 +35,10 @@ struct leds_t{
     led_t side;
 };
 
+void play_vabnicka();
+void play_pan_hory();
+void play_semafor();
+void play_odpocitavadlo();
 
 void set_brightness(led_t &LED);
 uint32_t colors(led_t &LED, Colors COLOR);

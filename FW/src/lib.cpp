@@ -10,7 +10,33 @@
 
 LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
+AtTouch CapBtn;
 
+
+void play_vabnicka(){
+
+}
+
+void play_pan_hory(){
+
+}
+
+void play_semafor(){
+
+}
+
+void play_odpocitavadlo(){
+    int timeout = 10; //cas v minutach - pak se bude nacitat z konfiguracniho webu
+    double time_for_1_LED = timeout / NUM_OF_LEDS;
+    double actual_time;
+    Colors color = RED; //jak nastavovat barvu?
+    LEDs_all_on(LED, color);
+    
+    //upravit vypocet actual time a pozici menit pouze za podminky, ze je to cele cislo 
+    LED.pos = NUM_OF_LEDS - (actual_time / time_for_1_LED); //blbost
+    LED_light(LED, BLACK);
+
+}
 
 void set_brightness(led_t &LED){
   uint8_t brightness = 255; //vycteni hodnot z fototranzistoru 
@@ -25,7 +51,7 @@ uint32_t colors(led_t &LED, Colors COLOR){
       return LED.leds.Color(0, 0, 255); 
     case GREEN:
       return LED.leds.Color(0, 255, 0);
-    case YELLOW:
+    case YELLOW: 
       return LED.leds.Color(255, 255, 0); 
     case BROWN:
       return LED.leds.Color(102, 51, 0); 
@@ -92,6 +118,13 @@ void LED_off(led_t &LED, Colors COLOR){
 
 void LEDs_all_off(led_t &LED){
   LED.leds.clear();
+}
+
+void LEDs_all_on(led_t &LED, Colors COLOR){
+    for(int i = 0; i < NUM_OF_LEDS; ++i){
+        LED.pos = i;
+        LED_light(LED, COLOR);
+    }
 }
 
 int measure_battery_voltage(){
