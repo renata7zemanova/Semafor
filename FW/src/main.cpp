@@ -1,21 +1,23 @@
 #include <Arduino.h>
 
 #include <iostream>
+//#include <USBCDC.h>
 
 #include "lib.h"
 
 //neni HW
-#define PIN_AUX_LORA 5
+//#define PIN_AUX_LORA 5
 
 
 void setup() {
+  Serial.begin(115200);
   //neni HW 
-  pinMode(PIN_AUX_LORA, INPUT_PULLDOWN);
+  //pinMode(PIN_AUX_LORA, INPUT_PULLDOWN);
 
   _init_();
 
  States state = PLAY;
- Games game = VABNICKA;
+ Games game = ODPOCITAVADLO;
  
   while(true){
     if(state = CONFIGURATION){
@@ -39,7 +41,7 @@ void setup() {
           play_semafor();
           break;
         case ODPOCITAVADLO:
-          play_odpocitavadlo();
+          play_odpocitavadlo(Serial);
           break;
       }
     }

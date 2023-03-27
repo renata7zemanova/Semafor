@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <Wire.h>
 #include <AtTouch.h> 
 #include <Adafruit_NeoPixel.h>
 
@@ -38,16 +37,19 @@ struct leds_t{
 void play_vabnicka();
 void play_pan_hory();
 void play_semafor();
-void play_odpocitavadlo();
+void play_odpocitavadlo(HardwareSerial &Serial);
 
 void set_brightness(led_t &LED);
 uint32_t colors(led_t &LED, Colors COLOR);
 Colors get_color(led_t &LED);
 
 void LED_light(led_t &LED, Colors COLOR);
+//void LED_light(Colors COLOR);
 void LED_toggle(led_t &LED, Colors COLOR);
 void LED_off(led_t &LED, Colors COLOR);
 void LEDs_all_off(led_t &LED);
+//void LEDs_all_on(led_t &LED, Colors COLOR);
+void LEDs_all_on(Colors COLOR);
 
 int measure_battery_voltage();
 
@@ -65,7 +67,7 @@ void vibrate_motor_off();
 void piezo_on();
 void piezo_off();
 
-void read_cap_but(AtTouch &CapBtn);
+void read_cap_but(AtTouch &CapBtn, HardwareSerial& Serial);
 
 bool is_configuration_on();
 bool is_configuration_end();
