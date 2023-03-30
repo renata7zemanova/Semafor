@@ -464,9 +464,40 @@ je provedeno dle doporučení z dokumentace.
 
 Komunikační piny D+ a D- pro programování jsou taženy jako diferenciální pár.
 
-\section{Osazení DPS}
+\section{Osazení, oživení a testování DPS}
 DPS byla taktéž strojově osazena u firmy JLCPCB. Z důvodu nedostupnosti některých součástek byly některé komponenty zakoupeny v jiných obchodních řetězcích a doosazeny ručně. 
 Jednalo se o %doplnit součástky, které jsem osazovala ručně 
+%místo vypínače byly osazeny kolíky a deska je zapínána pomocí jumperu (propojky)
+
+\subsection{Oživení}
+Po připájení všech součástek byla do pouzdra vložena baterie LiFePO4 a DPS byla pomocí propojky zapnuta. Po zapnutí DPS se rozsvítila LED indikující přítomnost napětí 3,3 V. 
+Po připojení konektoru USB-C s napájecím napětím se rozsvítila i LED indikující napětí 5 V. Také se rozsvítila červená LED indikující nabíjení baterie. Baterie byla pod dohledem 
+nabíjena v DPS. Nedošlo k zahřátí DPS ani baterie a po čase se u nabíjecího obvodu rozsvítila místo červené LED zelená LED. Tato LED indikuje plně nabitou baterii. Na plně nabité 
+baterii bylo naměřeno napětí 3,4 V. Nabíjecí obvod byl tedy otestován a bylo zjištěno, že funguje správně. 
+
+Při měření napětí bylo zjištěno, že napájecí napětí pro programovatelné LED dosahuje pouze 1,7 V. Dalším měřením bylo zjištěno, že ani na vstupu zvyšovače napětí není 3,3 V, ale 
+pouze 1,7 V. Díky tomu bylo zjištěno, že při logické 1 na pinu IO5 je 3,3 V, ale na spínaném výstupu je pouze 1,7 V. Bylo zjištěno, že byl použit tranzistor typu NMOS, který nelze 
+v takovém zapojení plně otevřít. Tranzistor tedy zůstává v lineárním režimu, a proto je na výstupu pouze 1,7 V. Chyba byla vyřešena výměnou tranzistoru. Místo NMOS byl použit PMOS 
+a do finální verze byla chyba opravena. Byla vyměněna schématická značka tranzistoru za PMOS a zároveň byl vyměněn kód součástky, aby byla správná součástka osazena již u firmy JLCPCB. 
+
+Po opravě již mělo napájecí napětí pro inteligentní LED hodnotu 5 V. Díky tomu bylo zjištěno, že zvyšovač napětí funguje správně. 
+
+Poté byla DPS naprogramována a vše bylo na první pokus funkční. Komunikace mezi počítačem a mikrokontrolérem proběhla bezproblémově. Byl napsán testovací SW pro programovatelné LED 
+a další periferie. Díky tomu mohly být otestovány programovatelné LED. Všechny inteligentní LED bylo možné rozsvítit různými barvami, takže jsou plně funkční. Byla otestování funkčnost 
+zapojení pieza a vibračního motoru. Obě zapojení byla funkční. 
+
+Dále bylo testováno zapojení kapacitních tlačítek a jejich čtení. 
+%nefunguje čtení tlačítek 
+%výpis pro debug
+%použití pinů pro LoRa, která prozatím nebyla testována
+
+
+
+\chapter{Firmware}
+%napěti 936 mV pri plnem napeti baterie
+%napsat odpojovani napeti pri nizkem napeti baterie
+
+
 
 \chapter{Hry a jejich metodika}
 
@@ -507,5 +538,8 @@ Jde o naprogramování funkce klasického dopravního semaforu.
 
 \underline{Funkce Semaforu ve hře:}
 Kruh je rozdělen na třetiny a každá třetina svítí jednou z barev klasického dopravního semaforu. Délka trvání jednotlivých stavů je náhodná v rozsahu 10 – 60 sekund. 
+
+
+\chapter{Software}
 
 
