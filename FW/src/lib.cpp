@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+
+
 LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
 AtTouch CapBtn;
@@ -28,17 +30,15 @@ void play_odpocitavadlo(HardwareSerial &Serial){
     int timeout = 10; //cas v minutach - pak se bude nacitat z konfiguracniho webu
     double time_for_1_LED = timeout / NUM_OF_LEDS;
     double actual_time;
-    Colors color = RED; //jak nastavovat barvu?
+    Colors color = BLACK; //jak nastavovat barvu?
     //LEDs_all_on(LED, color);
-    //LEDs_all_on(color);
-    LED.pos = 4;
-    LED_light(LED, BLUE);
-    LED.pos = 10;
-    LED_light(LED, GREEN);
-    
+    LEDs_all_on(color);
+
     //pro testovani tlacitek
+    Serial.println("pred ctenim kap. tlacitek");
     while(true){
         read_cap_but(CapBtn, Serial);
+        
         delay(1000);
     }
     //upravit vypocet actual time a pozici menit pouze za podminky, ze je to cele cislo 
@@ -209,6 +209,8 @@ void read_cap_but(AtTouch &CapBtn, HardwareSerial &Serial){ // otestovat, jestli
   Serial.print(digitalRead(INTERRUPT_CAP_BTN));
   Serial.print("  ");
   Serial.println("nebyla splnena ani jedna podminka");
+  Serial.print("Napeti na baterii ");
+  Serial.println(analogRead(ADC_BATTERY_PIN)); //plne nabita baterie ma 936 mV
 }
 
 bool is_configuration_on(){
@@ -231,7 +233,7 @@ void _init_ (){
   pinMode(INTERRUPT_CAP_BTN, INPUT);
   pinMode(ADC_BATTERY_PIN, INPUT);
   
-  CapBtn.begin(INTERRUPT_CAP_BTN + 2); //protoze na Arduinu se interrupt piny cisluji od nuly a ne podle pinu jako na esp
+  CapBtn.begin(INTERRUPT_CAP_BTN + 2, true, GPIO_SDA, GPIO_SCL); //protoze na Arduinu se interrupt piny cisluji od nuly a ne podle pinu jako na esp
 
   pinMode(SWITCH_VOLTAGE_PERIFERIES, OUTPUT);
   pinMode(MOTOR_PIN, OUTPUT);
@@ -245,7 +247,5 @@ void _init_ (){
   digitalWrite(LED_PIN_TOP, ST_OFF); 
 
   LED.leds.begin(); 
-  
-  //Serial.begin(9600);
-  //Serial.begin(115200);
+  //CapBtn.begin(INTERRUPT_CAP_BTN, true, 9, 8); //vratila jsem zpet, ale nevim, jestli to bude ok 
 }

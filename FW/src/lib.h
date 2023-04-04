@@ -19,6 +19,9 @@
 #define ST_OFF 0
 #define ST_ON 1
 
+static constexpr gpio_num_t GPIO_SCL = GPIO_NUM_8;
+static constexpr gpio_num_t GPIO_SDA = GPIO_NUM_9;
+
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION, PLAY};
 enum Games {VABNICKA, PAN_HORY, SEMAFOR, ODPOCITAVADLO};
@@ -28,7 +31,7 @@ struct led_t {
   Adafruit_NeoPixel leds;
   uint8_t pos; 
 };
-
+ 
 struct leds_t{
     led_t top;
     led_t side;
