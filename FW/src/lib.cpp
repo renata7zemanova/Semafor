@@ -233,7 +233,8 @@ void _init_ (){
   pinMode(INTERRUPT_CAP_BTN, INPUT);
   pinMode(ADC_BATTERY_PIN, INPUT);
   
-  CapBtn.begin(INTERRUPT_CAP_BTN + 2, true, GPIO_SDA, GPIO_SCL); //protoze na Arduinu se interrupt piny cisluji od nuly a ne podle pinu jako na esp
+  Wire.begin(GPIO_SDA, GPIO_SCL);
+  CapBtn.begin(INTERRUPT_CAP_BTN + 2); //protoze na Arduinu se interrupt piny cisluji od nuly a ne podle pinu jako na esp
 
   pinMode(SWITCH_VOLTAGE_PERIFERIES, OUTPUT);
   pinMode(MOTOR_PIN, OUTPUT);
