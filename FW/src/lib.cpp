@@ -1,7 +1,6 @@
 #include <lib.h>
 
 #include <Arduino.h>
-#include <AtTouch.h> //pridat pres GitHub odkaz do platformio 
 #include <Adafruit_NeoPixel.h>
 #include <LoRa_E22.h>
 
@@ -11,7 +10,7 @@
 
 LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
-AtTouch CapBtn;
+AT42QT1070Touch Touch_AT42(GPIO_SDA, GPIO_SCL);
 
 
 void play_vabnicka(){
@@ -27,23 +26,24 @@ void play_semafor(){
 }
 
 void play_odpocitavadlo(HardwareSerial &Serial){
-    int timeout = 10; //cas v minutach - pak se bude nacitat z konfiguracniho webu
-    double time_for_1_LED = timeout / NUM_OF_LEDS;
-    double actual_time;
-    Colors color = BLACK; //jak nastavovat barvu?
-    //LEDs_all_on(LED, color);
-    LEDs_all_on(color);
+  Buttons touched_buttons[5] = {NONE};
 
-    //pro testovani tlacitek
-    Serial.println("pred ctenim kap. tlacitek");
-    while(true){
-        read_cap_but(CapBtn, Serial);
-        
-        delay(1000);
-    }
-    //upravit vypocet actual time a pozici menit pouze za podminky, ze je to cele cislo 
-    //LED.pos = NUM_OF_LEDS - (actual_time / time_for_1_LED); //blbost
-    //LED_light(LED, BLACK);
+  int timeout = 10; //cas v minutach - pak se bude nacitat z konfiguracniho webu
+  double time_for_1_LED = timeout / NUM_OF_LEDS;
+  double actual_time;
+  Colors color = BLACK; //jak nastavovat barvu?
+  //LEDs_all_on(LED, color);
+  LEDs_all_on(color);
+
+  //pro testovani tlacitek
+  Serial.println("pred ctenim kap. tlacitek");
+  while(true){
+      read_cap_but(Touch_AT42, touched_buttons, Serial);
+      delay(10);
+  }
+  //upravit vypocet actual time a pozici menit pouze za podminky, ze je to cele cislo 
+  //LED.pos = NUM_OF_LEDS - (actual_time / time_for_1_LED); //blbost
+  //LED_light(LED, BLACK);
 
 }
 
@@ -186,31 +186,42 @@ void piezo_off(){
   digitalWrite(PIEZO_PIN, ST_OFF);
 }
 
-void read_cap_but(AtTouch &CapBtn, HardwareSerial &Serial){ // otestovat, jestli funguje (cist jednou za cas - jak dlouho chci, aby motor vibroval)
-  int hit_button = 10;
-  int hold_button = 10;
-  if(CapBtn.hit()){ //dotyk
-    //vibrate_motor_on();
-    Serial.print("hit: ");
-    Serial.println(CapBtn.readActiveKey());
-    //hit_button = CapBtn.readActiveKey(); //asi vraci cislo tlacitka 0 az 4 asi 
+void read_cap_but(AT42QT1070Touch &Touch_AT42, Buttons* touched_buttons, HardwareSerial &Serial){ 
+  Touch_AT42.find_active_keys();
+
+  if(Touch_AT42.is_touched_btn_0()){
+    vibrate_motor_on();
+    Serial.println("enter");
+    touched_buttons[0] = BTN_ENTER;
   }
-  if(CapBtn.hold()){
-    //vibrate_motor_on();
-    Serial.print(" hold: ");
-    Serial.println(CapBtn.getKey());
-    //hold_button = CapBtn.getKey(); // zjistit, co to dela
-  } //asi to pak bude rovnou vracet cislo tlacitka, ktere bylo zmacknuto
-  //if(!CapBtn.hit() || !CapBtn.hold()){
-    //vibrate_motor_off();
-  //} 
-  Serial.print("read act key ");
-  Serial.println(CapBtn.readActiveKey());
-  Serial.print(digitalRead(INTERRUPT_CAP_BTN));
-  Serial.print("  ");
-  Serial.println("nebyla splnena ani jedna podminka");
-  Serial.print("Napeti na baterii ");
-  Serial.println(analogRead(ADC_BATTERY_PIN)); //plne nabita baterie ma 936 mV
+
+  if(Touch_AT42.is_touched_btn_1()){
+    vibrate_motor_on();
+    Serial.println("up");
+    touched_buttons[1] = BTN_UP;
+  }
+
+  if(Touch_AT42.is_touched_btn_2()){
+    vibrate_motor_on();
+    Serial.println("down");
+    touched_buttons[2] = BTN_DOWN;
+  }
+
+  if(Touch_AT42.is_touched_btn_3()){
+    vibrate_motor_on();
+    Serial.println("right");
+    touched_buttons[3] = BTN_RIGHT;
+  }
+
+  if(Touch_AT42.is_touched_btn_4()){
+    vibrate_motor_on();
+    Serial.println("left");
+    touched_buttons[4] = BTN_LEFT;
+  }
+
+  if(!Touch_AT42.is_touched_btn_0() && !Touch_AT42.is_touched_btn_1() && !Touch_AT42.is_touched_btn_2() && !Touch_AT42.is_touched_btn_3() && !Touch_AT42.is_touched_btn_4()){
+    vibrate_motor_off();
+  }
 }
 
 bool is_configuration_on(){
@@ -229,18 +240,12 @@ bool is_configuration_end(){
   //return false; 
 }
 
-void _init_ (){ 
-  pinMode(INTERRUPT_CAP_BTN, INPUT);
+void _init_ (HardwareSerial &Serial){ 
   pinMode(ADC_BATTERY_PIN, INPUT);
-  
-  Wire.begin(GPIO_SDA, GPIO_SCL);
-  CapBtn.begin(INTERRUPT_CAP_BTN + 2); //protoze na Arduinu se interrupt piny cisluji od nuly a ne podle pinu jako na esp
-
   pinMode(SWITCH_VOLTAGE_PERIFERIES, OUTPUT);
   pinMode(MOTOR_PIN, OUTPUT);
   pinMode(PIEZO_PIN, OUTPUT);
   pinMode(LED_PIN_TOP, OUTPUT);
-
 
   digitalWrite(SWITCH_VOLTAGE_PERIFERIES, ST_ON); 
   vibrate_motor_off(); 
@@ -248,5 +253,5 @@ void _init_ (){
   digitalWrite(LED_PIN_TOP, ST_OFF); 
 
   LED.leds.begin(); 
-  //CapBtn.begin(INTERRUPT_CAP_BTN, true, 9, 8); //vratila jsem zpet, ale nevim, jestli to bude ok 
+  Touch_AT42.begin();
 }

@@ -14,7 +14,7 @@ void setup() {
   //neni HW 
   //pinMode(PIN_AUX_LORA, INPUT_PULLDOWN);
 
-  _init_();
+  _init_(Serial);
 
  States state = PLAY;
  Games game = ODPOCITAVADLO;
