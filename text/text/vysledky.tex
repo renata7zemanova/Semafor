@@ -486,11 +486,31 @@ Poté byla DPS naprogramována a vše bylo na první pokus funkční. Komunikace
 a další periferie. Díky tomu mohly být otestovány programovatelné LED. Všechny inteligentní LED bylo možné rozsvítit různými barvami, takže jsou plně funkční. Byla otestování funkčnost 
 zapojení pieza a vibračního motoru. Obě zapojení byla funkční. 
 
-Dále bylo testováno zapojení kapacitních tlačítek a jejich čtení. 
-%nefunguje čtení tlačítek 
-%výpis pro debug
-%použití pinů pro LoRa, která prozatím nebyla testována
+Dále bylo testováno zapojení kapacitních tlačítek a jejich čtení. Pro komunikaci s čipem AT42QT1070 byla použita knihovna AtTouch, která je primárně určena pro Arduino \cite{AtTouch}. 
+Knihovny pro Arduino bývají převážně s mikrokontroléry ESP32 kompatibilní. Nejdříve bylo zjištěno, že knihovna předpokládá připojení I2C na konkrétních pinech, tj. SCL na GPIO9 a SDA 
+na GPIO8 \cite{AtTouch}. Mnou navržený modul má piny připojené naopak, tj. SCL na GPIO8 a SDA na GPIO9. Došlo tedy k upravení knihovny, aby jako vstupní parametry byly přebírány i GPIO 
+piny I2C. Testovací software, který používal upravenou knihovnu AtTouch ale nebyl funkční. Nedocházelo k detekci stisku tlačítka a ani pin /CHANGE neměnil svůj stav. Ani po zapnutí 
+softwarového pullup rezistoru nezačal pin /CHANGE generovat správné pulzy. Proto byla DPS 
+připojena k osciloskopu. Nejdříve byla sledována komunikace po I2C pomocí pinů SCL a SDA. Díky tomu bylo zjištěno, že počáteční ustavovací komunikace probíhá v pořádku a mikrokontrolér 
+se s čipem AT42QT1070 domluví. Díky tomu bylo zjištěno, že čip AT42QT1070 funguje správně, ale data jsou knihovnou AtTouch chybně zpracovávána. Tato knihovna také neumožňovala detekci 
+stisků více tlačítek současně, i když tuto funkci použitý čip AT42QT1070 umí. Z tohoto důvodu bylo rozhodnuto, že bude mnou vytvořena nová knihovna, která bude tuto funkci podporovat 
+a budou v ní odstraněny všechny chyby, které jsou v knihovně AtTouch. 
 
+Při tvorbě knihovny bylo zapotřebí otestovat funkci jednotlivých registrů. Registr Detection Status generuje při doteku jakéhokoli tlačítka jedničku na bitu nula. Zároveň, pokud je tento 
+registr čten, tak pin /CHANGE negeneruje pulzy a zůstává v klidové pozici, tj. logické jedničce. Bylo tedy rozhodnuto, že pokud se bude daná informace používat, tak to bude právě z registru 
+Detection Status a díky tomu se uvolní pin na mikrokontroléru, který bude moci být použit pro připojení dalších periferií. Registr Key Status indikuje pouze stisk jednoho tlačítka. Pokud 
+je jich stisknuto více, tak se celý vynuluje. Toto chování může být způsobeno velikostí kapacitních tlačítek, jejich návrhem, nebo může být chyba v čipu AT42QT1070. Registry Key Signal 
+uchovávají aktuální měřenou informaci o měřené kapacitě ve 2 bytech pro každé tlačítko. Tyto hodnoty se mění v závislosti na prostředí, ve kterém se modul nachází, a také v závislosti 
+na stisknu. Při stisku jsou hodnoty změněny skokově a hodnota měřené kapacity se výrazně změní. 
+Registry Reference Data uchovávají data po kalibraci. Při testování se stávalo, že se kalibrace spouštěla sama ve chvílích, kdy bylo některé z tlačítek stisknuto. Zejména dělalo problémy hlavní
+velké tlačítko. Proto byla v knihovně využívána data pouze z registrů Key Signal a změna byla detekována pouze pomocí tohoto registru. Díky tomu, že změna prostředí nedělá tak velké a prudké 
+změny. Tlačítka byla nadále rozdělena do jednotlivých skupin, aby mohl být detekován i multistisk. To bylo nastaveno v registrech AVE/AKS. Bity 0 a 1 byly nastaveny do nuly, což znamená, že 
+tlačítka nejsou v žádné skupině, takže je každé samostatně. Pro používaná tlačítka 0 až 4 byly nastaveny registry na hodnotu 32, což znamená, že měřená hodnota je průměrem z 8mi naměřených
+hodnot. Registry pro tlačítka 5 a 6 jsou vynulovány, a tím jsou tyto vstupy deaktivovány. 
+
+Pro práci s kapacitními tlačítky jsou tedy primárně využívány registry Key Signal a informace o stisku jsou z nich dopočítávány. 
+
+%testování LoRa a WiFi
 
 
 \chapter{Firmware}
@@ -512,8 +532,10 @@ Zastavení času je signalizováno blikáním daného počtu LED červenou barvo
 %o hře
 \underline{Funkce Semaforu ve hře:}
 
-Hru Vábnička lze hrát ve třech režimech. Nastavení režimu probíhá v konfiguračním menu. Režimy jsou popsány níže. 
-\begin{itemize} %lepší by byly čísla
+Hru Vábnička lze hrát ve třech režimech. Nastavení režimu probíhá v konfiguračním menu. 
+
+Režimy hry Vábnička: 
+\begin{itemize} 
   \item Boční tlačítka mají charakter barev jednotlivých týmů. Po zmáčknutí daného tlačítka se Semafor rozsvítí danou barvou. 
   \item Středové tlačítko slouží pro přepnutí barvy na náhodnou jinou barvu, než kterou Semafor svítil do teď.  
   \item Středové tlačítko slouží pro přepnutí barvy na následující barvu, která je aktuálně v pořadí. 
