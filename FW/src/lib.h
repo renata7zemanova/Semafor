@@ -4,12 +4,6 @@
 
 #include <LoRa_E22.h>
 
-#define ADC_BATTERY_PIN 4
-#define SWITCH_VOLTAGE_PERIFERIES 5
-#define MOTOR_PIN 6
-#define PIEZO_PIN 7
-#define LED_PIN_TOP 10
-
 #define NUM_OF_COLORS 11
 #define NUM_OF_LEDS 12
 #define NUM_OF_BUTTONS 5
@@ -19,6 +13,13 @@
 
 static constexpr gpio_num_t GPIO_SCL = GPIO_NUM_8;
 static constexpr gpio_num_t GPIO_SDA = GPIO_NUM_9;
+static constexpr gpio_num_t ADC_BATTERY_PIN = GPIO_NUM_4;
+static constexpr gpio_num_t SWITCH_VOLTAGE_PERIFERIES = GPIO_NUM_5;
+static constexpr gpio_num_t MOTOR_PIN = GPIO_NUM_6;
+static constexpr gpio_num_t PIEZO_PIN = GPIO_NUM_7;
+static constexpr gpio_num_t LED_PIN_TOP = GPIO_NUM_10;
+
+
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION, PLAY};
@@ -53,8 +54,7 @@ void LEDs_all_off(led_t &LED);
 //void LEDs_all_on(led_t &LED, Colors COLOR);
 void LEDs_all_on(Colors COLOR);
 
-int measure_battery_voltage();
-
+double measure_battery_voltage();
 bool is_battery_voltage_ok();
 
 void switch_off_voltage_periferies();

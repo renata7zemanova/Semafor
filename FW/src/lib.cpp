@@ -12,40 +12,8 @@ LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
 AT42QT1070Touch Touch_AT42(GPIO_SDA, GPIO_SCL);
 
-
-void play_vabnicka(){
-
-}
-
-void play_pan_hory(){
-
-}
-
-void play_semafor(){
-
-}
-
-void play_odpocitavadlo(HardwareSerial &Serial){
-  Buttons touched_buttons[5] = {NONE};
-
-  int timeout = 10; //cas v minutach - pak se bude nacitat z konfiguracniho webu
-  double time_for_1_LED = timeout / NUM_OF_LEDS;
-  double actual_time;
-  Colors color = BLACK; //jak nastavovat barvu?
-  //LEDs_all_on(LED, color);
-  LEDs_all_on(color);
-
-  //pro testovani tlacitek
-  Serial.println("pred ctenim kap. tlacitek");
-  while(true){
-      read_cap_but(Touch_AT42, touched_buttons, Serial);
-      delay(10);
-  }
-  //upravit vypocet actual time a pozici menit pouze za podminky, ze je to cele cislo 
-  //LED.pos = NUM_OF_LEDS - (actual_time / time_for_1_LED); //blbost
-  //LED_light(LED, BLACK);
-
-}
+Colors LED_state[NUM_OF_LEDS] = {BLACK};
+Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
 
 void set_brightness(led_t &LED){
   uint8_t brightness = 255; //vycteni hodnot z fototranzistoru 
@@ -80,66 +48,51 @@ uint32_t colors(led_t &LED, Colors COLOR){
   return 0;
 }
 
-//??
 Colors get_color(led_t &LED){ 
-  std::cout << LED.leds.getPixelColor(LED.pos) << "\n";
-  /*switch(LED.leds.getPixelColor(LED.pos)){ //zjistit, co ta funkce vraci - v jakem formatu 
-    case RED:
-      return RED; 
-    case BLUE:
-      return BLUE;
-    case GREEN:
-      return GREEN;
-    case YELLOW:
-      return YELLOW;
-    case BROWN:
-      return BROWN;
-    case PURPLE:
-      return PURPLE;
-    case PINK:
-      return PINK;
-    case ORANGE:
-      return ORANGE;
-    case AZURO:
-      return AZURO;
-    case BLACK:
-      return BLACK;
-    case  WHITE:
-      return WHITE;
-  }*/
+  return LED_state[LED.pos];
 }
 
 void LED_light(led_t &LED, Colors COLOR){
   set_brightness(LED);
   LED.leds.setPixelColor(LED.pos, colors(LED, COLOR));
+  LED_state[LED.pos] = COLOR;
   LED.leds.show();
 }
  
 void LED_toggle(led_t &LED, Colors COLOR){
-  if(get_color(LED) == BLACK)
+  if(get_color(LED) == BLACK){
+    LED_state[LED.pos] = COLOR;
     LED_light(LED, COLOR);
-  else
+  }
+  else{
+    LED_state[LED.pos] = BLACK;
     LED_light(LED, BLACK);
+  }
 }
   
 void LED_off(led_t &LED, Colors COLOR){
+  LED_state[LED.pos] = BLACK;
   LED_light(LED, BLACK);
 }
 
 void LEDs_all_off(led_t &LED){
+  for(int i = 0; i < NUM_OF_LEDS; ++i){
+    LED_state[i] = BLACK;
+  }
   LED.leds.clear();
 }
 
 //void LEDs_all_on(led_t &LED, Colors COLOR)
 void LEDs_all_on(Colors COLOR){
     for(int i = 0; i < NUM_OF_LEDS; ++i){
-        LED.pos = i;
-        LED_light(LED, COLOR);
+      LED_state[LED.pos] = COLOR; 
+      LED.pos = i;
+      LED_light(LED, COLOR);
     }
 }
 
-int measure_battery_voltage(){
-  return float(ADC_BATTERY_PIN); //vzorec
+double measure_battery_voltage(){
+  return analogRead(ADC_BATTERY_PIN); //vzorec
 }
 
 bool is_battery_voltage_ok(){
@@ -186,7 +139,7 @@ void piezo_off(){
   digitalWrite(PIEZO_PIN, ST_OFF);
 }
 
-void read_cap_but(AT42QT1070Touch &Touch_AT42, Buttons* touched_buttons, HardwareSerial &Serial){ 
+void read_cap_but(AT42QT1070Touch &Touch_AT42, HardwareSerial &Serial){ 
   Touch_AT42.find_active_keys();
 
   if(Touch_AT42.is_touched_btn_0()){
@@ -224,6 +177,26 @@ void read_cap_but(AT42QT1070Touch &Touch_AT42, Buttons* touched_buttons, Hardwar
   }
 }
 
+bool is_touched_enter(){
+  return Touch_AT42.is_touched_btn_0();
+}
+
+bool is_touched_up(){
+  return Touch_AT42.is_touched_btn_1();
+}
+
+bool is_touched_down(){
+  return Touch_AT42.is_touched_btn_2();
+}
+
+bool is_touched_right(){
+  return Touch_AT42.is_touched_btn_3();
+}
+
+bool is_touched_left(){
+  return Touch_AT42.is_touched_btn_4();
+}
+
 bool is_configuration_on(){
   //if(){
     //stisk kombinace tlacitek
@@ -254,4 +227,31 @@ void _init_ (HardwareSerial &Serial){
 
   LED.leds.begin(); 
   Touch_AT42.begin();
+}
+
+void play_vabnicka(){
+
+}
+
+void play_pan_hory(){
+
+}
+
+void play_semafor(){
+
+}
+
+void play_odpocitavadlo(HardwareSerial &Serial){
+  while(!is_touched_enter()){ //cekani na stisk enter
+    continue;
+  }
+  LEDs_all_on(GREEN);
+  //tady zacatek odpocitavani casu (musim ho vycist z nastaveni)
+  
+
+  int timeout = 10; //cas v minutach - pak se bude nacitat z konfiguracniho webu
+  double time_for_1_LED = timeout / NUM_OF_LEDS;
+  double actual_time;
+  Colors color = BLACK; //jak nastavovat barvu?
+  //LEDs_all_on(LED, color);
 }

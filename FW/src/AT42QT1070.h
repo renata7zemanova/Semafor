@@ -49,7 +49,7 @@ class AT42QT1070Touch{
         calibration();
     }
 
-    void find_active_keys(){ //napsat to jako rozdil predchozich hodnot a detekovat stisk
+    void find_active_keys(){ 
         int addr_of_button = 0;
         int data_reg[10] = {0};
         int data_buttons_new[5] = {0}; 
@@ -108,6 +108,15 @@ class AT42QT1070Touch{
         return Wire.read(); 
     }
 
+    bool is_some_btn_touched(){
+        int sum = 0;
+        for(int i = 0; i < NUM_OF_BUTTONS; ++i){
+            if(touched_buttons[i] == 1)
+                return true;
+        }
+        return false; 
+    }
+
     bool is_touched_btn_0(){
         if(touched_buttons[0] == 1)
             return true;
@@ -137,6 +146,5 @@ class AT42QT1070Touch{
             return true;
         return false;
     }
-
 
 };

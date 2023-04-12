@@ -1,9 +1,8 @@
 #include <Arduino.h>
-
 #include <iostream>
-//#include <USBCDC.h>
 
 #include "lib.h"
+#include "web.h"
 
 //neni HW
 //#define PIN_AUX_LORA 5
@@ -16,8 +15,14 @@ void setup() {
 
   _init_(Serial);
 
- States state = PLAY;
- Games game = ODPOCITAVADLO;
+  States state = PLAY;
+  Games game = ODPOCITAVADLO;
+
+  wifi_enable_connect();
+  wifi_ap_enable();
+  while(true){
+    continue; 
+  }
  
   while(true){
     if(state = CONFIGURATION){
