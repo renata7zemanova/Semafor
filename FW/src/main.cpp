@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "lib.h"
-#include "web.h"
 
 //neni HW
 //#define PIN_AUX_LORA 5
@@ -18,8 +17,8 @@ void setup() {
   States state = PLAY;
   Games game = ODPOCITAVADLO;
 
-  wifi_enable_connect();
-  wifi_ap_enable();
+  // wifi_enable_connect();
+  start_server();
   while(true){
     continue; 
   }

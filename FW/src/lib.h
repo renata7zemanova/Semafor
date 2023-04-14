@@ -1,8 +1,20 @@
+#ifndef _LIB_
+#define _LIB_
+
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 #include "AT42QT1070.h"
 
+#include <WiFi.h>
+#include <WebServer.h>
 #include <LoRa_E22.h>
+
+#include <handleHttp.h>
+
+extern LoRa_E22 LoRa;
+// extern led_t LED;
+extern AT42QT1070Touch Touch_AT42;
+extern WebServer server;
 
 #define NUM_OF_COLORS 11
 #define NUM_OF_LEDS 12
@@ -75,3 +87,11 @@ bool is_configuration_on();
 bool is_configuration_end();
 
 void _init_ (HardwareSerial &Serial);
+
+void start_server();
+void wifi_enable_connect();
+void wifi_disable();
+void wifi_ap_enable();
+void wifi_ap_disable();
+
+#endif

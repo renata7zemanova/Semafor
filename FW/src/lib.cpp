@@ -1,16 +1,16 @@
 #include <lib.h>
 
-#include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
-#include <LoRa_E22.h>
-
 #include <iostream>
 
-
+const char wifi_ssid[] = "Semafor";
+const char wifi_password[] = "adminadmin";
+//IPAddress wifi_IP(192, 168, 1, 1);
+//IPAddress net_mask(255, 255, 255, 0);
 
 LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
 AT42QT1070Touch Touch_AT42(GPIO_SDA, GPIO_SCL);
+WebServer server(80); //port 80
 
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
@@ -254,4 +254,42 @@ void play_odpocitavadlo(HardwareSerial &Serial){
   double actual_time;
   Colors color = BLACK; //jak nastavovat barvu?
   //LEDs_all_on(LED, color);
+}
+
+
+void start_server(){
+    wifi_ap_enable();
+
+    server.on("/", handleRoot); //otevru v prohlizeci tuto stranku - lomitko 
+    //server.on("/admin", handleAdmin);
+    //server.on("/adminsave", handleAdminSave);
+    //server.on("/datasave", handleDataSave);
+    //server.on("/addparam", handleAddParam);
+    server.onNotFound(handleRoot);
+    //server.on("/style.css", handleStyle); //spusteni serveru a na nem je webovka
+
+    server.begin();
+
+}
+
+void wifi_enable_connect(){
+    WiFi.begin(wifi_ssid, wifi_password);
+}
+
+void wifi_disable(){
+    WiFi.disconnect(true);
+    //WiFi.disconnect();
+}
+
+void wifi_ap_enable(){
+    wifi_disable(); //vypnuti WiFi, ktera se k necemu pripoji a zapinam WiFi, ktera se vytvori a jde k ni pripojit
+    //WiFiAP.softAPConfig(wifi_IP, wifi_IP, net_mask); //konfigurace hlavni WiFi
+    // WiFi.softAPConfig((192, 168, 1, 1), (192, 168, 1, 1), (255, 255, 255, 0)); //konfigurace hlavni WiFi
+    WiFi.softAP(wifi_ssid, wifi_password); //vytvoreni hlavni WiFi - tim se take zapina server
+    // WiFi.softAP("Semafor", "12345678");
+    delay(500);
+}
+
+void wifi_ap_disable(){
+    WiFi.softAPdisconnect(true);
 }

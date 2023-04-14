@@ -1,3 +1,6 @@
+#ifndef _AT42QT_
+#define _AT42QT_
+
 #include <Arduino.h>
 #include <Wire.h>
 
@@ -148,3 +151,5 @@ class AT42QT1070Touch{
     }
 
 };
+
+#endif
