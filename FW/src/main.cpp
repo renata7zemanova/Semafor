@@ -12,7 +12,7 @@ void setup() {
   //neni HW 
   //pinMode(PIN_AUX_LORA, INPUT_PULLDOWN);
 
-  _init_(Serial);
+  _init_();
 
   States state = PLAY;
   Games game = ODPOCITAVADLO;
@@ -20,9 +20,13 @@ void setup() {
   // wifi_enable_connect();
   start_server();
   while(true){
-    continue; 
+    server.handleClient();
+    promenna_web++;
+    //Serial.println("Hello");
+    delay(1);
   }
  
+ //az zmacknu tlacitko, tak zacne hra (vypne se server a WiFi)
   while(true){
     if(state = CONFIGURATION){
       if(is_configuration_on()){
@@ -45,7 +49,7 @@ void setup() {
           play_semafor();
           break;
         case ODPOCITAVADLO:
-          play_odpocitavadlo(Serial);
+          play_odpocitavadlo();
           break;
       }
     }

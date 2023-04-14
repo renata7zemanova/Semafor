@@ -4,6 +4,9 @@
 
 const char wifi_ssid[] = "Semafor";
 const char wifi_password[] = "adminadmin";
+
+int promenna_web = 5;
+int promenna_web2 = 4;
 //IPAddress wifi_IP(192, 168, 1, 1);
 //IPAddress net_mask(255, 255, 255, 0);
 
@@ -139,7 +142,7 @@ void piezo_off(){
   digitalWrite(PIEZO_PIN, ST_OFF);
 }
 
-void read_cap_but(AT42QT1070Touch &Touch_AT42, HardwareSerial &Serial){ 
+void read_cap_but(AT42QT1070Touch &Touch_AT42){ 
   Touch_AT42.find_active_keys();
 
   if(Touch_AT42.is_touched_btn_0()){
@@ -213,7 +216,7 @@ bool is_configuration_end(){
   //return false; 
 }
 
-void _init_ (HardwareSerial &Serial){ 
+void _init_ (){ 
   pinMode(ADC_BATTERY_PIN, INPUT);
   pinMode(SWITCH_VOLTAGE_PERIFERIES, OUTPUT);
   pinMode(MOTOR_PIN, OUTPUT);
@@ -241,7 +244,7 @@ void play_semafor(){
 
 }
 
-void play_odpocitavadlo(HardwareSerial &Serial){
+void play_odpocitavadlo(){
   while(!is_touched_enter()){ //cekani na stisk enter
     continue;
   }
@@ -263,7 +266,7 @@ void start_server(){
     server.on("/", handleRoot); //otevru v prohlizeci tuto stranku - lomitko 
     //server.on("/admin", handleAdmin);
     //server.on("/adminsave", handleAdminSave);
-    //server.on("/datasave", handleDataSave);
+    server.on("/datasave", handleDataSave); //webovka s nazvem datasave
     //server.on("/addparam", handleAddParam);
     server.onNotFound(handleRoot);
     //server.on("/style.css", handleStyle); //spusteni serveru a na nem je webovka
@@ -276,7 +279,7 @@ void wifi_enable_connect(){
     WiFi.begin(wifi_ssid, wifi_password);
 }
 
-void wifi_disable(){
+void wifi_disable(){ //vypnuti WiFi i serveru - musim udelat pred zacatkem hry
     WiFi.disconnect(true);
     //WiFi.disconnect();
 }

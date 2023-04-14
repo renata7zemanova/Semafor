@@ -6,5 +6,6 @@
 #include "web_files.h"
 
 void handleRoot();
+void handleDataSave();
 
 #endif

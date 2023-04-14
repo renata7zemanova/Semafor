@@ -12,9 +12,11 @@
 #include <handleHttp.h>
 
 extern LoRa_E22 LoRa;
-// extern led_t LED;
 extern AT42QT1070Touch Touch_AT42;
 extern WebServer server;
+
+extern int promenna_web;
+extern int promenna_web2;
 
 #define NUM_OF_COLORS 11
 #define NUM_OF_LEDS 12
@@ -30,7 +32,6 @@ static constexpr gpio_num_t SWITCH_VOLTAGE_PERIFERIES = GPIO_NUM_5;
 static constexpr gpio_num_t MOTOR_PIN = GPIO_NUM_6;
 static constexpr gpio_num_t PIEZO_PIN = GPIO_NUM_7;
 static constexpr gpio_num_t LED_PIN_TOP = GPIO_NUM_10;
-
 
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
@@ -52,7 +53,7 @@ struct leds_t{
 void play_vabnicka();
 void play_pan_hory();
 void play_semafor();
-void play_odpocitavadlo(HardwareSerial &Serial);
+void play_odpocitavadlo();
 
 void set_brightness(led_t &LED);
 uint32_t colors(led_t &LED, Colors COLOR);
@@ -81,12 +82,12 @@ void vibrate_motor_off();
 void piezo_on();
 void piezo_off();
 
-void read_cap_but(AT42QT1070Touch &Touch_AT42, Buttons* touched_buttons, HardwareSerial &Serial);
+void read_cap_but(AT42QT1070Touch &Touch_AT42, Buttons* touched_buttons);
 
 bool is_configuration_on();
 bool is_configuration_end();
 
-void _init_ (HardwareSerial &Serial);
+void _init_ ();
 
 void start_server();
 void wifi_enable_connect();
