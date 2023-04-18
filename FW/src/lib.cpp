@@ -5,8 +5,10 @@
 const char wifi_ssid[] = "Semafor";
 const char wifi_password[] = "adminadmin";
 
-int promenna_web = 5;
-int promenna_web2 = 4;
+int odpocitavadlo_timeout = 5;
+int vabnicka_num_of_teams = 2;
+int pan_hory_num_of_teams = 3;
+//int promenna_web2 = 4;
 //IPAddress wifi_IP(192, 168, 1, 1);
 //IPAddress net_mask(255, 255, 255, 0);
 
@@ -144,7 +146,7 @@ void piezo_off(){
 
 void read_cap_but(AT42QT1070Touch &Touch_AT42){ 
   Touch_AT42.find_active_keys();
-
+/*
   if(Touch_AT42.is_touched_btn_0()){
     vibrate_motor_on();
     Serial.println("enter");
@@ -178,34 +180,27 @@ void read_cap_but(AT42QT1070Touch &Touch_AT42){
   if(!Touch_AT42.is_touched_btn_0() && !Touch_AT42.is_touched_btn_1() && !Touch_AT42.is_touched_btn_2() && !Touch_AT42.is_touched_btn_3() && !Touch_AT42.is_touched_btn_4()){
     vibrate_motor_off();
   }
+  */
 }
 
 bool is_touched_enter(){
-  return Touch_AT42.is_touched_btn_0();
+  return Touch_AT42.is_touched_btn(0);
 }
 
 bool is_touched_up(){
-  return Touch_AT42.is_touched_btn_1();
+  return Touch_AT42.is_touched_btn(1);
 }
 
 bool is_touched_down(){
-  return Touch_AT42.is_touched_btn_2();
+  return Touch_AT42.is_touched_btn(2);
 }
 
 bool is_touched_right(){
-  return Touch_AT42.is_touched_btn_3();
+  return Touch_AT42.is_touched_btn(3);
 }
 
 bool is_touched_left(){
-  return Touch_AT42.is_touched_btn_4();
-}
-
-bool is_configuration_on(){
-  //if(){
-    //stisk kombinace tlacitek
-    return true;
-  //}
-  //return false; 
+  return Touch_AT42.is_touched_btn(4);
 }
 
 bool is_configuration_end(){
@@ -245,9 +240,10 @@ void play_semafor(){
 }
 
 void play_odpocitavadlo(){
-  while(!is_touched_enter()){ //cekani na stisk enter
-    continue;
-  }
+  //while(!is_touched_enter()){ //cekani na stisk enter
+   // continue;
+  //}
+  read_cap_but(Touch_AT42);
   LEDs_all_on(GREEN);
   //tady zacatek odpocitavani casu (musim ho vycist z nastaveni)
   

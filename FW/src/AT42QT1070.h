@@ -3,6 +3,62 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+#include <vector>
+
+class MovingAverage{
+    // std::array<int, 100> raw_data; //vytvori pole, kde je .size, iterace apod
+    std::vector<int> raw_data;
+    int index = 0;
+    int sum = 0;
+
+    public:
+    int get_average(){
+        return sum / raw_data.size();
+    }
+
+    void push_sample(int sample){
+        index = (index + 1) % raw_data.size();
+        sum -= raw_data[index];
+        raw_data[index] = sample;
+        sum += raw_data[index];
+    }
+
+    void setup(int size, int initial_value){
+        raw_data.resize(size);
+        for(int i = 0; i < raw_data.size(); ++i){
+            raw_data[i] = initial_value; 
+        }
+        sum = initial_value * raw_data.size();
+        index = 0;
+    }
+
+};
+
+class TouchButton{
+    MovingAverage average;
+    bool is_pressed = false;
+    int detection_trashold; 
+
+    public:
+    bool is_btn_pressed(){
+        return is_pressed;
+    }
+
+    void tick(int new_value){
+        if(abs(new_value - average.get_average()) > detection_trashold){
+            is_pressed = true; //tady bude pamatovani - myslim si, ze jsem stisknuta 
+        }
+        else{
+            average.push_sample(new_value);
+            is_pressed = false; 
+        }
+    }
+
+    void setup(int trashold, int average_sample_count, int initial_value){
+        detection_trashold = trashold; 
+        average.setup(average_sample_count, initial_value);
+    }
+};
 
 class AT42QT1070Touch{
     public:
@@ -13,10 +69,13 @@ class AT42QT1070Touch{
     gpio_num_t sda_pin;
     gpio_num_t scl_pin;
     gpio_num_t interrupt_pin;
+    
 
     static constexpr int NUM_OF_BUTTONS = 5;
     int default_buttons[NUM_OF_BUTTONS] = {0}; 
-    int touched_buttons[NUM_OF_BUTTONS] = {0};
+    int data_buttons_new[NUM_OF_BUTTONS] = {0}; 
+
+    TouchButton Touch_buttons[NUM_OF_BUTTONS];
 
     public:
     
@@ -50,12 +109,23 @@ class AT42QT1070Touch{
         Wire.endTransmission();
 
         calibration();
+
+        for(int i = 0; i < NUM_OF_BUTTONS; ++i){
+            int threshold = 270; //prejmenovat i jinde
+            if(i == 0)
+                threshold = 32;
+            Touch_buttons[i].setup(threshold, 10, read_button_raw_value(i)); 
+        }
+    }
+
+    void tick(){ //musim volat pravidelne
+        for(int i = 0; i < NUM_OF_BUTTONS; ++i)
+            Touch_buttons[i].tick(read_button_raw_value(i));
     }
 
     void find_active_keys(){ 
         int addr_of_button = 0;
         int data_reg[10] = {0};
-        int data_buttons_new[5] = {0}; 
 
         for(int i = 4; i <= 13; ++i)
             data_reg[i - 4] = read_reg(i); 
@@ -66,21 +136,18 @@ class AT42QT1070Touch{
         for(int i = 0; i < NUM_OF_BUTTONS * 2; ++i){
             if(i == 0)
                 data_buttons_new[i] += data_reg[i] << 8;
-            if(i % 2 == 0)
+            if(i % 2 == 0)  
                 data_buttons_new[i / 2] += data_reg[i] << 8;
             else
                 data_buttons_new[(i - 1) / 2] += data_reg[i];
         }
 
-        for(int i = 0; i < NUM_OF_BUTTONS; ++i)
-            touched_buttons[i] = 0;
+    }
 
-        for(int i = 0; i < NUM_OF_BUTTONS; ++i){
-            if((i == 0) && abs(data_buttons_new[i] - default_buttons[i]) > 32)
-                touched_buttons[i] = 1;
-            if(abs(data_buttons_new[i] - default_buttons[i]) > 270)
-                touched_buttons[i] = 1;
-        }
+    //aby precetla pouze jedno tlacitko a surova data vratila
+    int read_button_raw_value(int index){
+        find_active_keys();
+        return data_buttons_new[index];
     }
 
     void calibration(){
@@ -111,44 +178,10 @@ class AT42QT1070Touch{
         return Wire.read(); 
     }
 
-    bool is_some_btn_touched(){
-        int sum = 0;
-        for(int i = 0; i < NUM_OF_BUTTONS; ++i){
-            if(touched_buttons[i] == 1)
-                return true;
-        }
-        return false; 
+    bool is_touched_btn(int index){
+        return Touch_buttons[index].is_btn_pressed();
     }
 
-    bool is_touched_btn_0(){
-        if(touched_buttons[0] == 1)
-            return true;
-        return false;
-    }
-
-    bool is_touched_btn_1(){
-        if(touched_buttons[1] == 1)
-            return true;
-        return false;
-    }
-
-    bool is_touched_btn_2(){
-        if(touched_buttons[2] == 1)
-            return true;
-        return false;
-    }
-
-    bool is_touched_btn_3(){
-        if(touched_buttons[3] == 1)
-            return true;
-        return false;
-    }
-
-    bool is_touched_btn_4(){
-        if(touched_buttons[4] == 1)
-            return true;
-        return false;
-    }
 
 };
 

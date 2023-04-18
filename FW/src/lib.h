@@ -15,8 +15,10 @@ extern LoRa_E22 LoRa;
 extern AT42QT1070Touch Touch_AT42;
 extern WebServer server;
 
-extern int promenna_web;
-extern int promenna_web2;
+extern int odpocitavadlo_timeout;
+extern int vabnicka_num_of_teams;
+extern int pan_hory_num_of_teams;
+//extern int promenna_web2;
 
 #define NUM_OF_COLORS 11
 #define NUM_OF_LEDS 12
@@ -32,7 +34,6 @@ static constexpr gpio_num_t SWITCH_VOLTAGE_PERIFERIES = GPIO_NUM_5;
 static constexpr gpio_num_t MOTOR_PIN = GPIO_NUM_6;
 static constexpr gpio_num_t PIEZO_PIN = GPIO_NUM_7;
 static constexpr gpio_num_t LED_PIN_TOP = GPIO_NUM_10;
-
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION, PLAY};
@@ -84,7 +85,6 @@ void piezo_off();
 
 void read_cap_but(AT42QT1070Touch &Touch_AT42, Buttons* touched_buttons);
 
-bool is_configuration_on();
 bool is_configuration_end();
 
 void _init_ ();

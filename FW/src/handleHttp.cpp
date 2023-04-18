@@ -14,27 +14,55 @@ void handleRoot() { //uvodni webovka
                 "<link rel='stylesheet' type='text/css' href='style.css'>"
                 "<meta name='viewport' content='width=device-width'>"
                 "<title>Semafor manager</title></head><body>"
-                "<h1>Nastavení semaforu #");
+                "<h1>Konfigurační menu Univerzálního modulu pro podporu týmových her");
     Page += F(
             "<form method='POST' action='datasave'>"); //vytvarim formular pro data
             //po odeslani pomoci "submit" se posle vysledek na /datasave
             // /datasave je dalsi webovka, ktera prijima data
             // je zapnuta v start_server()
 
-    Page += F("Ahoj");
-    Page += 
-        String(promenna_web) + F("promenna web");
+    //Page += F("Ahoj");
+    //Page += 
+    //    String(promenna_web) + F("promenna web");
 
     Page += F(
-                "<h2>Tower Defence (3)</h2>"
-                "2 módy - stavba a rozebírání zdi. Přepínání mezi nimi dlouhým stiskem tlačítka. Při stavbě zdi mačkání tlačítka postupně rozsvěcí LEDky. Při rozebírání dlouhý stisk tlačítka postupně zhasíná LEDky. Po zhasnutí všech se semafor rozbliká.<br>"
-                "Doba krátkého stisku tlačítka [sekundy]:<br>"
+                "<h2>Odpočítávadlo</h2>"
+                //"2 módy - stavba a rozebírání zdi. Přepínání mezi nimi dlouhým stiskem tlačítka. Při stavbě zdi mačkání tlačítka postupně rozsvěcí LEDky. Při rozebírání dlouhý stisk tlačítka postupně zhasíná LEDky. Po zhasnutí všech se semafor rozbliká.<br>"
+                "Doba odpočtu [sekundy]:<br>"
                 "<input type='text' placeholder='");
                 
-    Page += String(promenna_web2); //co je v te promenne, tak se mi ukaze jak by default na webu 
+    Page += String(odpocitavadlo_timeout); //co je v te promenne, tak se mi ukaze jak by default na webu 
     Page += F(
-                "' name='promenna_web2'/><br>" //nazev promenne, kterou odesila prohlizec
-                "<input type='submit' name='tlacitka_1' value='Ulož a aktivuj Tower Defence'/><br>"); //vsechno se po stisku submit odesle
+                "' name='timeout_odpocitavadlo'/><br>" //nazev promenne, kterou odesila prohlizec
+                "<input type='submit' name='tlacitko_1_odpocitavadlo' value='Ulož a aktivuj Odpočítávadlo'/><br>"); //vsechno se po stisku submit odesle
+    
+     Page += F(
+                "<h2>Vábnička</h2>"
+                "Počet hrajících týmů:<br>"
+                "<input type='text' placeholder='");
+    Page += String(vabnicka_num_of_teams);
+    Page += F(
+                "' name='num_of_teams_vabnicka'/><br>" 
+                "<input type='submit' name='tlacitko_2_vabnicka' value='Ulož a aktivuj Vábničku'/><br>"); 
+    
+    Page += F(
+                "<h2>Pán hory</h2>"
+                "Počet hrajících týmů:<br>"
+                "<input type='text' placeholder='");
+    Page += String(pan_hory_num_of_teams);
+    Page += F(
+                "' name='num_of_teams_pan_hory'/><br>" 
+                "<input type='submit' name='tlacitko_3_pan_hory' value='Ulož a aktivuj Pán hory'/><br>"); 
+    
+    Page += F(
+                "<h2>Semafor</h2>");
+                //"Počet hrajících týmů:<br>"
+                //"<input type='text' placeholder='");
+    Page += F(
+                //"' name='num_of_teams_pan_hory'/><br>" 
+                "<input type='submit' name='tlacitko_4_semafor' value='Ulož a aktivuj Semafor'/><br>"); 
+    
+
     // End form and page
     Page += F("</form></body></html>");
 
@@ -45,7 +73,7 @@ void handleRoot() { //uvodni webovka
 
 
 void handleDataSave() {
-    Serial.println("handlaDataSave");
+    Serial.println("handleDataSave");
     char buffer[10];
     int32_t temp;
 
@@ -67,18 +95,26 @@ void handleDataSave() {
     //     stateVector.tdPressShort = temp;
     // }
 
-    server.arg("promenna_web2").toCharArray(buffer, sizeof(buffer) - 1);
+    server.arg("timeout_odpocitavadlo").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer); //string na cislo
     if(temp > 0) {
-        promenna_web2 = temp;
-        Serial.println(promenna_web2);
+        odpocitavadlo_timeout = temp;
+        Serial.println(odpocitavadlo_timeout);
     }
 
-    // server.arg("holdToGet_press").toCharArray(buffer, sizeof(buffer) - 1);
-    // temp = atoi(buffer);
-    // if(temp > 0) {
-    //     stateVector.holdToGetTimeout = temp;
-    // }
+    server.arg("num_of_teams_vabnicka").toCharArray(buffer, sizeof(buffer) - 1);
+    temp = atoi(buffer); //string na cislo
+    if(temp > 0) {
+        vabnicka_num_of_teams = temp;
+        Serial.println(vabnicka_num_of_teams);
+    }
+
+    server.arg("num_of_teams_pan_hory").toCharArray(buffer, sizeof(buffer) - 1);
+    temp = atoi(buffer);
+    if(temp > 0) {
+        pan_hory_num_of_teams = temp;
+        Serial.println(pan_hory_num_of_teams);
+    }
 
     // server.arg("minutkaTimeMinAll").toCharArray(buffer, sizeof(buffer) - 1);
     // temp = atoi(buffer);
@@ -98,10 +134,19 @@ void handleDataSave() {
     //     stateVector.ledBrightness[0] = temp;
     // }
     
-     if(server.hasArg("tlacitka_1")) //podle zmacknuteho tlacitka mohu detekovat, kterou hru chci hrat a pak z ni vzit dane promenne
-         Serial.println("tlacitko 1");
-    // else if(server.hasArg("vabicka"))
-    //     stateVector.gameMode = 1;
+     if(server.hasArg("tlacitko_1_odpocitavadlo")){ //podle zmacknuteho tlacitka mohu detekovat, kterou hru chci hrat a pak z ni vzit dane promenne
+        Serial.println("tlacitko 1 odpocitavadlo");
+        //game = ODPOCITAVADLO;
+    }
+    else if(server.hasArg("tlacitko_2_vabnicka")){
+        Serial.println("tlacitko 2 vabnicka");
+    }
+    else if(server.hasArg("tlacitko_3_pan_hory")){
+        Serial.println("tlacitko 3 pan hory");
+    }
+    else if(server.hasArg("tlacitko_4_semafor")){
+        Serial.println("tlacitko 4 semafor");
+    }
     // else if(server.hasArg("vlajky"))
     //     stateVector.gameMode = 2;
     // else if(server.hasArg("towerDefence"))
