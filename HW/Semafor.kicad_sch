@@ -2051,6 +2051,7 @@
     )
   )
 
+
   (junction (at 154.94 34.29) (diameter 0) (color 0 0 0 0)
     (uuid 0233f3d5-71f6-48d2-82df-c2a1310fe68b)
   )
@@ -2191,10 +2192,10 @@
   )
 
   (no_connect (at 158.75 41.91) (uuid 0258fee8-2256-408f-8cf3-55e7619e47b3))
+  (no_connect (at 135.89 102.235) (uuid 324b7f7f-e807-4fc0-8981-538a1fb1dc2e))
   (no_connect (at 276.86 33.02) (uuid 601b10a7-e47a-4509-8ff3-bf28029be384))
   (no_connect (at 44.45 109.22) (uuid 74b1dabe-0872-4620-af34-b236ecdd1da6))
   (no_connect (at 44.45 111.76) (uuid 74b1dabe-0872-4620-af34-b236ecdd1da7))
-  (no_connect (at 135.89 102.235) (uuid aa4249fd-2114-4396-9f57-195255fe2ea6))
   (no_connect (at 135.89 108.585) (uuid adac67f4-6d1a-4e70-b890-b474cbbd7587))
   (no_connect (at 135.255 151.765) (uuid c835cc24-07af-44cc-9ddb-b740fcec3926))
   (no_connect (at 189.23 44.45) (uuid efed4c65-f9bc-4609-903a-4995ac096af0))
@@ -4195,7 +4196,7 @@
     (property "Value" "Cap_btn" (id 1) (at 220.7464 25.8576 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Library:Cap_btn_2,5x2,5" (id 2) (at 217.1954 27.9654 0)
+    (property "Footprint" "Library:Cap_btn_2x2" (id 2) (at 217.1954 27.9654 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (id 3) (at 217.1954 27.9654 0)
@@ -6040,7 +6041,7 @@
       (reference "BT1") (unit 1) (value "Battery_Cell") (footprint "Library:battery_dock")
     )
     (path "/68281409-52c5-4f8e-8215-bb8b09652217"
-      (reference "BTN1_ENTER1") (unit 1) (value "Cap_btn") (footprint "Library:Cap_btn_2,5x2,5")
+      (reference "BTN1_ENTER1") (unit 1) (value "Cap_btn") (footprint "Library:Cap_btn_2x2")
     )
     (path "/e088e96c-5953-47aa-bea0-66eddd726a95"
       (reference "BTN2_UP1") (unit 1) (value "Cap_btn") (footprint "Library:Cap_btn_1,6x1,6")
