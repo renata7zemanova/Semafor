@@ -15,7 +15,7 @@ void handleRoot() { //uvodni webovka
                 "<meta name='viewport' content='width=device-width'>"
                 "<title>Semafor manager</title></head><body>"
                 "<h1>Konfigurační menu Univerzálního modulu pro podporu týmových her");
-    Page += F(
+    Page += F( //novy formular pro tlacitko pro konfiguraci - upload mode
             "<form method='POST' action='datasave'>"); //vytvarim formular pro data
             //po odeslani pomoci "submit" se posle vysledek na /datasave
             // /datasave je dalsi webovka, ktera prijima data
@@ -31,7 +31,7 @@ void handleRoot() { //uvodni webovka
                 "Doba odpočtu [sekundy]:<br>"
                 "<input type='text' placeholder='");
                 
-    Page += String(odpocitavadlo_timeout); //co je v te promenne, tak se mi ukaze jak by default na webu 
+    Page += String(s_vect.odpocitavadlo_timeout); //co je v te promenne, tak se mi ukaze jak by default na webu 
     Page += F(
                 "' name='timeout_odpocitavadlo'/><br>" //nazev promenne, kterou odesila prohlizec
                 "<input type='submit' name='tlacitko_1_odpocitavadlo' value='Ulož a aktivuj Odpočítávadlo'/><br>"); //vsechno se po stisku submit odesle
@@ -40,7 +40,7 @@ void handleRoot() { //uvodni webovka
                 "<h2>Vábnička</h2>"
                 "Počet hrajících týmů:<br>"
                 "<input type='text' placeholder='");
-    Page += String(vabnicka_num_of_teams);
+    Page += String(s_vect.vabnicka_num_of_teams);
     Page += F(
                 "' name='num_of_teams_vabnicka'/><br>" 
                 "<input type='submit' name='tlacitko_2_vabnicka' value='Ulož a aktivuj Vábničku'/><br>"); 
@@ -49,7 +49,7 @@ void handleRoot() { //uvodni webovka
                 "<h2>Pán hory</h2>"
                 "Počet hrajících týmů:<br>"
                 "<input type='text' placeholder='");
-    Page += String(pan_hory_num_of_teams);
+    Page += String(s_vect.pan_hory_num_of_teams);
     Page += F(
                 "' name='num_of_teams_pan_hory'/><br>" 
                 "<input type='submit' name='tlacitko_3_pan_hory' value='Ulož a aktivuj Pán hory'/><br>"); 
@@ -98,22 +98,23 @@ void handleDataSave() {
     server.arg("timeout_odpocitavadlo").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer); //string na cislo
     if(temp > 0) {
-        odpocitavadlo_timeout = temp;
-        Serial.println(odpocitavadlo_timeout);
+        s_vect.odpocitavadlo_timeout = temp;
+        //tady rovnou ulozit do eprrom = preferences
+        Serial.println(s_vect.odpocitavadlo_timeout);
     }
 
     server.arg("num_of_teams_vabnicka").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer); //string na cislo
     if(temp > 0) {
-        vabnicka_num_of_teams = temp;
-        Serial.println(vabnicka_num_of_teams);
+        s_vect.vabnicka_num_of_teams = temp;
+        Serial.println(s_vect.vabnicka_num_of_teams);
     }
 
     server.arg("num_of_teams_pan_hory").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer);
     if(temp > 0) {
-        pan_hory_num_of_teams = temp;
-        Serial.println(pan_hory_num_of_teams);
+        s_vect.pan_hory_num_of_teams = temp;
+        Serial.println(s_vect.pan_hory_num_of_teams);
     }
 
     // server.arg("minutkaTimeMinAll").toCharArray(buffer, sizeof(buffer) - 1);
@@ -136,6 +137,7 @@ void handleDataSave() {
     
      if(server.hasArg("tlacitko_1_odpocitavadlo")){ //podle zmacknuteho tlacitka mohu detekovat, kterou hru chci hrat a pak z ni vzit dane promenne
         Serial.println("tlacitko 1 odpocitavadlo");
+        s_vect.game = ODPOCITAVADLO;
         //game = ODPOCITAVADLO;
     }
     else if(server.hasArg("tlacitko_2_vabnicka")){
@@ -147,6 +149,9 @@ void handleDataSave() {
     else if(server.hasArg("tlacitko_4_semafor")){
         Serial.println("tlacitko 4 semafor");
     }
+
+    //ukladat do Preferences
+
     // else if(server.hasArg("vlajky"))
     //     stateVector.gameMode = 2;
     // else if(server.hasArg("towerDefence"))

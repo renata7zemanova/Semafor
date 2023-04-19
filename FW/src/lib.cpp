@@ -5,9 +5,6 @@
 const char wifi_ssid[] = "Semafor";
 const char wifi_password[] = "adminadmin";
 
-int odpocitavadlo_timeout = 5;
-int vabnicka_num_of_teams = 2;
-int pan_hory_num_of_teams = 3;
 //int promenna_web2 = 4;
 //IPAddress wifi_IP(192, 168, 1, 1);
 //IPAddress net_mask(255, 255, 255, 0);
@@ -16,6 +13,7 @@ LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
 AT42QT1070Touch Touch_AT42(GPIO_SDA, GPIO_SCL);
 WebServer server(80); //port 80
+state_vector_t s_vect;
 
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
@@ -263,6 +261,7 @@ void start_server(){
     //server.on("/admin", handleAdmin);
     //server.on("/adminsave", handleAdminSave);
     server.on("/datasave", handleDataSave); //webovka s nazvem datasave
+    server.on("/upload", handleUpload);//
     //server.on("/addparam", handleAddParam);
     server.onNotFound(handleRoot);
     //server.on("/style.css", handleStyle); //spusteni serveru a na nem je webovka

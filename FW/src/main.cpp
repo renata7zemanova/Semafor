@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <iostream>
+#include <Preferences.h>
 
 #include "lib.h"
 
@@ -8,6 +9,8 @@
 
 
 void setup() {
+
+
   Serial.begin(115200);
   //neni HW 
   //pinMode(PIN_AUX_LORA, INPUT_PULLDOWN);
@@ -15,7 +18,10 @@ void setup() {
   _init_();
 
   States state = PLAY; //na zacatku musi byt CONFIGURATION
-  Games game = ODPOCITAVADLO;
+  //pokud jsem ho jeste nenaprogramovala, tak ulozit defaultni hodnoty (treba prvni hru s nejakymi parametry)
+  //vyrobit state vector default
+  //getBytes("dentificator", state default) //kdyz neexistuje 
+  //vycist RAMku
 
   while(true){
     Touch_AT42.tick();
@@ -45,12 +51,12 @@ void setup() {
   //az zmacknu tlacitko, tak zacne hra 
   //kazdy case bude cekat na stisk tlacitka enter (asi)
     if(state = PLAY){
-      switch(game){
+      switch(s_vect.game){
         case VABNICKA:
-          play_vabnicka();
+          play_vabnicka(); //nedelat blokujici 
           break;
         case PAN_HORY:
-          play_pan_hory();
+          play_pan_hory(); //static veci, abych pokracovala ve hre
           break;
         case SEMAFOR:
           play_semafor();

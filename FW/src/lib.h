@@ -15,11 +15,6 @@ extern LoRa_E22 LoRa;
 extern AT42QT1070Touch Touch_AT42;
 extern WebServer server;
 
-extern int odpocitavadlo_timeout;
-extern int vabnicka_num_of_teams;
-extern int pan_hory_num_of_teams;
-//extern int promenna_web2;
-
 #define NUM_OF_COLORS 11
 #define NUM_OF_LEDS 12
 #define NUM_OF_BUTTONS 5
@@ -36,9 +31,20 @@ static constexpr gpio_num_t PIEZO_PIN = GPIO_NUM_7;
 static constexpr gpio_num_t LED_PIN_TOP = GPIO_NUM_10;
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
-enum States {CONFIGURATION, PLAY};
+enum States {CONFIGURATION, PLAY}; //konfiguraci prijimam od Semaforu, nebo z webu
+//upload, download
+//vsechny startuji v download a jeden pak prepnu do upload
 enum Games {VABNICKA, PAN_HORY, SEMAFOR, ODPOCITAVADLO};
 enum Buttons {BTN_ENTER, BTN_UP, BTN_DOWN, BTN_RIGHT, BTN_LEFT, NONE};
+
+struct state_vector_t { //hlavni struktura
+  Games game; 
+  int pan_hory_num_of_teams;
+  int odpocitavadlo_timeout;
+  int vabnicka_num_of_teams;
+};
+
+extern state_vector_t s_vect;
 
 struct led_t {
   led_t(const int COUNT, const int PIN) : leds(COUNT, PIN), pos(0) {} 
