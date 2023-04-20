@@ -2051,7 +2051,6 @@
     )
   )
 
-
   (junction (at 154.94 34.29) (diameter 0) (color 0 0 0 0)
     (uuid 0233f3d5-71f6-48d2-82df-c2a1310fe68b)
   )
@@ -3474,7 +3473,7 @@
   (symbol (lib_id "Device:LED") (at 76.2 166.37 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 0c46bb14-fb6b-48d6-95e0-46a87e6d62fc)
-    (property "Reference" "D13" (id 0) (at 79.121 167.1228 90)
+    (property "Reference" "D13" (id 0) (at 71.12 167.005 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "Green" (id 1) (at 69.85 168.91 90)
