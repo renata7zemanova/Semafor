@@ -142,71 +142,64 @@ void piezo_off(){
   digitalWrite(PIEZO_PIN, ST_OFF);
 }
 
-void read_cap_but(AT42QT1070Touch &Touch_AT42){ 
-  Touch_AT42.find_active_keys();
-/*
-  if(Touch_AT42.is_touched_btn_0()){
-    vibrate_motor_on();
-    Serial.println("enter");
-    touched_buttons[0] = BTN_ENTER;
-  }
-
-  if(Touch_AT42.is_touched_btn_1()){
-    vibrate_motor_on();
-    Serial.println("up");
-    touched_buttons[1] = BTN_UP;
-  }
-
-  if(Touch_AT42.is_touched_btn_2()){
-    vibrate_motor_on();
-    Serial.println("down");
-    touched_buttons[2] = BTN_DOWN;
-  }
-
-  if(Touch_AT42.is_touched_btn_3()){
-    vibrate_motor_on();
-    Serial.println("right");
-    touched_buttons[3] = BTN_RIGHT;
-  }
-
-  if(Touch_AT42.is_touched_btn_4()){
-    vibrate_motor_on();
-    Serial.println("left");
-    touched_buttons[4] = BTN_LEFT;
-  }
-
-  if(!Touch_AT42.is_touched_btn_0() && !Touch_AT42.is_touched_btn_1() && !Touch_AT42.is_touched_btn_2() && !Touch_AT42.is_touched_btn_3() && !Touch_AT42.is_touched_btn_4()){
-    vibrate_motor_off();
-  }
-  */
-}
-
 bool is_touched_enter(){
-  return Touch_AT42.is_touched_btn(0);
+  if(Touch_AT42.is_touched_btn(0)){
+    vibrate_motor_on();
+    return true;
+  }
+  vibrate_motor_off();
+  return false; 
 }
 
 bool is_touched_up(){
-  return Touch_AT42.is_touched_btn(1);
+  if(Touch_AT42.is_touched_btn(1)){
+    vibrate_motor_on();
+    return true;
+  }
+  vibrate_motor_off();
+  return false; 
 }
 
 bool is_touched_down(){
-  return Touch_AT42.is_touched_btn(2);
+  if(Touch_AT42.is_touched_btn(2)){
+    vibrate_motor_on();
+    return true;
+  }
+  vibrate_motor_off();
+  return false; 
 }
 
 bool is_touched_right(){
-  return Touch_AT42.is_touched_btn(3);
+  if(Touch_AT42.is_touched_btn(3)){
+    vibrate_motor_on();
+    return true;
+  }
+  vibrate_motor_off();
+  return false; 
 }
 
 bool is_touched_left(){
-  return Touch_AT42.is_touched_btn(4);
+  if(Touch_AT42.is_touched_btn(4)){
+    vibrate_motor_on();
+    return true;
+  }
+  vibrate_motor_off();
+  return false; 
 }
 
-bool is_configuration_end(){
-  //if(){
-    //kontrola ulozeni konfigurace a nastaveni hry
-    return true;
-  //}
-  //return false; 
+bool is_touched_some_btn(){
+  for(int i = 0; i < NUM_OF_BUTTONS; ++i){
+    if(Touch_AT42.is_touched_btn(i)){
+      vibrate_motor_on();
+      return true;
+    }
+  }
+  vibrate_motor_off();
+  return false; 
+}
+
+void tick_for_buttons(){ //musim volat pravidelne a casto
+  Touch_AT42.tick();
 }
 
 void _init_ (){ 
@@ -241,7 +234,6 @@ void play_odpocitavadlo(){
   //while(!is_touched_enter()){ //cekani na stisk enter
    // continue;
   //}
-  read_cap_but(Touch_AT42);
   LEDs_all_on(GREEN);
   //tady zacatek odpocitavani casu (musim ho vycist z nastaveni)
   

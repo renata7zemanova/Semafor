@@ -77,12 +77,8 @@ class AT42QT1070Touch{
     private:
     gpio_num_t sda_pin;
     gpio_num_t scl_pin;
-    gpio_num_t interrupt_pin;
     
-
-    static constexpr int NUM_OF_BUTTONS = 5;
-    int default_buttons[NUM_OF_BUTTONS] = {0}; 
-    int data_buttons_new[NUM_OF_BUTTONS] = {0}; 
+    static constexpr int NUM_OF_BUTTONS = 5;  
 
     TouchButton Touch_buttons[NUM_OF_BUTTONS];
 
@@ -117,66 +113,27 @@ class AT42QT1070Touch{
         Wire.write(0);
         Wire.endTransmission();
 
-        calibration();
-
         for(int i = 0; i < NUM_OF_BUTTONS; ++i){
             int threshold = 40; 
             if(i == 0)
                 threshold = 32;
-            Touch_buttons[i].setup(threshold, 10, read_button_raw_value(i)); 
+            Touch_buttons[i].setup(threshold, 10, get_raw_data_btn(i)); 
         }
     }
 
-    void tick(){ //musim volat pravidelne
+    void tick(){ 
         for(int i = 0; i < NUM_OF_BUTTONS; ++i)
-            Touch_buttons[i].tick(read_button_raw_value(i));
+            Touch_buttons[i].tick(get_raw_data_btn(i));
     }
 
-    void find_active_keys(){ 
-        int addr_of_button = 0;
-        int data_reg[10] = {0};
-
-        for(int i = 4; i <= 13; ++i)
-            data_reg[i - 4] = read_reg(i); 
-
-        for(int i = 0; i < NUM_OF_BUTTONS; ++i)
-            data_buttons_new[i] = 0;
-
-        for(int i = 0; i < NUM_OF_BUTTONS * 2; ++i){
-            if(i == 0)
-                data_buttons_new[i] += data_reg[i] << 8;
-            if(i % 2 == 0)  
-                data_buttons_new[i / 2] += data_reg[i] << 8;
-            else
-                data_buttons_new[(i - 1) / 2] += data_reg[i];
+    int get_raw_data_btn(int index){ 
+        int data_reg[2] = {0};
+        int k = 0;
+        for(int i = (4 + (index * 2)); k < 2; ++i){
+            data_reg[k] = read_reg(i); 
+            ++k;
         }
-
-    }
-
-    //aby precetla pouze jedno tlacitko a surova data vratila
-    int read_button_raw_value(int index){
-        find_active_keys();
-        return data_buttons_new[index];
-    }
-
-    void calibration(){
-        int data_reg[NUM_OF_BUTTONS * 2] = {0};
-
-        for(int i = 4; i <= (NUM_OF_BUTTONS * 2) + 3; ++i){
-            data_reg[i - 4] = read_reg(i); 
-        }
-
-        for(int i = 0; i < NUM_OF_BUTTONS; ++i){
-            default_buttons[i] = 0;
-        }
-        for(int i = 0; i < NUM_OF_BUTTONS * 2; ++i){
-            if(i == 0)
-                default_buttons[i] += data_reg[i] << 8;
-            if(i % 2 == 0)
-                default_buttons[i / 2] += data_reg[i] << 8;
-            else
-                default_buttons[(i - 1) / 2] += data_reg[i];
-        }
+        return (data_reg[0] << 8) + data_reg[1];
     }
 
     int read_reg(int num_of_reg){
@@ -190,8 +147,6 @@ class AT42QT1070Touch{
     bool is_touched_btn(int index){
         return Touch_buttons[index].is_btn_pressed();
     }
-
-
 };
 
 #endif

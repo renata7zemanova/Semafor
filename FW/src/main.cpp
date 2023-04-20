@@ -23,8 +23,8 @@ void setup() {
   //getBytes("dentificator", state default) //kdyz neexistuje 
   //vycist RAMku
 
-  while(true){
-    Touch_AT42.tick();
+  /*while(true){
+    tick_for_buttons();
     for(int i = 0; i < NUM_OF_BUTTONS; ++i){
       //Serial.print(Touch_AT42.read_button_raw_value(i));
       Serial.print(Touch_AT42.is_touched_btn(i));
@@ -32,7 +32,7 @@ void setup() {
     }
     Serial.println();
     delay(10);
-  }
+  }*/
 
   while(true){
     if(state = CONFIGURATION){
@@ -67,6 +67,7 @@ void setup() {
           break;
       }
     }
+    tick_for_buttons();
   }
 }
 

@@ -89,10 +89,7 @@ void vibrate_motor_off();
 void piezo_on();
 void piezo_off();
 
-void read_cap_but(AT42QT1070Touch &Touch_AT42, Buttons* touched_buttons);
-
-bool is_configuration_end();
-
+void tick_for_buttons();
 void _init_ ();
 
 void start_server();
