@@ -261,7 +261,7 @@ void start_server(){
     //server.on("/admin", handleAdmin);
     //server.on("/adminsave", handleAdminSave);
     server.on("/datasave", handleDataSave); //webovka s nazvem datasave
-    server.on("/upload", handleUpload);//
+    //server.on("/upload", handleUpload);//
     //server.on("/addparam", handleAddParam);
     server.onNotFound(handleRoot);
     //server.on("/style.css", handleStyle); //spusteni serveru a na nem je webovka

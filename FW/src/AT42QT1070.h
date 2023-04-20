@@ -37,7 +37,9 @@ class MovingAverage{
 class TouchButton{
     MovingAverage average;
     bool is_pressed = false;
-    int detection_trashold; 
+    bool detected_press = false; 
+    int counter = 0;
+    int detection_threshold; 
 
     public:
     bool is_btn_pressed(){
@@ -45,17 +47,24 @@ class TouchButton{
     }
 
     void tick(int new_value){
-        if(abs(new_value - average.get_average()) > detection_trashold){
-            is_pressed = true; //tady bude pamatovani - myslim si, ze jsem stisknuta 
+        if(abs(new_value - average.get_average()) > detection_threshold){
+            detected_press = true;
+            counter++;
         }
         else{
             average.push_sample(new_value);
-            is_pressed = false; 
+            detected_press = false; 
+            is_pressed = false;
+            counter = 0;
+        }
+        if(detected_press && (counter > 3)){
+            is_pressed = true; 
+            counter = 0;
         }
     }
 
-    void setup(int trashold, int average_sample_count, int initial_value){
-        detection_trashold = trashold; 
+    void setup(int threshold, int average_sample_count, int initial_value){
+        detection_threshold = threshold; 
         average.setup(average_sample_count, initial_value);
     }
 };
@@ -111,7 +120,7 @@ class AT42QT1070Touch{
         calibration();
 
         for(int i = 0; i < NUM_OF_BUTTONS; ++i){
-            int threshold = 270; //prejmenovat i jinde
+            int threshold = 40; 
             if(i == 0)
                 threshold = 32;
             Touch_buttons[i].setup(threshold, 10, read_button_raw_value(i)); 

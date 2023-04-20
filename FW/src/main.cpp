@@ -26,6 +26,7 @@ void setup() {
   while(true){
     Touch_AT42.tick();
     for(int i = 0; i < NUM_OF_BUTTONS; ++i){
+      //Serial.print(Touch_AT42.read_button_raw_value(i));
       Serial.print(Touch_AT42.is_touched_btn(i));
       Serial.print(" ");
     }
