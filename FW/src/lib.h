@@ -35,7 +35,7 @@ enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK
 enum States {CONFIGURATION, PLAY}; //konfiguraci prijimam od Semaforu, nebo z webu
 //upload, download
 //vsechny startuji v download a jeden pak prepnu do upload
-enum Games {VABNICKA, PAN_HORY, SEMAFOR, ODPOCITAVADLO};
+enum Games {VABNICKA1, VABNICKA2, PAN_HORY, SEMAFOR, ODPOCITAVADLO};
 enum Buttons {BTN_ENTER, BTN_UP, BTN_DOWN, BTN_RIGHT, BTN_LEFT, NONE};
 
 struct state_vector_t { //hlavni struktura
@@ -43,6 +43,7 @@ struct state_vector_t { //hlavni struktura
   int vabnicka_num_of_teams;
   int pan_hory_num_of_teams;
   int odpocitavadlo_timeout;
+  int semafor_max_timeout; 
 };
 
 extern state_vector_t s_vect;
@@ -58,18 +59,19 @@ struct leds_t{
     led_t side;
 };
 
-void play_vabnicka();
+void play_vabnicka1();
+void play_vabnicka2();
 void play_pan_hory();
 void play_semafor();
 void play_odpocitavadlo();
 
 void set_brightness();
 uint32_t colors(Colors COLOR);
-Colors get_color();
+Colors get_color(int index);
 
-void LED_light(Colors COLOR);
-void LED_toggle(Colors COLOR);
-void LED_off(Colors COLOR);
+void LED_light(int index, Colors COLOR);
+void LED_toggle(int index, Colors COLOR);
+void LED_off(int index);
 void LEDs_all_off();
 void LEDs_all_on(Colors COLOR);
 

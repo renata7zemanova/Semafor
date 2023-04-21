@@ -18,7 +18,7 @@ void setup() {
   _init_();
 
   States state = PLAY; //na zacatku musi byt CONFIGURATION
-  s_vect.game = ODPOCITAVADLO; //pak nebude definovano tady
+  s_vect.game = VABNICKA2; //pak nebude definovano tady
   //pokud jsem ho jeste nenaprogramovala, tak ulozit defaultni hodnoty (treba prvni hru s nejakymi parametry)
   //vyrobit state vector default
   //getBytes("identificator", state default) //kdyz neexistuje 
@@ -54,8 +54,11 @@ void setup() {
   //kazdy case bude cekat na stisk tlacitka enter (asi)
     if(state = PLAY){
       switch(s_vect.game){
-        case VABNICKA:
-          play_vabnicka(); //nedelat blokujici 
+        case VABNICKA1:
+          play_vabnicka1(); //nedelat blokujici 
+          break;
+        case VABNICKA2:
+          play_vabnicka2();
           break;
         case PAN_HORY:
           play_pan_hory(); //static veci, abych pokracovala ve hre

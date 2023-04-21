@@ -51,31 +51,35 @@ uint32_t colors(Colors COLOR){
   return 0;
 }
 
-Colors get_color(){ 
+Colors get_color(int index){ 
+  LED.pos = index;
   return LED_state[LED.pos];
 }
 
-void LED_light(Colors COLOR){
+void LED_light(int index, Colors COLOR){
+  LED.pos = index; 
   set_brightness(LED);
   LED.leds.setPixelColor(LED.pos, colors(COLOR));
   LED_state[LED.pos] = COLOR;
   LED.leds.show();
 }
  
-void LED_toggle(Colors COLOR){
-  if(get_color() == BLACK){
+void LED_toggle(int index, Colors COLOR){
+  if(get_color(index) == BLACK){
+    LED.pos = index; 
     LED_state[LED.pos] = COLOR;
-    LED_light(COLOR);
+    LED_light(LED.pos, COLOR);
   }
   else{
     LED_state[LED.pos] = BLACK;
-    LED_light(BLACK);
+    LED_light(LED.pos, BLACK);
   }
 }
   
-void LED_off(Colors COLOR){
+void LED_off(int index){
+  LED.pos = index;
   LED_state[LED.pos] = BLACK;
-  LED_light(BLACK);
+  LED_light(LED.pos, BLACK);
 }
 
 void LEDs_all_off(){
@@ -89,7 +93,7 @@ void LEDs_all_on(Colors COLOR){
     for(int i = 0; i < NUM_OF_LEDS; ++i){
       LED_state[LED.pos] = COLOR; 
       LED.pos = i;
-      LED_light(COLOR);
+      LED_light(LED.pos, COLOR);
     }
 }
 
@@ -219,7 +223,35 @@ void _init_ (){
   LEDs_all_on(BLACK);
 }
 
-void play_vabnicka(){
+void play_vabnicka1(){//nahodne prepinani barvy po stisku enteru 
+  static int num_of_team = 1;
+  s_vect.vabnicka_num_of_teams = 4;  
+  static int counter = 0;
+  static int old_counter = 0;
+  if(is_touched_enter() && (counter == old_counter)){
+    num_of_team = random(s_vect.vabnicka_num_of_teams);
+    if(get_color(1) != Colors(num_of_team)){
+      counter ++;
+      LEDs_all_on(Colors(num_of_team));
+    }
+  }
+  if(!is_touched_enter())
+    old_counter = counter; 
+}
+
+void play_vabnicka2(){
+  if(is_touched_right()){
+    LEDs_all_on(RED);
+  }
+  if(is_touched_left()){
+    LEDs_all_on(BLUE);
+  }
+  if(is_touched_up()){
+    LEDs_all_on(GREEN);
+  }
+  if(is_touched_down()){
+    LEDs_all_on(WHITE);
+  }
 
 }
 
@@ -228,7 +260,39 @@ void play_pan_hory(){
 }
 
 void play_semafor(){
+  static int counter_of_pressed = 0;
+  static double start_time = 0;
+  s_vect.semafor_max_timeout = 20; //potom bude nastaveno z webu
+  static int timeout = random(1, s_vect.semafor_max_timeout); 
+  LED.pos = 1;
+  if(!is_touched_enter() && counter_of_pressed == 0){
+    return;
+  }
+  if(is_touched_enter() && counter_of_pressed == 0){
+    LEDs_all_on(RED);
+    start_time = millis();
+    Serial.print("timeout ");
+    Serial.println(timeout);
 
+  } 
+  counter_of_pressed = 1;
+  double elapsed_time = double(millis() - start_time) / 1000.0;
+
+  if(elapsed_time >= timeout){
+    timeout = random(1, s_vect.semafor_max_timeout);
+    start_time = millis();
+    Serial.print("timeout ");
+    Serial.print(timeout);
+    Serial.print(" ");
+    Serial.println(get_color(1));
+
+    if(get_color(1) == RED)
+      LEDs_all_on(ORANGE);
+    else if(get_color(1) == ORANGE)
+      LEDs_all_on(GREEN);
+    else if(get_color(1) == GREEN)
+      LEDs_all_on(RED);
+  }
 }
 
 void play_odpocitavadlo(){
@@ -236,22 +300,22 @@ void play_odpocitavadlo(){
   static int counter_of_pressed = 0;
   static double start_time = 0;
   s_vect.odpocitavadlo_timeout = 20; 
+  
   if(!is_touched_enter() && counter_of_pressed == 0){
+    //LED_toggle(WHITE);
     return; 
   }
-  if(is_touched_enter() && counter_of_pressed == 0){
+  if(is_touched_enter()){ //&& counter_of_pressed == 0){
     LEDs_all_on(GREEN);
     start_time = millis();
   }
   counter_of_pressed = 1;
   
   double elapsed_time = double(millis() - start_time) / 1000.0;
-  double podminka = double((elapsed_time / s_vect.odpocitavadlo_timeout) * NUM_OF_LEDS);
 
   if(!time_is_over){
-    for(int i = 0; i < podminka; ++i){
-      LED.pos = 12 - i;
-      LED_light(BLACK);
+    for(int i = 0; i < double((elapsed_time / s_vect.odpocitavadlo_timeout) * NUM_OF_LEDS); ++i){
+      LED_light(12 - i, BLACK);
     }
   }
   if(elapsed_time >= s_vect.odpocitavadlo_timeout){
