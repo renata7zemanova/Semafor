@@ -23,7 +23,7 @@ void set_brightness(led_t &LED){
   LED.leds.setBrightness(brightness);
 }
 
-uint32_t colors(led_t &LED, Colors COLOR){ 
+uint32_t colors(Colors COLOR){ 
   switch(COLOR){
     case RED:
       return LED.leds.Color(255, 0, 0); 
@@ -51,46 +51,45 @@ uint32_t colors(led_t &LED, Colors COLOR){
   return 0;
 }
 
-Colors get_color(led_t &LED){ 
+Colors get_color(){ 
   return LED_state[LED.pos];
 }
 
-void LED_light(led_t &LED, Colors COLOR){
+void LED_light(Colors COLOR){
   set_brightness(LED);
-  LED.leds.setPixelColor(LED.pos, colors(LED, COLOR));
+  LED.leds.setPixelColor(LED.pos, colors(COLOR));
   LED_state[LED.pos] = COLOR;
   LED.leds.show();
 }
  
-void LED_toggle(led_t &LED, Colors COLOR){
-  if(get_color(LED) == BLACK){
+void LED_toggle(Colors COLOR){
+  if(get_color() == BLACK){
     LED_state[LED.pos] = COLOR;
-    LED_light(LED, COLOR);
+    LED_light(COLOR);
   }
   else{
     LED_state[LED.pos] = BLACK;
-    LED_light(LED, BLACK);
+    LED_light(BLACK);
   }
 }
   
-void LED_off(led_t &LED, Colors COLOR){
+void LED_off(Colors COLOR){
   LED_state[LED.pos] = BLACK;
-  LED_light(LED, BLACK);
+  LED_light(BLACK);
 }
 
-void LEDs_all_off(led_t &LED){
+void LEDs_all_off(){
   for(int i = 0; i < NUM_OF_LEDS; ++i){
     LED_state[i] = BLACK;
   }
   LED.leds.clear();
 }
 
-//void LEDs_all_on(led_t &LED, Colors COLOR)
 void LEDs_all_on(Colors COLOR){
     for(int i = 0; i < NUM_OF_LEDS; ++i){
       LED_state[LED.pos] = COLOR; 
       LED.pos = i;
-      LED_light(LED, COLOR);
+      LED_light(COLOR);
     }
 }
 
@@ -216,6 +215,8 @@ void _init_ (){
 
   LED.leds.begin(); 
   Touch_AT42.begin();
+  
+  LEDs_all_on(BLACK);
 }
 
 void play_vabnicka(){
@@ -231,18 +232,31 @@ void play_semafor(){
 }
 
 void play_odpocitavadlo(){
-  //while(!is_touched_enter()){ //cekani na stisk enter
-   // continue;
-  //}
-  LEDs_all_on(GREEN);
-  //tady zacatek odpocitavani casu (musim ho vycist z nastaveni)
+  bool time_is_over = false; 
+  static int counter_of_pressed = 0;
+  static double start_time = 0;
+  s_vect.odpocitavadlo_timeout = 20; 
+  if(!is_touched_enter() && counter_of_pressed == 0){
+    return; 
+  }
+  if(is_touched_enter() && counter_of_pressed == 0){
+    LEDs_all_on(GREEN);
+    start_time = millis();
+  }
+  counter_of_pressed = 1;
   
+  double elapsed_time = double(millis() - start_time) / 1000.0;
+  double podminka = double((elapsed_time / s_vect.odpocitavadlo_timeout) * NUM_OF_LEDS);
 
-  int timeout = 10; //cas v minutach - pak se bude nacitat z konfiguracniho webu
-  double time_for_1_LED = timeout / NUM_OF_LEDS;
-  double actual_time;
-  Colors color = BLACK; //jak nastavovat barvu?
-  //LEDs_all_on(LED, color);
+  if(!time_is_over){
+    for(int i = 0; i < podminka; ++i){
+      LED.pos = 12 - i;
+      LED_light(BLACK);
+    }
+  }
+  if(elapsed_time >= s_vect.odpocitavadlo_timeout){
+    time_is_over = true;
+  }
 }
 
 

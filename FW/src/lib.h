@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+
 #include "AT42QT1070.h"
 
 #include <WiFi.h>
@@ -39,9 +40,9 @@ enum Buttons {BTN_ENTER, BTN_UP, BTN_DOWN, BTN_RIGHT, BTN_LEFT, NONE};
 
 struct state_vector_t { //hlavni struktura
   Games game; 
+  int vabnicka_num_of_teams;
   int pan_hory_num_of_teams;
   int odpocitavadlo_timeout;
-  int vabnicka_num_of_teams;
 };
 
 extern state_vector_t s_vect;
@@ -62,16 +63,14 @@ void play_pan_hory();
 void play_semafor();
 void play_odpocitavadlo();
 
-void set_brightness(led_t &LED);
-uint32_t colors(led_t &LED, Colors COLOR);
-Colors get_color(led_t &LED);
+void set_brightness();
+uint32_t colors(Colors COLOR);
+Colors get_color();
 
-void LED_light(led_t &LED, Colors COLOR);
-//void LED_light(Colors COLOR);
-void LED_toggle(led_t &LED, Colors COLOR);
-void LED_off(led_t &LED, Colors COLOR);
-void LEDs_all_off(led_t &LED);
-//void LEDs_all_on(led_t &LED, Colors COLOR);
+void LED_light(Colors COLOR);
+void LED_toggle(Colors COLOR);
+void LED_off(Colors COLOR);
+void LEDs_all_off();
 void LEDs_all_on(Colors COLOR);
 
 double measure_battery_voltage();

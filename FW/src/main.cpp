@@ -18,9 +18,10 @@ void setup() {
   _init_();
 
   States state = PLAY; //na zacatku musi byt CONFIGURATION
+  s_vect.game = ODPOCITAVADLO; //pak nebude definovano tady
   //pokud jsem ho jeste nenaprogramovala, tak ulozit defaultni hodnoty (treba prvni hru s nejakymi parametry)
   //vyrobit state vector default
-  //getBytes("dentificator", state default) //kdyz neexistuje 
+  //getBytes("identificator", state default) //kdyz neexistuje 
   //vycist RAMku
 
   /*while(true){
@@ -68,6 +69,7 @@ void setup() {
       }
     }
     tick_for_buttons();
+    delay(10);
   }
 }
 
