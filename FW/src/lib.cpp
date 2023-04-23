@@ -18,7 +18,7 @@ state_vector_t s_vect;
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
 
-void set_brightness(led_t &LED){
+void set_brightness(){
   uint8_t brightness = 255; //vycteni hodnot z fototranzistoru 
   LED.leds.setBrightness(brightness);
 }
@@ -58,22 +58,18 @@ Colors get_color(int index){
 
 void LED_light(int index, Colors COLOR){
   LED.pos = index; 
-  set_brightness(LED);
+  set_brightness();
   LED.leds.setPixelColor(LED.pos, colors(COLOR));
   LED_state[LED.pos] = COLOR;
   LED.leds.show();
 }
  
 void LED_toggle(int index, Colors COLOR){
-  if(get_color(index) == BLACK){
-    LED.pos = index; 
-    LED_state[LED.pos] = COLOR;
-    LED_light(LED.pos, COLOR);
-  }
-  else{
-    LED_state[LED.pos] = BLACK;
-    LED_light(LED.pos, BLACK);
-  }
+  LED.pos = index;
+  if(get_color(LED.pos) != BLACK)
+    COLOR = BLACK; 
+  LED_state[LED.pos] = COLOR;
+  LED_light(LED.pos, COLOR);
 }
   
 void LED_off(int index){
@@ -97,8 +93,18 @@ void LEDs_all_on(Colors COLOR){
     }
 }
 
+void LEDs_all_toggle(Colors COLOR){
+  if(get_color(0) != BLACK)
+    COLOR = BLACK;
+  for(int i = 0; i < NUM_OF_LEDS; ++i){
+    LED.pos = i;
+    LED_state[LED.pos] = COLOR;
+    LED_light(LED.pos, COLOR);
+  }
+}
+
 double measure_battery_voltage(){
-  return analogRead(ADC_BATTERY_PIN); //vzorec
+  return analogRead(ADC_BATTERY_PIN); //vzorec aby byl ve voltech
 }
 
 bool is_battery_voltage_ok(){

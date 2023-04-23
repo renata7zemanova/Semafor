@@ -74,6 +74,7 @@ void LED_toggle(int index, Colors COLOR);
 void LED_off(int index);
 void LEDs_all_off();
 void LEDs_all_on(Colors COLOR);
+void LEDs_all_toggle(Colors COLOR);
 
 double measure_battery_voltage();
 bool is_battery_voltage_ok();

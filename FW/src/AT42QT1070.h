@@ -84,7 +84,7 @@ class AT42QT1070Touch{
 
     public:
     
-    void begin(bool disable_auto_calibration = false){
+    void begin(){
         Wire.begin(sda_pin, scl_pin);
 
         Wire.beginTransmission(0x1B);
