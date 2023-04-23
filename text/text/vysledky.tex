@@ -233,7 +233,12 @@ Z~registru převodníku lze poté vyčíst stavy daných kapacitních dotykovýc
 
 Jelikož je v~tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito zapojení právě s~tímto typem 
 komunikace. Díky tomu budou využity pouze 2 GPIO piny mikrokontroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
-sběrnici $I^2C$.
+sběrnici $I^2C$. Komunikační sběrnice $I^2C$ vyžaduje pullup rezistory, proto byly mezi napájecí napětí a piny SDA a SCL převodníku AT42QT1070 
+přidány rezistory R17 a R18 o hodnotě 10 k$\Omega$. To znamená, že komunikační sběrnice $I^2C$ je aktivní v logické nule. 
+
+Kapacitní tlačítka jsou připojena přes rezistory R19 až R23 k převodníku AT42QT1070. Tyto rezistory jsou připojeny sériově a slouží ke snížení šumu, 
+omezení elektrostatických výbojů a potlačení radiofrekvenčního rušení \cite{conv_cap_but_AT42QT1070_dtsh}. Doporučená hodnota je rezistorů je mezi 
+4,7k$\Omega$ a 20 k$\Omega$ \cite{conv_cap_but_AT42QT1070_dtsh}. Byla zvolena střední hodnota z doporučeného rozsahu, tj 10 k$\Omega$.
 
 Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči GND, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
 R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice $I^2C$ s~mikrokontrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
@@ -417,10 +422,8 @@ zapojeno dle následujícího blokového schématu.
 \end{figure}
 
 
-
-
 \chapter{Návrh DPS}
-Byl zvolen kruhový tvar desky s průměrem téměř 15 cm a s výběžkem pro připojení powerbanky. Deska plošného spoje byla navržena v programu KiCad 6.0 a má 2 vrstvy mědi. 
+Byl zvolen kruhový tvar desky s průměrem téměř 15 cm a s výběžkem USB-A pro připojení powerbanky. Deska plošného spoje byla navržena v programu KiCad 6.0 a má 2 vrstvy mědi. 
 Některé součástky jsou natočeny tak, aby byly co nejvíce na kraji kulaté DPS.
 
 Komunikační dráhy jsou vedeny o tloušťce 0,150 mm a napájecí dráhy jsou vedeny o tloušťce 0,5 mm. 
@@ -466,8 +469,12 @@ Komunikační piny D+ a D- pro programování jsou taženy jako diferenciální 
 
 \section{Osazení, oživení a testování DPS}
 DPS byla taktéž strojově osazena u firmy JLCPCB. Z důvodu nedostupnosti některých součástek byly některé komponenty zakoupeny v jiných obchodních řetězcích a doosazeny ručně. 
-Jednalo se o %doplnit součástky, které jsem osazovala ručně 
-%místo vypínače byly osazeny kolíky a deska je zapínána pomocí jumperu (propojky)
+Jednalo se o držák na baterie, piezo, kondenzátor C3 v pouzdře 0805 o hodnotě 100 $\mu$F, čip pro kapacitní tlačítka AT42QT1070, vypínač a LoRa modul. 
+
+Nebyl sehnán přesný typ držáku, pro který byl modul navržen, proto byly nožičky držáku roztaženy, aby byla jejich rozteč zvětšena a mohlo dojít k zapájení. U pieza také chybělo 
+označení polarity. Do finální verze bylo tedy přidáno do popisové vrstvy plus u správného vývodu. Vypínač byl kvůli testovacím účelům realizován pinheady a na ně byla nasazena 
+propojka. Na místo LoRa modulu byly připájeny dutinky a LoRa modul byl pouze zasunut do dutinek. Hlavním důvodem byla cena tohoto modulu. LoRa modul bude z prototypu přesunut 
+na finální výrobek a nedojde tak k plýtvání součástek ani peněz.
 
 \subsection{Oživení}
 Po připájení všech součástek byla do pouzdra vložena baterie LiFePO4 a DPS byla pomocí propojky zapnuta. Po zapnutí DPS se rozsvítila LED indikující přítomnost napětí 3,3 V. 
@@ -482,7 +489,12 @@ a do finální verze byla chyba opravena. Byla vyměněna schématická značka 
 
 Po opravě již mělo napájecí napětí pro inteligentní LED hodnotu 5 V. Díky tomu bylo zjištěno, že zvyšovač napětí funguje správně. 
 
-Poté byla DPS naprogramována a vše bylo na první pokus funkční. Komunikace mezi počítačem a mikrokontrolérem proběhla bezproblémově. Byl napsán testovací SW pro programovatelné LED 
+Do finální verze byl také přidán fototranzistor, který bude následně využíván pro regulaci jasu programovatelných LED typu WS2812C. Dále byl také přidán konektor pro připojení dalších 
+programovatelných LED typu WS2812C, které budou na pásku, který bude připevněn po obvodu univerzálního modulu. Tyto LED budou zajišťovat, aby modul mohl svítit nejen dopředu, ale i do stran.
+Tato funkcionalita opět rozšiřuje možnosti využití tohoto modulu.  
+
+\subsection{Testování}
+DPS byla naprogramována a komunikace mezi počítačem a mikrokontrolérem proběhla bezproblémově. Byl napsán testovací SW pro programovatelné LED 
 a další periferie. Díky tomu mohly být otestovány programovatelné LED. Všechny inteligentní LED bylo možné rozsvítit různými barvami, takže jsou plně funkční. Byla otestování funkčnost 
 zapojení pieza a vibračního motoru. Obě zapojení byla funkční. 
 
@@ -510,12 +522,61 @@ hodnot. Registry pro tlačítka 5 a 6 jsou vynulovány, a tím jsou tyto vstupy 
 
 Pro práci s kapacitními tlačítky jsou tedy primárně využívány registry Key Signal a informace o stisku jsou z nich dopočítávány. 
 
-%testování LoRa a WiFi
+%testování LoRa modulu
 
+\chapter{Finální verze hardwaru}
 
 \chapter{Firmware}
+V následující kapitole je popsán firmware univerzálního modulu. Jsou zde popsány veškeré vytvořené funkce a moduly, které jsou potřebné pro následnou tvorbu softwaru univerzálního modulu. 
 %napěti 936 mV pri plnem napeti baterie
 %napsat odpojovani napeti pri nizkem napeti baterie
+
+%popsat celkovou funkci - vývojový diagram
+
+\section{Tvorba hlavní knihovny}
+Hlavní knihovna lib.h a lib.cpp slouží pro sdružování veškerých funkcí, které jsou univerzálnímu modulu k dispozici. Funkce init slouží pro počáteční inicializaci univerzálního modulu. Jsou zde 
+zadefinovány piny mikrokontroléru, zda jsou vstupní, nebo výstupní, případně je zapnut softwarový pullup rezistor. Jsou zde nastaveny počáteční hodnoty výstupních pinů, vypnut vibrační motor, vypnuto 
+piezo a zhasnuty všechny programovatelné LED. Jsou zde také vytvořeny všechny potřebné objekty, jako jsou tlačítka a programovatelné LED. 
+
+Pro programování LED byla využita již existující knihovna Adafruit\_NeoPixel.h. Nad touto knihovnou byly vytvořeny nádstavbové funkce, aby práce s programovatelnými LED byla ještě snazší. 
+Pro práci s programovatelnými LED byly vytvořeny následující funkce. Funkce set\_brightness vyčítá hodnotu z fototranzistoru a dle ní nastavuje jas programovatelných LED. Funkce colors přebírá jako
+parametr název barvy a ten převádí do RBG kódu, se kterým již knihovna NeoPixel umí pracovat. Funkce get\_color přebírá jako parametr index LED a vrací barvu, kterou daná LED aktuálně svítí. 
+Pomocí funkce LED\_light, která přebírá jako parametr index LED a barvu, lze rozsvítit LED na dané pozici danou barvou. Funkce LED\_toggle při každém volání funkce přepíná barvu LED mezi zadanou barvou 
+a zhasnutím LED. Tato funkce přebírá jako parametr právě barvu, kterou má blikat a pozici LED, která má blikat. Funkce LED\_off zhasne LED na pozici, která je předána parametrem. Pro usnadnění práce 
+se všemi LED yly vytvořeny také funkce LEDs\_all\_off, která zhasne všechny LED, LEDs\_all\_on, která přebírá jako parametr barvu a tou barvou poté rozsvítí všechny LED, a LEDs\_all\_toggle, která přebírá 
+jako parametr barvu, kterou blikají všechny LED. Přepínání zhasnutí LED a rozsvícení danou barvou probíhá při každém zavolání této funkce. 
+
+%zacházení s tlačítky 
+%piezo
+%motor
+%LoRa
+Pro hlídání stavu nabití baterií byly vytořeny 2 funkce. První funkce measure\_battery\_voltage měří napětí na baterie ve voltech, tato hodnota je také návratovou hodnotou této funkce. Druhou funkcí je 
+is\_battery\_voltage\_ok, která vrací informaci, zda je baterie dostatečně nabitá. Pokud by vrátila informaci, že baterie je málo nabitá, tak na tento stav může program reagovat. Například je vytvořena 
+funkce switch\_off\_voltage\_periferies, která odpojí od napětí periferie, které mají vyšší spotřebu. Jsou to například programovatelné LED nebo LoRa modul. 
+
+\section{Knihovna pro AT42QT1070}
+Pro převodník AT42QT1070, který převádí signál z kapacitních tlačítek na komunikaci po sběrnici $I^2C$, byla připravena knihovna AT42QT1070.h. Tato knihovna obsahuje 3 třídy, které dopomáhají 
+práci s tlačítky a usnadňují ji. 
+
+Třída s názvem AT42QT1070Touch obsahuje funkci begin, která slouží pro nastavení čipu AT42QT1070, rozděluje tlačítka do jednotlivých skupin a dělá počáteční kalibraci. Z tohoto důvodu nesmí být při 
+zapnutí modulu stisknuto žádné tlačítko. Pokud by tomu tak bylo, tak by se tlačítka chybně zkalibrovala a docházelo by tak k falešným stiskům. Funkce tick musí být volána pravidelně, aby docházelo 
+k neustálé obnově dat a kalibraci tlačítek. Díky tomu nejsou vyvolány falešný stisky při změně prostředí, která může způsobovat pozvolnou změnu kapacity. Funkce get\_raw\_data\_btn berejako parametr 
+index tlačítka a vrátí hodnotu kapacity tlačítka přímo z registru čipu AT42QT1070. Funkce is\_touched\_btn přebírá jako parametr index tlačítka a vrací informaci o tom, zda je tlačítko stisknuto 
+či nikoli.  
+
+Třída s názvem TouchButton reprezentuje tlačítko. V této třídě je definována funkce tick, která přebírá aktuální vzorek z tlačítka. Tento vzorek je porovnáván s průměrně naměřenou hodnotou. Pokud 
+je aktuálně naměřená hodnota blízká průměrné hodnotě, tak je tento vzorek započítán do průměru. Pokud je aktuálně naměřená hodnota dostatečně rozdílná oproti předchozím průměru, tak je detekován stisk. 
+Stisk je signalizován až ve chvíli, když je neměřen 3$\times$ za sebou. Díky tomu jsou vyloučeny falšené stisky, které mohou být vyvolány například okolním rušením.  
+
+Třída s názvem MovingAverage slouží pro počítání klouzavého průměru z naměřených hodnot z tlačítek. Funkce push\_sample převezme naměřený vzorek a nahradí jím nejstarší vzorek, který je pro počítání 
+průměru využit. Funkce setup přebírá 2 parametry. První parametr size určuje, z kolika posledních naměřených vzorků bude průměr počítán, a druhý parametr initial\_value udává první hodnoty, které 
+jsou po spuštění využity pro počítání průměru. Při použití jsou poté předávány hodnoty z počáteční kalibrace. 
+
+\section{Webový server}
+
+%pak upravit, podle skutečnosti
+Pro práci s WiFi byla vybrána knihovna WiFi.h, která je určena pro Arduino i mikrokontroléry typu ESP32 \cite{WiFi_lib}. Testovací kód obsahoval vytvoření WiFi sítě a následně vytvoření webové 
+stránky.  Telefon byl připojen k vytvořené WiFi síti a poté byl přesměrován na vytvořenou webovou stránku. Dále probíhalo testování získávání dat z nastavení na webové stránce. 
 
 
 
@@ -563,5 +624,10 @@ Kruh je rozdělen na třetiny a každá třetina svítí jednou z barev klasick�
 
 
 \chapter{Software}
+%konkrétní hry 
+
+
+
+\chapter{Pouzdro}
 
 
