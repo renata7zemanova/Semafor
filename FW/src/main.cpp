@@ -17,7 +17,7 @@ void setup() {
 
   _init_();
 
-  States state = PLAY; //na zacatku musi byt CONFIGURATION
+  States state = CONFIGURATION_DOWNLOAD; //na zacatku musi byt CONFIGURATION
   s_vect.game = VABNICKA2; //pak nebude definovano tady
   //pokud jsem ho jeste nenaprogramovala, tak ulozit defaultni hodnoty (treba prvni hru s nejakymi parametry)
   //vyrobit state vector default
@@ -35,24 +35,34 @@ void setup() {
     delay(10);
   }*/
 
+  wifi_enable_connect();
   while(true){
-    if(state = CONFIGURATION){
-      wifi_enable_connect();
-      start_server(); //tuhle cast kodu bude vykonavat pouze jeden Semafor - pouze ten, ke kteremu se pripojim 
-      while(true){ //dat nejakou casovou konstantu (konfigurace bude mozna pouze po nejaky cas)
-        server.handleClient(); //dokud neskonci konfigurace a nevypnu WiFi, tak to musim periodicky volat
-        delay(1);
+    if(state == CONFIGURATION_DOWNLOAD){
+      if(is_touched_up() && is_touched_down()){
+        state = CONFIGURATION_SHARE;
+        //to co se ma provest pouze jedou - zapnuti sdileni
+        start_server(); //tuhle cast kodu bude vykonavat pouze jeden Semafor - pouze ten, ke kteremu se pripojim 
+        continue;
       }
+
       //tady si musim nacist vsechny promenne dane hry
       //tady musim nastavit hru a ulozit ji do promenne game
       //tyhle informace musim pres WiFi (klasickou, ne AP) odeslat ostatnim Semaforum 
-      wifi_disable();
-      state = PLAY;
+      //wifi_disable();
+      
+      //state = PLAY;
+    }
+
+    else if(state == CONFIGURATION_SHARE){
+      server.handleClient(); //dokud neskonci konfigurace a nevypnu WiFi, tak to musim periodicky volat
+      
+      share_settings();
+      //pokud neco, tak zmenit stav na PLAY
     }
   
   //az zmacknu tlacitko, tak zacne hra 
   //kazdy case bude cekat na stisk tlacitka enter (asi)
-    if(state = PLAY){
+    else if(state == PLAY){
       switch(s_vect.game){
         case VABNICKA1:
           play_vabnicka1(); //nedelat blokujici 

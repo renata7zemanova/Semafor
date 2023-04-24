@@ -13,6 +13,7 @@ LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
 AT42QT1070Touch Touch_AT42(GPIO_SDA, GPIO_SCL);
 WebServer server(80); //port 80
+WiFiUDP udpSett;
 state_vector_t s_vect;
 
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
@@ -344,6 +345,9 @@ void start_server(){
 
     server.begin();
 
+//udp protokol - pro sdileni nastaveni ostatnim semaforum 
+    udpSett.begin(1111);
+
 }
 
 void wifi_enable_connect(){
@@ -366,4 +370,44 @@ void wifi_ap_enable(){
 
 void wifi_ap_disable(){
     WiFi.softAPdisconnect(true);
+}
+
+void share_settings(){
+  wifi_sta_list_t wifi_sta_list;
+  tcpip_adapter_sta_list_t adapter_sta_list;
+  esp_wifi_ap_get_sta_list(&wifi_sta_list);
+  tcpip_adapter_get_sta_list(&wifi_sta_list, &adapter_sta_list);
+
+  if (adapter_sta_list.num > 0)
+      Serial.println("-----------");
+  for (uint8_t i = 0; i < adapter_sta_list.num; i++)
+  {
+      tcpip_adapter_sta_info_t station = adapter_sta_list.sta[i];
+      //Serial.print((String)"[+] Device " + i + " | MAC : ");
+      //Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X", station.mac[0], station.mac[1], station.mac[2], station.mac[3], station.mac[4], station.mac[5]);
+      //IPAddress ipaddr = (&(station.ip));
+      //Serial.println((String) " | IP " + (&(station.ip)));
+
+      udpSett.beginPacket((&(station.ip)), 1111);
+      udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
+      udpSett.endPacket();  
+  }
+
+
+  //stare
+  Serial.println("Clients coutn: " + String(WiFi.softAPgetStationNum())); //kolik je pripojenych dalsich semaforu na toho jednoho - max 8 zarizeni 
+  //struct station_info *station_list = wifi_softap_get_station_info(); //seznam zarizeni
+  wifi_sta_list_t station_list;
+  esp_wifi_ap_get_sta_list(&station_list);
+  for(int i = 0; i<station_list.num; i++) { //vybrano zarizeni a odeslani konfigurace
+      IPAddress station_ip = ((&station_list->ip)->addr);
+
+      // Serial.println(station_ip.toString());
+      udpSett.beginPacket(station_ip, 1111);
+      udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
+      udpSett.endPacket();            
+
+      station_list = STAILQ_NEXT(station_list, next);
+  }
+  wifi_softap_free_station_info();    
 }

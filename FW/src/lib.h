@@ -7,6 +7,10 @@
 #include "AT42QT1070.h"
 
 #include <WiFi.h>
+#include "esp_wifi.h"
+
+#include <WiFiUdp.h>
+
 #include <WebServer.h>
 #include <LoRa_E22.h>
 
@@ -32,9 +36,7 @@ static constexpr gpio_num_t PIEZO_PIN = GPIO_NUM_7;
 static constexpr gpio_num_t LED_PIN_TOP = GPIO_NUM_10;
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
-enum States {CONFIGURATION, PLAY}; //konfiguraci prijimam od Semaforu, nebo z webu
-//upload, download
-//vsechny startuji v download a jeden pak prepnu do upload
+enum States {CONFIGURATION_SHARE, CONFIGURATION_DOWNLOAD, PLAY}; //konfiguraci prijimam od Semaforu, nebo z webu
 enum Games {VABNICKA1, VABNICKA2, PAN_HORY, SEMAFOR, ODPOCITAVADLO};
 enum Buttons {BTN_ENTER, BTN_UP, BTN_DOWN, BTN_RIGHT, BTN_LEFT, NONE};
 
@@ -91,6 +93,13 @@ void vibrate_motor_off();
 void piezo_on();
 void piezo_off();
 
+bool is_touched_enter();
+bool is_touched_up();
+bool is_touched_down();
+bool is_touched_right();
+bool is_touched_left();
+bool is_touched_some_btn();
+
 void tick_for_buttons();
 void _init_ ();
 
@@ -99,5 +108,6 @@ void wifi_enable_connect();
 void wifi_disable();
 void wifi_ap_enable();
 void wifi_ap_disable();
+void share_settings();
 
 #endif
