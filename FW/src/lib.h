@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include <ArduinoMetronome.hpp>
 
 #include "AT42QT1070.h"
 
@@ -19,6 +20,8 @@
 extern LoRa_E22 LoRa;
 extern AT42QT1070Touch Touch_AT42;
 extern WebServer server;
+extern ArduinoMetronome share_delay;
+extern ArduinoMetronome LED_delay;
 
 #define NUM_OF_COLORS 11
 #define NUM_OF_LEDS 12
@@ -99,6 +102,7 @@ bool is_touched_down();
 bool is_touched_right();
 bool is_touched_left();
 bool is_touched_some_btn();
+void handle_btn_vibration(std::vector<Buttons> button);
 
 void tick_for_buttons();
 void _init_ ();

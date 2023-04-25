@@ -36,6 +36,8 @@ void setup() {
   }*/
 
   while(true){
+    
+
     if(state == CONFIGURATION_DOWNLOAD){
       if(receive_settings()){
         state = PLAY;
@@ -62,10 +64,16 @@ void setup() {
     }
 
     else if(state == CONFIGURATION_SHARE){
-      server.handleClient(); //dokud neskonci konfigurace a nevypnu WiFi, tak to musim periodicky volat
-      
-      share_settings();
-      delay(200);
+      if(share_delay.loopMs()){
+        Serial.println("share mode");
+        server.handleClient(); //dokud neskonci konfigurace a nevypnu WiFi, tak to musim periodicky volat
+        share_settings();
+      }
+      if(LED_delay.loopMs()){
+        LEDs_all_toggle(BLUE);
+      }
+      //dalsi odpocet pro signalizaci na ledkach / bude jiny cas
+  
       //pokud neco, tak zmenit stav na PLAY
     }
   

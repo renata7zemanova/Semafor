@@ -5,16 +5,15 @@
 const char wifi_ssid[] = "Semafor";
 const char wifi_password[] = "adminadmin";
 
-//int promenna_web2 = 4;
-//IPAddress wifi_IP(192, 168, 1, 1);
-//IPAddress net_mask(255, 255, 255, 0);
-
 LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
 AT42QT1070Touch Touch_AT42(GPIO_SDA, GPIO_SCL);
 WebServer server(80); //port 80
 WiFiUDP udpSett;
 state_vector_t s_vect;
+
+ArduinoMetronome share_delay(200);
+ArduinoMetronome LED_delay(800);
 
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
@@ -164,59 +163,56 @@ void piezo_off(){
 }
 
 bool is_touched_enter(){
-  if(Touch_AT42.is_touched_btn(0)){
-    vibrate_motor_on();
+  if(Touch_AT42.is_touched_btn(0))
     return true;
-  }
-  vibrate_motor_off();
   return false; 
 }
 
 bool is_touched_up(){
-  if(Touch_AT42.is_touched_btn(1)){
-    vibrate_motor_on();
+  if(Touch_AT42.is_touched_btn(1))
     return true;
-  }
-  vibrate_motor_off();
   return false; 
 }
 
 bool is_touched_down(){
-  if(Touch_AT42.is_touched_btn(2)){
-    vibrate_motor_on();
+  if(Touch_AT42.is_touched_btn(2))
     return true;
-  }
-  vibrate_motor_off();
   return false; 
 }
 
 bool is_touched_right(){
-  if(Touch_AT42.is_touched_btn(3)){
-    vibrate_motor_on();
+  if(Touch_AT42.is_touched_btn(3))
     return true;
-  }
-  vibrate_motor_off();
   return false; 
 }
 
 bool is_touched_left(){
-  if(Touch_AT42.is_touched_btn(4)){
-    vibrate_motor_on();
+  if(Touch_AT42.is_touched_btn(4))
     return true;
-  }
-  vibrate_motor_off();
   return false; 
 }
 
 bool is_touched_some_btn(){
   for(int i = 0; i < NUM_OF_BUTTONS; ++i){
-    if(Touch_AT42.is_touched_btn(i)){
-      vibrate_motor_on();
+    if(Touch_AT42.is_touched_btn(i))
       return true;
+  }
+  return false; 
+}
+
+void handle_btn_vibration(std::vector<Buttons> button){
+  bool is_touched_some_btn = false; 
+  for(int i = 0; i < button.size(); ++i){
+    if(Touch_AT42.is_touched_btn(button[i])){
+      is_touched_some_btn = true;
     }
   }
-  vibrate_motor_off();
-  return false; 
+  if(is_touched_some_btn){
+    vibrate_motor_on();
+  }
+  else{
+    vibrate_motor_off();
+  }
 }
 
 void tick_for_buttons(){ //musim volat pravidelne a casto
@@ -242,6 +238,7 @@ void _init_ (){
 }
 
 void play_vabnicka1(){//nahodne prepinani barvy po stisku enteru 
+  handle_btn_vibration({{BTN_ENTER}});
   static int num_of_team = 1;
   s_vect.vabnicka_num_of_teams = 4;  
   static int counter = 0;
@@ -258,6 +255,7 @@ void play_vabnicka1(){//nahodne prepinani barvy po stisku enteru
 }
 
 void play_vabnicka2(){
+  handle_btn_vibration({{BTN_LEFT, BTN_RIGHT, BTN_UP, BTN_DOWN}});
   if(is_touched_right()){
     LEDs_all_on(RED);
   }
@@ -274,36 +272,31 @@ void play_vabnicka2(){
 }
 
 void play_pan_hory(){
-
 }
 
 void play_semafor(){
+  handle_btn_vibration({{BTN_ENTER}});
   static int counter_of_pressed = 0;
   static double start_time = 0;
   s_vect.semafor_max_timeout = 20; //potom bude nastaveno z webu
-  static int timeout = random(1, s_vect.semafor_max_timeout); 
+  static ArduinoMetronome timeout(random(1, s_vect.semafor_max_timeout));
   LED.pos = 1;
   if(!is_touched_enter() && counter_of_pressed == 0){
     return;
   }
   if(is_touched_enter() && counter_of_pressed == 0){
     LEDs_all_on(RED);
-    start_time = millis();
-    Serial.print("timeout ");
-    Serial.println(timeout);
+    //start_time = millis();
+    //Serial.print("timeout ");
+    //Serial.println(timeout);
 
   } 
   counter_of_pressed = 1;
-  double elapsed_time = double(millis() - start_time) / 1000.0;
+  //double elapsed_time = double(millis() - start_time) / 1000.0;
 
-  if(elapsed_time >= timeout){
-    timeout = random(1, s_vect.semafor_max_timeout);
-    start_time = millis();
-    Serial.print("timeout ");
-    Serial.print(timeout);
-    Serial.print(" ");
-    Serial.println(get_color(1));
-
+  if(timeout.loopMs()){ 
+    timeout.intervalSet(random(1, s_vect.semafor_max_timeout));
+    //start_time = millis();
     if(get_color(1) == RED)
       LEDs_all_on(ORANGE);
     else if(get_color(1) == ORANGE)
@@ -314,10 +307,12 @@ void play_semafor(){
 }
 
 void play_odpocitavadlo(){
+  handle_btn_vibration({{BTN_ENTER}});
   bool time_is_over = false; 
   static int counter_of_pressed = 0;
   static double start_time = 0;
   s_vect.odpocitavadlo_timeout = 20; 
+  static ArduinoMetronome timeout(s_vect.odpocitavadlo_timeout);
   
   if(!is_touched_enter() && counter_of_pressed == 0){
     //LED_toggle(WHITE);
@@ -331,12 +326,12 @@ void play_odpocitavadlo(){
   
   double elapsed_time = double(millis() - start_time) / 1000.0;
 
-  if(!time_is_over){
+  if(!timeout.loopMs() && !time_is_over){
     for(int i = 0; i < double((elapsed_time / s_vect.odpocitavadlo_timeout) * NUM_OF_LEDS); ++i){
       LED_light(12 - i, BLACK);
     }
   }
-  if(elapsed_time >= s_vect.odpocitavadlo_timeout){
+  else{
     time_is_over = true;
   }
 }
@@ -396,7 +391,8 @@ void share_settings(){
     Serial.println(clientIP);
 
     udpSett.beginPacket(clientIP, 1111);
-    udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
+    //udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
+    udpSett.println("Ahoj svete"); //potom smazat a nechat to nahore 
     udpSett.endPacket();   
   }  
 }
