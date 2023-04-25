@@ -108,10 +108,21 @@ double measure_battery_voltage(){
   return analogRead(ADC_BATTERY_PIN); //vzorec aby byl ve voltech
 }
 
-bool is_battery_voltage_ok(){
-  if(measure_battery_voltage() < 10) //vymyslet konstantu
+bool is_battery_voltage_ok(double threshold){
+  if(measure_battery_voltage() < threshold){ 
     return true;
+  }
   return false;
+}
+
+void warn_if_battery_discharge(){
+  if(!is_battery_voltage_ok(2.6)){
+    switch_off_voltage_periferies();
+  }
+  if(!is_battery_voltage_ok(2.8)){
+    LEDs_all_toggle(RED);
+  }
+
 }
 
 void switch_off_voltage_periferies(){
@@ -378,36 +389,55 @@ void share_settings(){
   esp_wifi_ap_get_sta_list(&wifi_sta_list);
   tcpip_adapter_get_sta_list(&wifi_sta_list, &adapter_sta_list);
 
-  if (adapter_sta_list.num > 0)
-      Serial.println("-----------");
-  for (uint8_t i = 0; i < adapter_sta_list.num; i++)
-  {
-      tcpip_adapter_sta_info_t station = adapter_sta_list.sta[i];
-      //Serial.print((String)"[+] Device " + i + " | MAC : ");
-      //Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X", station.mac[0], station.mac[1], station.mac[2], station.mac[3], station.mac[4], station.mac[5]);
-      //IPAddress ipaddr = (&(station.ip));
-      //Serial.println((String) " | IP " + (&(station.ip)));
+  for (uint8_t i = 0; i < adapter_sta_list.num; i++){
+    tcpip_adapter_sta_info_t station = adapter_sta_list.sta[i];
+    IPAddress clientIP((uint32_t) station.ip.addr);
+    Serial.print("Clients IP: ");
+    Serial.println(clientIP);
 
-      udpSett.beginPacket((&(station.ip)), 1111);
-      udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
-      udpSett.endPacket();  
+    udpSett.beginPacket(clientIP, 1111);
+    udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
+    udpSett.endPacket();   
+  }  
+}
+
+bool receive_settings(){
+  static int counter = 0;
+  static bool connected = false; 
+  if(counter == 0){
+    wifi_enable_connect();
+  }
+  counter = 1;
+
+  if(counter == 1 && WiFi.status() == WL_CONNECTED){
+    udpSett.begin(1111);
+    counter = 2;
+    connected = true;
   }
 
+  if(connected){
+    state_vector_t receive_vector;
 
-  //stare
-  Serial.println("Clients coutn: " + String(WiFi.softAPgetStationNum())); //kolik je pripojenych dalsich semaforu na toho jednoho - max 8 zarizeni 
-  //struct station_info *station_list = wifi_softap_get_station_info(); //seznam zarizeni
-  wifi_sta_list_t station_list;
-  esp_wifi_ap_get_sta_list(&station_list);
-  for(int i = 0; i<station_list.num; i++) { //vybrano zarizeni a odeslani konfigurace
-      IPAddress station_ip = ((&station_list->ip)->addr);
+    int packetSize = udpSett.parsePacket();
+    if (packetSize) { 
+        int len = udpSett.read((char *) &receive_vector, sizeof(receive_vector)); //cteni dat + kam chci nacist data (receiveVector)
+        if(len>0) { //jestli mi vubec neco prislo
+            s_vect = receive_vector;
+            //stateVector_eeprom.write(); //ulozeni nastaveni do EEPROM
+            Serial.printf("New settings recieved and updated from Semafor ID: %d", receive_vector.game);
 
-      // Serial.println(station_ip.toString());
-      udpSett.beginPacket(station_ip, 1111);
-      udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
-      udpSett.endPacket();            
+            // success upload blink
+            LEDs_all_on(GREEN);
+            delay(200);
+            LEDs_all_off();
+            wifi_disable();
 
-      station_list = STAILQ_NEXT(station_list, next);
+            return true; // jump to Normal mode
+        }
+        else {
+            Serial.printf("Error receive new settings from Semafor ID: %d", receive_vector.game);
+        } 
+    }
   }
-  wifi_softap_free_station_info();    
+  return false;
 }

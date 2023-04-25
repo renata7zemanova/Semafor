@@ -17,7 +17,7 @@ void setup() {
 
   _init_();
 
-  States state = CONFIGURATION_DOWNLOAD; //na zacatku musi byt CONFIGURATION
+  States state = CONFIGURATION_DOWNLOAD; //na zacatku musi byt CONFIGURATION_DOWNLOAD
   s_vect.game = VABNICKA2; //pak nebude definovano tady
   //pokud jsem ho jeste nenaprogramovala, tak ulozit defaultni hodnoty (treba prvni hru s nejakymi parametry)
   //vyrobit state vector default
@@ -35,13 +35,21 @@ void setup() {
     delay(10);
   }*/
 
-  wifi_enable_connect();
   while(true){
     if(state == CONFIGURATION_DOWNLOAD){
+      if(receive_settings()){
+        state = PLAY;
+        continue;
+      }
+
+      Serial.println("cekam na stisk");
       if(is_touched_up() && is_touched_down()){
+        Serial.println("stisk tlacitek");
         state = CONFIGURATION_SHARE;
         //to co se ma provest pouze jedou - zapnuti sdileni
         start_server(); //tuhle cast kodu bude vykonavat pouze jeden Semafor - pouze ten, ke kteremu se pripojim 
+        delay(200);
+        vibrate_motor_off();
         continue;
       }
 
@@ -57,12 +65,15 @@ void setup() {
       server.handleClient(); //dokud neskonci konfigurace a nevypnu WiFi, tak to musim periodicky volat
       
       share_settings();
+      delay(200);
       //pokud neco, tak zmenit stav na PLAY
     }
   
   //az zmacknu tlacitko, tak zacne hra 
   //kazdy case bude cekat na stisk tlacitka enter (asi)
+  //vypnout wifi
     else if(state == PLAY){
+      Serial.println("jsem ve hre");
       switch(s_vect.game){
         case VABNICKA1:
           play_vabnicka1(); //nedelat blokujici 
