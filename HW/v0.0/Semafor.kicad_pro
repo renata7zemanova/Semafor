@@ -382,7 +382,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "../../../Semafor.step",
+      "step": "../../../dily_DPS/Semafor.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
