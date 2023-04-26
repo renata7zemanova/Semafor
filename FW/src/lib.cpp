@@ -11,6 +11,7 @@ AT42QT1070Touch Touch_AT42(GPIO_SDA, GPIO_SCL);
 WebServer server(80); //port 80
 WiFiUDP udpSett;
 state_vector_t s_vect;
+Preferences pref;
 
 ArduinoMetronome share_delay(200);
 ArduinoMetronome LED_delay(800);
@@ -336,6 +337,44 @@ void play_odpocitavadlo(){
   }
 }
 
+void upload_permanently_pref(){
+  pref.begin("init_Semafor", false);
+  pref.putBytes("settings", &s_vect, sizeof(s_vect));
+  pref.end();
+
+}
+
+void download_permanently_pref(){
+  s_vect.game = ODPOCITAVADLO;
+  s_vect.odpocitavadlo_timeout = 10; 
+  s_vect.pan_hory_num_of_teams = 4;
+  s_vect.semafor_max_timeout = 10;
+  s_vect.vabnicka_num_of_teams = 4; 
+
+  pref.begin("init_Semafor", false);
+  int counter = pref.getUInt("counter", 0);
+  if(counter == 0){
+    counter++;
+    pref.putUInt("counter", counter);
+    Serial.println("zadna data jeste nebyla zapsana jako settings");
+    pref.putBytes("settings", &s_vect, sizeof(s_vect));
+  }
+  else
+    Serial.println("data uz byla zapsana");
+
+  pref.getBytes("settings", &s_vect, sizeof(s_vect));
+  Serial.print("hra ");
+  Serial.print(s_vect.game);
+  Serial.print(" ");
+  Serial.print(s_vect.odpocitavadlo_timeout);
+  Serial.print(" ");
+  Serial.print(s_vect.pan_hory_num_of_teams);
+  Serial.print(" ");
+  Serial.print(s_vect.semafor_max_timeout);
+  Serial.print(" ");
+  Serial.println(s_vect.vabnicka_num_of_teams);
+  pref.end();
+}
 
 void start_server(){
     wifi_ap_enable();
@@ -416,24 +455,20 @@ bool receive_settings(){
 
     int packetSize = udpSett.parsePacket();
     if (packetSize) { 
-        int len = udpSett.read((char *) &receive_vector, sizeof(receive_vector)); //cteni dat + kam chci nacist data (receiveVector)
-        if(len>0) { //jestli mi vubec neco prislo
-            s_vect = receive_vector;
-            //stateVector_eeprom.write(); //ulozeni nastaveni do EEPROM
-            Serial.printf("New settings recieved and updated from Semafor ID: %d", receive_vector.game);
-
-            // success upload blink
-            LEDs_all_on(GREEN);
-            delay(200);
-            LEDs_all_off();
-            wifi_disable();
-
-            return true; // jump to Normal mode
-        }
-        else {
-            Serial.printf("Error receive new settings from Semafor ID: %d", receive_vector.game);
-        } 
+      int len = udpSett.read((char *) &receive_vector, sizeof(receive_vector)); //cteni dat + kam chci nacist data (receive_vector)
+      if(len>0) { //jestli mi vubec neco prislo
+        s_vect = receive_vector;
+        upload_permanently_pref(); //ulozeni do permanentni pameti
+        Serial.printf("New settings recieved and updated from Semafor ID: %d", receive_vector.game);
+        
+        wifi_disable();
+        return true; 
+      }
+      else {
+        Serial.printf("Error receive new settings from Semafor ID: %d", receive_vector.game);
+      } 
     }
   }
   return false;
 }
+

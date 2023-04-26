@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 #include <ArduinoMetronome.hpp>
+#include <Preferences.h>
 
 #include "AT42QT1070.h"
 
@@ -106,6 +107,9 @@ void handle_btn_vibration(std::vector<Buttons> button);
 
 void tick_for_buttons();
 void _init_ ();
+
+void upload_permanently_pref();
+void download_permanently_pref();
 
 void start_server();
 void wifi_enable_connect();
