@@ -524,7 +524,7 @@ Pro práci s kapacitními tlačítky jsou tedy primárně využívány registry 
 
 %testování LoRa modulu
 
-\chapter{Finální verze hardwaru}
+\chapter{Finální verze DPS}
 
 \chapter{Firmware}
 V následující kapitole je popsán firmware univerzálního modulu. Jsou zde popsány veškeré vytvořené funkce a moduly, které jsou potřebné pro následnou tvorbu softwaru univerzálního modulu. 
@@ -579,7 +579,6 @@ Pro práci s WiFi byla vybrána knihovna WiFi.h, která je určena pro Arduino i
 stránky.  Telefon byl připojen k vytvořené WiFi síti a poté byl přesměrován na vytvořenou webovou stránku. Dále probíhalo testování získávání dat z nastavení na webové stránce. 
 
 
-
 \chapter{Hry a jejich metodika}
 
 \section{Odpočítávadlo}
@@ -628,6 +627,56 @@ Kruh je rozdělen na třetiny a každá třetina svítí jednou z barev klasick�
 
 
 
-\chapter{Pouzdro}
+\chapter{Voděodolnost}
+Pro zajištění voděodolnosti byl zvolen obal z průhledného silikonu. Do silikonu je DPS zalita, proto musela být navržena forma pro následné odlití. V následující části je popsán postup 
+návrhu formy a následná výroba silikonového pouzdra. Nejdříve byl celý proces otestován na prototypových DPS: Po odladění bylo vše překresleno podle finální verze DPS a byly zapouzdřeny
+i finální verze univerzálního modulu.  
+
+Nejprve byl vyexportován z programu KiCad 3D model celé DPS včetně všech součástek, které měly 3D model již z interní knihovny. Pro součástky, které neměly 3D model a zároveň byly důležité 
+pro výsledný vzhled pouzdra, byly 3D modely dokresleny v programu SolidWorks. Pouzdra byly kresleny bez větších detailů. S přesností byly kresleny pouze kritická místa, kde součástka ovlivňuje 
+rozměry pouzdra nebo kde musí procházet pouzdrem až na povrch.
+
+%ukázka některého mnou kresleného pouzdra
+%ukázka celé DPS
+
+Náledně byl nakreslen model pouzdra, jak by mělo vypadat bez vložené DPS. Poté byla vytvořena sestava, kde byla DPS již vložené v pouzdře. Z pouzdra musely vyčnívat součásti, které nesmí být 
+zality v silikonu. Nesmí být zalit USB konektor, prostřednictvím něhož je modul napájen a programován, dále vypínač a piezo, protože by jinak nemohlo vydávat zvuk. 
+%ukázka DPS + obalu
+
+Z takto vytvořeného modelu byla vytvořena forma. Byl nakreslen válec, který končil vždy v polovině vyčnívajících součástí. Poté byl použit nástroj "Kombinovat", který umožnil odečtení vytvořeného 
+modelu DPS s obalem, takže vznikla forma pro potřebný tvar. Druhá polovina formy byla vytvořena stejným způsobem.
+
+Ve formě byl vytvořen otvor pro vstřik silikonu a také otvory pro XXX.
+
+Forma na silikonový obal byla vytištěna na FMD 3D tiskárně. Nemohla být použita 3D tiskárna typu SLA, protože resin, ze kterého se v SLA tiskárnách tiskne, zabraňuje tuhnutí použitého typu silikonu. 
+
+%jak udělat formu
+
+%jaký typ silikonu je využit - na jaké bázi, jaké jsou jiné možnosti, výhody použitého typu 
+Byl umíchán silikon z XXX v poměru 1:1. Pomocí stříkačky byl vtlačen silikon XXX. 
+Tvrdnutí této silikonové směsy trvalo XXX. 
+%fotka výsledného prototypu i s obalem
+
+
+
+\chapter{Uživatelský manuál}
+Po zapnutí Semaforu vypínačem je načtena poslední hraná hra. 
+
+Po dobu XXX je možné přepnout modul do konfiguračního módu. Tento mód je k dispozici pomocí současného stisku tlačítek XXX. Konfigurační mód signalizován XXX. Po zapnutí tohoto módu je zapotřebí telefon 
+nebo notebook, který má možnost připojit se k WiFi síti. V zařízení je zapotřebí najít WiFi síť s názvem XXX. Připojení proběhne po zadání hesla XXX. Po připojení k této WiFi síti přejďete do internetového 
+vyhledávače. Do něj napište XXX. 
+
+Zobrazí se webová stránka s konfiguračním menu modulu. Zde si můžete najít konkrétní hru i s jejím popisem. Pokud lze u dané hry nastavit nějaké parametry, jako je například počet hrajících týmů apod, tak 
+jsou u této hry místa, kam lze daný parametr vyplnit. Pro nastavení dané hry stiskněte tlačítko dané hry. V tuto chvíli se spustí dané hra na nastavovaném modulu a zároveň na všech modulech, které jsou v danou
+chvíli zapnuty a neuběhl u nich čas XXX od jejich zapnutí. 
+
+Tímto způsobem lze konfigurovat až 9 modulů současně. 
+
+Krátký popis funkce modulu v jednotlivých hrách je popsána na konfigurační webové stránce. 
+
+\section{Funkce modulu v jednotlivých hrách}
+
+
+
 
 
