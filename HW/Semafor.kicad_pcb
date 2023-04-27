@@ -175,7 +175,7 @@
   (net 85 "Net-(D15-Pad1)")
   (net 86 "LED_1")
   (net 87 "MOTOR_1")
-  (net 88 "Net-(U5-Pad13)")
+  (net 88 "Net-(R30-Pad1)")
 
   (footprint "Package_TO_SOT_SMD:SOT-23" (layer "F.Cu")
     (tedit 5FA16958) (tstamp 0a803830-896b-453b-9793-23ced94e3f29)
@@ -420,7 +420,7 @@
     (fp_line (start 0.8 0.4125) (end -0.8 0.4125) (layer "F.Fab") (width 0.1) (tstamp 894605fa-cd38-4352-a490-33c4eda34a81))
     (fp_line (start -0.8 0.4125) (end -0.8 -0.4125) (layer "F.Fab") (width 0.1) (tstamp cf273894-d392-4f4a-8a03-f8e8281afb53))
     (pad "1" smd roundrect (at -0.825 0 180) (size 0.8 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
-      (net 88 "Net-(U5-Pad13)") (pintype "passive") (tstamp ad7ba559-998c-47ea-8d61-43111696bec7))
+      (net 88 "Net-(R30-Pad1)") (pintype "passive") (tstamp ad7ba559-998c-47ea-8d61-43111696bec7))
     (pad "2" smd roundrect (at 0.825 0 180) (size 0.8 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
       (net 83 "GUARD_B") (pintype "passive") (tstamp df62fd41-fbe5-4d8e-a5a4-feaf08890b48))
     (model "${KICAD6_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.wrl"
@@ -2657,7 +2657,7 @@
     (pad "12" smd roundrect (at 2.475 -1.27 180) (size 1.95 0.6) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
       (net 49 "Net-(R19-Pad1)") (pinfunction "KEY1") (pintype "passive") (tstamp 3607aeab-6227-48f3-af11-7407ee91a79a))
     (pad "13" smd roundrect (at 2.475 -2.54 180) (size 1.95 0.6) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
-      (net 88 "Net-(U5-Pad13)") (pinfunction "KEY0") (pintype "passive") (tstamp 54622a1e-bc1d-4b9b-8dc2-5d20b5e21896))
+      (net 88 "Net-(R30-Pad1)") (pinfunction "KEY0") (pintype "passive") (tstamp 54622a1e-bc1d-4b9b-8dc2-5d20b5e21896))
     (pad "14" smd roundrect (at 2.475 -3.81 180) (size 1.95 0.6) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
       (net 1 "GND") (pinfunction "VSS") (pintype "power_in") (tstamp e15827cf-c85e-4ccd-9296-cb92d2a6da93))
     (model "${KICAD6_3DMODEL_DIR}/Package_SO.3dshapes/SOIC-14_3.9x8.7mm_P1.27mm.wrl"
