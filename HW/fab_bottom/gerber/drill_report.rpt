@@ -1,5 +1,5 @@
-Drill report for Semafor.kicad_pcb
-Created on Thu Apr 27 18:05:00 2023
+Drill report for Semafor_bottom.kicad_pcb
+Created on Fri Apr 28 08:08:20 2023
 
 Copper Layer Stackup:
     =============================================================
@@ -7,21 +7,21 @@ Copper Layer Stackup:
     L2 :  B.Cu                      back
 
 
-Drill file 'Semafor.drl' contains
+Drill file 'Semafor_bottom.drl' contains
     plated through holes:
     =============================================================
-    T1  0.300mm  0.0118"  (47 holes)
-    T2  0.500mm  0.0197"  (41 holes)
+    T1  0.300mm  0.0118"  (45 holes)
+    T2  0.500mm  0.0197"  (28 holes)
     T3  0.600mm  0.0236"  (4 holes)  (with 4 slots)
     T4  0.700mm  0.0276"  (2 holes)
     T5  0.762mm  0.0300"  (2 holes)  (with 2 slots)
     T6  0.900mm  0.0354"  (15 holes)
-    T7  1.000mm  0.0394"  (15 holes)
-    T8  1.000mm  0.0394"  (39 holes)
+    T7  1.000mm  0.0394"  (2 holes)
+    T8  1.000mm  0.0394"  (25 holes)
     T9  1.020mm  0.0402"  (2 holes)
     T10  1.500mm  0.0591"  (3 holes)
 
-    Total plated holes count 170
+    Total plated holes count 128
 
 
 Not plated through holes are merged with plated holes

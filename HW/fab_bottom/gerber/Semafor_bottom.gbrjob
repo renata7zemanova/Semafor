@@ -5,16 +5,16 @@
       "Application": "Pcbnew",
       "Version": "6.0.11-2627ca5db0~126~ubuntu20.04.1"
     },
-    "CreationDate": "2023-04-27T18:05:00+02:00"
+    "CreationDate": "2023-04-28T08:08:20+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
-      "Name": "Semafor",
-      "GUID": "53656d61-666f-4722-9e6b-696361645f70",
+      "Name": "Semafor_bottom",
+      "GUID": "53656d61-666f-4725-9f62-6f74746f6d2e",
       "Revision": "rev?"
     },
     "Size": {
-      "X": 220.1,
+      "X": 100.1,
       "Y": 100.1
     },
     "LayerNumber": 2,
@@ -34,52 +34,52 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "Semafor-CuTop.gtl",
+      "Path": "Semafor_bottom-CuTop.gtl",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Semafor-CuBottom.gbl",
+      "Path": "Semafor_bottom-CuBottom.gbl",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Semafor-PasteBottom.gbp",
+      "Path": "Semafor_bottom-PasteBottom.gbp",
       "FileFunction": "SolderPaste,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Semafor-PasteTop.gtp",
+      "Path": "Semafor_bottom-PasteTop.gtp",
       "FileFunction": "SolderPaste,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Semafor-SilkTop.gto",
+      "Path": "Semafor_bottom-SilkTop.gto",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Semafor-SilkBottom.gbo",
+      "Path": "Semafor_bottom-SilkBottom.gbo",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Semafor-MaskBottom.gbs",
+      "Path": "Semafor_bottom-MaskBottom.gbs",
       "FileFunction": "SolderMask,Bot",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "Semafor-MaskTop.gts",
+      "Path": "Semafor_bottom-MaskTop.gts",
       "FileFunction": "SolderMask,Top",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "Semafor-EdgeCuts.gm1",
+      "Path": "Semafor_bottom-EdgeCuts.gm1",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Semafor-CmtUser.gbr",
+      "Path": "Semafor_bottom-CmtUser.gbr",
       "FileFunction": "Other,User",
       "FilePolarity": "Positive"
     }
