@@ -489,10 +489,6 @@ a do finální verze byla chyba opravena. Byla vyměněna schématická značka 
 
 Po opravě již mělo napájecí napětí pro inteligentní LED hodnotu 5 V. Díky tomu bylo zjištěno, že zvyšovač napětí funguje správně. 
 
-Do finální verze byl také přidán fototranzistor, který bude následně využíván pro regulaci jasu programovatelných LED typu WS2812C. Dále byl také přidán konektor pro připojení dalších 
-programovatelných LED typu WS2812C, které budou na pásku, který bude připevněn po obvodu univerzálního modulu. Tyto LED budou zajišťovat, aby modul mohl svítit nejen dopředu, ale i do stran.
-Tato funkcionalita opět rozšiřuje možnosti využití tohoto modulu.  
-
 \subsection{Testování}
 DPS byla naprogramována a komunikace mezi počítačem a mikrokontrolérem proběhla bezproblémově. Byl napsán testovací SW pro programovatelné LED 
 a další periferie. Díky tomu mohly být otestovány programovatelné LED. Všechny inteligentní LED bylo možné rozsvítit různými barvami, takže jsou plně funkční. Byla otestování funkčnost 
@@ -522,9 +518,54 @@ hodnot. Registry pro tlačítka 5 a 6 jsou vynulovány, a tím jsou tyto vstupy 
 
 Pro práci s kapacitními tlačítky jsou tedy primárně využívány registry Key Signal a informace o stisku jsou z nich dopočítávány. 
 
+Byla otestována komunikace s E22-900T22D LoRa modulem. Vyčítání informací z LoRa modulu probíhalo v pořádku, ale kvůli nepřipojení pinů M0, M1 a AUX k mikrokontroléru nemohl být modul nastaven
+tak, aby komunikoval s dalšími moduly. Tyto chyby byly opraveny do finální verze a další testování tohoto modulu probíhalo až na hardwaru finální verze DPS. 
 %testování LoRa modulu
 
 \chapter{Finální verze DPS}
+Finální verze DPS byla zmenšena na průměr 10 cm, protože DPS od firmy JLCPCB jsou mnohem levnější, když mají maximální rozměry 10$\times$10 cm. Také jejich skladovací nároky jsou mnohem  menší. 
+Kvůli tomuto zmenšení ale nebylo dost místa 
+kolem kapacitních tlačítek, aby nedocházelo k jejich rušení z okolních obvodů. Zároveň by musely být tlačítka moc blízko u sebe, takže by mohlo docházet k jejich přeslechům. Routování takové 
+DPS, aby dráhy nevedly v blízkosti kapacitních tlačítek ani pod nimi bylo takřka nemožné. Proto bylo přistoupeno k řešení 2 spojených DPS. Díky tomu mohly být obě DPS osazeny pouze z jedné strany,
+což ušetří další nemalé peníze. I při výrobě 2 kusů DPS o průměru 10 cm místo jedné velké byla cena výhodnější. Na spodní DPS je tedy veškerá řídicí elektronika a na vrchní DPS jsou pouze tlačítka 
+a programovatelné LED. Kolem kapacitních tlačítek byla také vytvořena tzv. "guard" zóna, která slouží pro lepší odstínění tlačítek od ostatních signálů. Tato zóna byla připojena k převodníku AT42QT1070 
+dle datasheetu na pozici prvního tlačítka - pin KEY0 \cite{conv_cap_but_AT42QT1070_dtsh}. 
+
+Po konzultaci bylo domluveno, že při napájení z baterie a možnosti napájení přes konektor USB-C není konektor USB-A zapotřebí. Rozměry DPS by se tím také opět zvětšily a výrobní náklady by tím 
+stouply. 
+
+Do finální verze byl také přidán fototranzistor, který bude následně využíván pro regulaci jasu programovatelných LED typu WS2812C. Fototranzistor byl připojen na GPIO01 mikrokontroléru ESP32-C3. Na tomto 
+pinu je k dispozici AD převodník \cite{ESP_C3_dtsh}. Byl vybrán fototranzistor s označením SMD3528C-50, který je citlivý na viditelné světlo. %citace https://jlcpcb.com/partdetail/Senba_SensingTech-SMD3528C50/C250859
+Tento fototranzistor byl umístěn také na vrchní DP. Dále byl také 
+přidán konektor pro připojení dalších programovatelných LED typu WS2812C, které budou na pásku, který bude připevněn po obvodu univerzálního modulu. Tyto LED budou zajišťovat, aby modul mohl svítit 
+nejen dopředu, ale i do stran. Tato funkcionalita opět rozšiřuje možnosti využití tohoto modulu. Na datový pin těchto programovatelných LED byl připojen do série rezistor, který zabraňuje zničení pinu 
+mikrokontroléru EPS32-C3, kdyby byly omylem zkratován s napájecím napětí. 
+
+Bylo zapotřebí připojit k mikrokontroléru i piny M0, M1 a AUX od LoRa modulu E22-900T22D. Na mikrokontroléru ale nebylo již dostatek volných pinů a tak byl použit expander GPIO pinů. Vybraný expander
+PCA9536D umožňuje připojení 4 GPIO a zároveň komunikuje s mikrokontrolérem přes sběrnici $I^2C$. Pin AUX byl tedy připojen k mikrokontroléru přímo přes GPIO05 a piny M0 a M1 byly připojeny k GPIO0 
+a GPIO1 expanderu. Protože byly ještě volné GPIO piny na expanderu, bylo realizováno ještě samostatné vypínání napájení programovatelných LED, protože i když tyto LED nesvítí, tak mají stále spotřebu 
+0,3 mA na jednu LED \cite{WS2812C_dtsh}. při bateriově napájení aplikaci je to stále nemalý proud, a proto byl realizován právě samostatný vypínač napájení. 
+%citace expanderu PCA9536D
+
+Ve finální verzi DPS byl použit posuvný vypínač se zahnutými vývody. Díky tomu mohl být vypínač umístěn na okraj DPS a nemusel být ručně pájen na drátkách. LED indikující přítomnost napájecího napětí 
+3,3 V a LED indikující nabíjení nebo plné nabití baterie byly dány na okraj spodní DPS tak, aby bylo možné je vidět, ale zároveň aby při používání modulu při hře nemohly zmást. LED indikující přítomnost 
+napájecího napětí 5 V byla odstraněna pro její nadbytečnost. 
+
+Byly přidány také zkratovací prokovy na EN pinu mikrokontroléru s GND. Při zkratování je restartován mikrokontrolér. Tyto prokovy slouží pro snazší oživování a testování softwaru. Při proovozu nebude propojka 
+zkratována a bude zabráněno jejímu náhodnomu zkratování díky obalu. 
+
+Při návrhu byly také brány v potaz tekoucí proudy danými drahami. Tloušťky drah tomu byly přizpůsobeny a případné prokovy také. Například dráhy od baterie, jak k nabíjecímu obvodu, tak k USB mají tloušťku
+2 mm, signálové dráhy mají tloušťku 0,125 mm a ostatní napájení dráhy mají tloušťku 1 mm. Prokovy mají vždy vrtanou díru stejně velkou, jako je tloušťka dráhy a okolní měď má průměr alespoň o 0,2 mm větší 
+než vrtaná díra. U dvounožičkových součástek byl také řešen thombstone efekt. Proto u takových součástek byly dráhy vyvedeny stejně tlusté, případně alespoň co nejpodobnější. 
+%obrázek řešení thombsone efektu - původní a řešení 
+
+Rozložení součástek zvyšovače napětí bylo realizováno dle doporučení z datasheetu. Prokovy k signálu GND byly umístěny co nejblíže k vstupnímu i výstupnímu kondenzátoru. Propojovací konektory byly 
+umístěny po obvodu a byly na ně připojeny všechny potřebné signály. Napájecí napětí a GND signál byly přivedeny přes jeden konektor, aby se tak zlepšilo EMC. 
+
+DPS byla následně opět vyrobena a osazena u firmy JLCPCB. 
+%propojení DPS realizováno prodlouženými pinheady, aby se mezi DPS vešla baterie. 
+%napsat co jsem ručně osazovala
+%napsat i oživení 
 
 \chapter{Firmware}
 V následující kapitole je popsán firmware univerzálního modulu. Jsou zde popsány veškeré vytvořené funkce a moduly, které jsou potřebné pro následnou tvorbu softwaru univerzálního modulu. 
@@ -643,8 +684,9 @@ Náledně byl nakreslen model pouzdra, jak by mělo vypadat bez vložené DPS. P
 zality v silikonu. Nesmí být zalit USB konektor, prostřednictvím něhož je modul napájen a programován, dále vypínač a piezo, protože by jinak nemohlo vydávat zvuk. 
 %ukázka DPS + obalu
 
-Z takto vytvořeného modelu byla vytvořena forma. Byl nakreslen válec, který končil vždy v polovině vyčnívajících součástí. Poté byl použit nástroj "Kombinovat", který umožnil odečtení vytvořeného 
-modelu DPS s obalem, takže vznikla forma pro potřebný tvar. Druhá polovina formy byla vytvořena stejným způsobem.
+Z takto vytvořeného modelu byla vytvořena forma. Byl nakreslen válec, který byl z každé strany o 3 mm větší než DPS s obalem. Poté byl použit nástroj "Kombinovat", který umožnil odečtení vytvořeného 
+modelu DPS s obalem, takže vznikla dutá forma pro potřebný tvar. Následně byla forma rozdělena na 2 díly, které na sebe pasují a protínají v polovině všechny otvory tak, aby se do těchto půlek 
+dala DPS zavřít.
 
 Ve formě byl vytvořen otvor pro vstřik silikonu a také otvory pro XXX.
 
