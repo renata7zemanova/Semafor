@@ -251,6 +251,11 @@
       (net 19 "+3V3") (pinfunction "-") (pintype "passive") (tstamp abf0b212-c0aa-4be8-b675-720e8158c535))
     (pad "2" thru_hole circle locked (at 0 3.81 180) (size 2 2) (drill 1.02) (layers *.Cu *.Mask)
       (net 35 "Net-(BZ1-Pad2)") (pinfunction "+") (pintype "passive") (tstamp c1eef260-6737-45d9-81fc-9ac76a9408e0))
+    (model "D:/School/FEKT/Magisterske/Diplomka/dily_DPS/Piezo.STEP"
+      (offset (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 90 180 0))
+    )
   )
 
   (footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm" (layer "F.Cu")
