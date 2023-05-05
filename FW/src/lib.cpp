@@ -186,7 +186,7 @@ bool is_touched_right(){
     return true;
   return false; 
 }
-
+ 
 bool is_touched_left(){
   if(Touch_AT42.is_touched_btn(4))
     return true;
@@ -429,8 +429,8 @@ void share_settings(){
     Serial.print("Clients IP: ");
     Serial.println(clientIP);
 
-    udpSett.beginPacket(clientIP, 1111);
-    //udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
+    //udpSett.beginPacket(clientIP, 1111);
+    udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
     udpSett.println("Ahoj svete"); //potom smazat a nechat to nahore 
     udpSett.endPacket();   
   }  

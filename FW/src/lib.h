@@ -116,6 +116,7 @@ void wifi_enable_connect();
 void wifi_disable();
 void wifi_ap_enable();
 void wifi_ap_disable();
+
 void share_settings();
 bool receive_settings();
 

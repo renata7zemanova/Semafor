@@ -148,15 +148,19 @@ void handleDataSave() {
     }
     else if(server.hasArg("tlacitko_vabnicka1")){
         Serial.println("tlacitko vabnicka1");
+        s_vect.game = VABNICKA1;
     }
     else if(server.hasArg("tlacitko_vabnicka2")){
         Serial.println("tlacitko vabnicka2");
+        s_vect.game = VABNICKA2;
     }
     else if(server.hasArg("tlacitko_pan_hory")){
         Serial.println("tlacitko pan hory");
+        s_vect.game = PAN_HORY;
     }
     else if(server.hasArg("tlacitko_semafor")){
         Serial.println("tlacitko semafor");
+        s_vect.game = SEMAFOR;
     }
 
     //ukladat do Preferences

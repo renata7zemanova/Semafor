@@ -11,7 +11,7 @@ void setup() {
   States state = CONFIGURATION_DOWNLOAD; //na zacatku musi byt PLAY
   download_permanently_pref();
 
-  ArduinoMetronome settings_delay(20000); //pak budou 2 minuty
+  ArduinoMetronome settings_delay(300000); //tohle je 5 minut
 
   while(true){
     
@@ -19,8 +19,8 @@ void setup() {
       if(state == CONFIGURATION_DOWNLOAD){
         if(receive_settings()){
           //potvrzeni LEDkama
-          LEDs_all_on(GREEN);
-          delay(200);
+          LEDs_all_on(BLUE);
+          delay(500);
           LEDs_all_off();
           
           state = PLAY;
@@ -34,12 +34,12 @@ void setup() {
           //to co se ma provest pouze jedou - zapnuti sdileni
           start_server(); //tuhle cast kodu bude vykonavat pouze jeden Semafor - pouze ten, ke kteremu se pripojim 
           delay(200);
-          vibrate_motor_off();
+          //vibrate_motor_off();
           continue;
         }
       }
 
-      else if(state == CONFIGURATION_SHARE){
+      else if(state == CONFIGURATION_SHARE){ //jak se odsud dostanu?
         if(share_delay.loopMs()){
           Serial.println("share mode");
           server.handleClient(); //dokud neskonci konfigurace a nevypnu WiFi, tak to musim periodicky volat
@@ -50,10 +50,13 @@ void setup() {
         }
       }
     }
+    //state = PLAY;
+    //LEDs_all_off();
+    //wifi_disable();
+    //continue;
   
   //az zmacknu tlacitko, tak zacne hra 
   //kazdy case bude cekat na stisk tlacitka enter (asi)
-  //vypnout wifi
     else
       state = PLAY;
       
