@@ -303,7 +303,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "../forma_na_silikon/v1.0/DPS_bottom.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
