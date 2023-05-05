@@ -3,14 +3,14 @@ Výběr elektronických součástek probíhal dle jejich parametrů, využití, 
 na tom vše ostatní. 
 
 \section{Bezdrátová technologie}
-Ke komunikaci Semaforů mezi sebou byla zvolena technologie LoRa a pro bezdrátovou konfiguraci Semaforů byla zvolena technologie WiFi. 
+Ke komunikaci Univerzálních modulů mezi sebou byla zvolena technologie LoRa a pro bezdrátovou konfiguraci Univerzálních modulů byla zvolena technologie WiFi. 
 
 \subsection{LoRa}
  Tato technologie byla zvolena především kvůli komunikačnímu dosahu. Jedná se sice o~dražší technologii, 
 ale na tolik, aby ji nebylo možné v~tomto zařízení použít. Táborové hry se většinou hrají na loukách, které mají rozlohu několik stovek metrů čtverečných. LoRa je jedinou
-dostupnou technologií, která na tyto vzdálenosti spolehlivě komunikuje. Bezdrátové propojení Semaforů bude použito pro posílání informací o~aktuálně svítící barvě, či 
-stisku tlačítka v~závislosti na hře, která se aktuálně hraje. U~některých her například může být žádoucí, aby po přepínání nesvítily všechny Semafory stejnou barvou 
-a díky této komunikaci bude moci být takovým stavům zabráněno. 
+dostupnou technologií, která na tyto vzdálenosti spolehlivě komunikuje. Bezdrátové propojení Univerzálních modulů bude použito pro posílání informací o~aktuálně svítící 
+barvě, či stisku tlačítka v~závislosti na hře, která se aktuálně hraje. U~některých her například může být žádoucí, aby po přepínání nesvítily všechny Univerzální moduly 
+stejnou barvou a díky této komunikaci bude moci být takovým stavům zabráněno. 
 
 Byl vybrán bezdrátový LoRa modul E22-900T22D od firmy EBYTE. Tento modul komunikuje s mikrokontrolérem pomocí UART sběrnice \cite{LoRa_ebyte}. Jeho napájecí napětí je od 
 2,1 V do 5,5 V a komunikační napětí je 3,3 V \cite{LoRa_ebyte}. Rozsah komunikačních frekvencí bezdrátového modulu E22-900T22D je 850,125 MHz až 930,125 MHz a ve výchozím 
@@ -52,15 +52,14 @@ provozován pouze v normálním režimu, a proto jsou piny M0 a M1 připojeny k 
 %obrazek se zapojenim LoRa modulu
 
 \subsection{WiFi}
-K~propojení Semaforu s~telefonem a dalšími zařízeními byla vybrána technologie WiFi. Jedná se o~rozšířenou technologii, která je v~telefonech a noteboocích zabudovaná. 
-Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce, kde bude seznam her, které Semafor umí. U~jednotlivých her se poté budou moci nastavovat 
-další parametry. Po nastavení se konfigurace pošle do Semaforu. 
-
-%více rozepsat info o WiFi
+K~propojení Univerzálního modulu s~telefonem a dalšími zařízeními byla vybrána technologie WiFi. Jedná se o~rozšířenou technologii, která je v~telefonech a noteboocích zabudovaná. 
+Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce, kde bude seznam her, které Univerzální modul umí. U~jednotlivých her se poté budou moci nastavovat 
+další parametry. Po nastavení se konfigurace pošle právě pomocí WiFi do Univerzálního modulu. Některé mikrokontroléry mají WiFi zabudovanou, takže jedním z kritérií pro výběr 
+mikrokontroléru se stala právě WiFi, která musí být jeho součástí. 
 
 \section{Mikrokontrolér}
 WiFi modul obsahuje jako jediný mikrokontrolér od firmy Espressif z~řady ESP32. Konkrétně jde o~typ ESP32-C3-MINI-1, dále již jen ESP32-C3. Je také nabízen za cenu, která 
-je v~porovnání s~ostatními nízká a v~porovnání s~nabízenými parametry bezkonkurenční. Pro zařízení Semaforu je také se svým počtem periferií dostačující. ESP32-C3 má 
+je v~porovnání s~ostatními nízká a v~porovnání s~nabízenými parametry bezkonkurenční. Pro zařízení Univerzálního modulu je také se svým počtem periferií dostačující. ESP32-C3 má 
 384 kB ROM a 4 MB flash paměti \cite{ESP_C3_dtsh}. Dále obsahuje WiFi modul pracující na frekvenci 2,4 GHz a Bluetooth \cite{ESP_C3_dtsh}. ESP32-C3 obsahuje mnoho periferií
 jako je SPI, UART, $I^2C$, USB a další \cite{ESP_C3_dtsh}. Mikrokontrolér má vyvedeno 13 GPIO pinů, které je možno softwarově nastavit jako vstupní nebo výstupní. Tyto piny
 slouží pro připojení senzorů, díky kterým je zprostředkována komunikace mezi mikrokontrolérem a okolním světem. V~mikrokontroléru je také zabudován krystal s~vlastní frekvencí 
@@ -117,11 +116,12 @@ Pin GPIO2 nebyl využit pro připojení žádného senzoru, a proto byl připoje
 
 \section{Napájení}
 Zabudování baterie přináší kompaktnost řešení a pro použití není třeba dalších komponent. Pokud je ale na táboře větší využití, tak se baterie vybije.
-Na táborech většinou nebývá k~dispozici připojení k~elektrické síti, a proto je řešením powerbanka. Na Semaforu tedy bude napájecí vstup USB-A pro nabíjení baterií
-přímo z~powerbanky bez nutnosti kabelu. Semafor musí být koncipován tak, aby se mohla baterie nabíjet a zároveň, aby při tom byly Semafory funkční.
+Na táborech většinou nebývá k~dispozici připojení k~elektrické síti, a proto je řešením powerbanka. Na Univerzálním modulu tedy bude napájecí vstup USB-A pro nabíjení 
+baterií přímo z~powerbanky bez nutnosti kabelu. Univerzální modul musí být koncipován tak, aby se mohla baterie nabíjet a zároveň, aby při tom byly Univerzální moduly 
+funkční.
 
-Při realizaci Semaforu byla tedy zvolena kombinace napájení pomocí baterií i~pomocí powerbanky. Článek baterie LiFePO4 byl vybrán právě kvůli již zmíněným vynikajícím 
-vlastnostem. Vybraný mikrokontrolér má napájecí napětí v~rozsahu 3 až 3,6 V~\cite{ESP_C3_dtsh}. Pro funkci mikrokontroléru tedy nebude muset být použit ani 
+Při realizaci Univerzálního modulu byla tedy zvolena kombinace napájení pomocí baterií i~pomocí powerbanky. Článek baterie LiFePO4 byl vybrán právě kvůli již zmíněným 
+vynikajícím vlastnostem. Vybraný mikrokontrolér má napájecí napětí v~rozsahu 3 až 3,6 V~\cite{ESP_C3_dtsh}. Pro funkci mikrokontroléru tedy nebude muset být použit ani 
 převodník napětí. 
 
 Napětí na baterii je měřeno pomocí děliče a připojeno na pin GPIO4, který má k~dispozici AD převodník \cite{ESP_C3_dtsh}. V~softwaru bude nastaven útlum na 0 dB, to 
@@ -130,6 +130,7 @@ Proto je napětí z~baterie pomocí rezistorového děliče převedeno na rozsah
 zvolen o~hodnotě 10 k$\Omega$ a druhý byl dopočítán na hodnotu 50 k$\Omega$ podle maximálního napětí baterií LiFePO4 3,6 V. Nejbližší hodnota rezistoru je 47 k$\Omega$
 \cite{rezistorova_rada}. Tomu odpovídá maximální napětí na AD převodníku 0,63 V, což je stále v~možném měřeném rozsahu. 
 
+%tuhle větu upravit - přesunout někam 
 Při nízkém napětí baterie jsou softwarově odpojovány periferie a senzory od jejich napájecího napětí. Děje se tak pomocí pinu GPIO5, na který je připojen spínací 
 tranzistor.
 
@@ -147,7 +148,7 @@ Když je nabíjecí obvod odpojen od napájecího napětí, tak přejde do reži
 když není nabíjena. 
 
 Nabíjecí obvod CN3058E umí také vyhodnocovat teplotu baterie a v~závislosti na tom přestávat baterii nabíjet \cite{charger_dtsh}. Tato funkce není v~zapojení
-Semaforu využita, proto je pin TEMP připojen k~signálu GND \cite{charger_dtsh}.
+Univerzálního modulu využita, proto je pin TEMP připojen k~signálu GND \cite{charger_dtsh}.
 
 Tento nabíjecí obvod se vyrábí ve standardizovaném pouzdře SOP8 \cite{charger_dtsh}.
 
@@ -189,9 +190,9 @@ nebo moc vysoká teplota baterie a nabíjení je zastaveno \cite{charger_dtsh}. 
 \end{figure}
 
 \section{Senzory doteku}
-V~návrhu Semaforu byla zvolena kapacitní dotyková tlačítka. Pro možnost použití uvnitř i venku jsou díky možnosti voděodolnosti 
-vhodnějším řešením. Také velikost a označení tlačítka může být variabilní. Velikost může být na DPS navržena dle potřeby a potisk
-v~místě tlačítka vyznačen barevně, nebo např. samolepkou. Odezva na dotyk bude realizována pomocí vibračního motoru.
+V~návrhu Univerzálního modulu byla zvolena kapacitní dotyková tlačítka. Pro možnost použití uvnitř i venku jsou díky možnosti voděodolnosti 
+vhodnějším řešením. Také velikost a označení tlačítka je variabilnější. Velikost může být na DPS navržena dle potřeby a potisk
+v~místě tlačítka vyznačen barevně, nebo označen např. samolepkou. Odezva na dotyk bude realizována pomocí vibračního motoru.
 
 \section{Vibrační motor}
 Vibrační motory jsou založeny na principu kmitání. Motor je připevněn k~zařízení, které je kmitáním rozvibrováno. Vibrační motory jsou dnes 
@@ -204,8 +205,8 @@ Vibrační motor je připojen k~mikrokontroléru přes tranzistor, protože maxi
 motor roztočil. Tranzistor je tedy připojen na gate tranzistoru, který se při logické jedničce na pinu sepne a motorem protéká proud, který 
 nedodává MCU, ale zdroj 3.3 V~(v~tomto případě baterie LiFePO4). Baterie tak dokáže dodat dostatek proudu, aby se motor roztočil. 
 
-Pro Semafor byl vybrán vibrační motor LCM1020A2945F. Tento motor má maximální požadovaný proud 120 mA \cite{vib_motor_dtsh}. Maximální proud, 
-který lze odebírat z~pinu mikrokontroléru ESP32-C3, je 40 mA \cite{ESP_C3_dtsh}. Vibrační motor lze pouze spínat, nebo je možné jej připojit 
+Pro Univerzální modul byl vybrán vibrační motor LCM1020A2945F. Tento motor má maximální požadovaný proud 120 mA \cite{vib_motor_dtsh}. Maximální 
+proud, který lze odebírat z~pinu mikrokontroléru ESP32-C3, je 40 mA \cite{ESP_C3_dtsh}. Vibrační motor lze pouze spínat, nebo je možné jej připojit 
 k~pinu, který dokáže generovat PWM a lze tím regulovat jeho otáčky. 
 
 Vibrační motor slouží jako odezva na dotyk kapacitního tlačítka. 
@@ -231,7 +232,7 @@ Druhý režim je využitelný pouze v~případě, je-li převodník připojen k~
 která jsou připojena na pinech KEY0 až KEY6. Převodník poté komunikuje s~MCU pomocí komunikační sběrnice $I^2C$ \cite{conv_cap_but_AT42QT1070_dtsh}. 
 Z~registru převodníku lze poté vyčíst stavy daných kapacitních dotykových tlačítek. 
 
-Jelikož je v~tomto návrhu Semaforu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito zapojení právě s~tímto typem 
+Jelikož je v~tomto návrhu Univerzálního modulu využit mikrokontrolér, který podporuje komunikaci po sběrnici $I^2C$, tak bylo využito zapojení právě s~tímto typem 
 komunikace. Díky tomu budou využity pouze 2 GPIO piny mikrokontroléru ESP32-C3 a ne 5 GPIO pinů, které by byly zapotřebí při zapojení bez komunikace pro
 sběrnici $I^2C$. Komunikační sběrnice $I^2C$ vyžaduje pullup rezistory, proto byly mezi napájecí napětí a piny SDA a SCL převodníku AT42QT1070 
 přidány rezistory R17 a R18 o hodnotě 10 k$\Omega$. To znamená, že komunikační sběrnice $I^2C$ je aktivní v logické nule. 
@@ -248,6 +249,10 @@ Pin MODE je připojen k~signálu GND, protože převodník je provozován v~rež
 
 Pin /CHANGE je připojen k~GPIO pinu mikrokontroléru. Slouží pro indikaci změny stavu některého z~připojených tlačítek \cite{conv_cap_but_AT42QT1070_dtsh}. 
 Signál z~tohoto pinu lze tedy využít jako indikátor vyvolání přerušení pro obsluhu tlačítek. 
+
+Pin KEY0 může být také využit pro tzv. ochrannou zónu \cite{conv_cap_but_AT42QT1070_dtsh}. Tento kanál slouží pro zabránění falešným 
+detekcím \cite{conv_cap_but_AT42QT1070_dtsh}. Tento pin je citlivější než ostatní \cite{conv_cap_but_AT42QT1070_dtsh}. Ochranná zóna by měla být také větší 
+než použitá tlačítka. Této funkce nebylo do prototypu DPS využito. 
 
 \begin{figure}[!h]
     \begin{center}
@@ -409,7 +414,7 @@ připojení těchto rezistorů nesmí připojit napájecí napětí 5 V~na pin V
 %ke každé komponentě napsat odběr
 
 \section{Výsledné zapojení}
-Pro realizaci Semaforu byly vybrány následující komponenty: mikrokontrolér ESP32-C3, baterie LiFePO4, nabíjecí obvod CN3056E, konektory USB-C a USB-A,
+Pro realizaci Univerzálního modulu byly vybrány následující komponenty: mikrokontrolér ESP32-C3, baterie LiFePO4, nabíjecí obvod CN3056E, konektory USB-C a USB-A,
 kapacitní tlačítka s~převodníkem AT42QT1070, inteligentní LED WS2812C s~převodníkem napětí LT1930, piezo, vibrační motor a LoRa modul. LoRa modul komunikuje 
 s~mikrokontrolérem pomocí sběrnice UART, převodník pro kapacitní tlačítka pomocí sběrnice $I^2C$ a programování bude probíhat pomocí USB sběrnice. Vše je 
 zapojeno dle následujícího blokového schématu. 
@@ -418,7 +423,7 @@ zapojeno dle následujícího blokového schématu.
   \begin{center}
     \includegraphics[scale=0.65]{obrazky/vysledne_blokove_schema.jpg}
   \end{center}
-  \caption[Výsledné blokové schéma Semaforu]{Výsledné blokové schéma Semaforu.}
+  \caption[Výsledné blokové schéma Univerzálního modulu]{Výsledné blokové schéma Univerzálního modulu.}
 \end{figure}
 
 
@@ -435,8 +440,8 @@ Jejich výrobky také dosahují vysoké kvality.
 Byl požadavek na 5 tlačítek. Jedno tlačítko je uprostřed a slouží jako hlavní tlačítko. U her bude používáno např. jako registrace průchodu místem apod. Bude tedy nejčastěji
 používáno a zároveň může být stisknuto, když hráč běží, takže by mělo být co nejjednodušeji stisknutelné. Proto bylo navrženo větší než zbylá tlačítka. Konkrétně má 
 čtvercový tvar se zaoblenými rohy s rozměry 5~$\times$~5~cm. Ostatní tlačítka slouží například jako směrovky, nebo pro vyklikávání nějakého kódu, aby získali nějakou informaci. 
-Slouží tedy primárně, když účastník u Semaforu stojí, nebo sedí, a vyklikává. Díky tomu mohou být tlačítka menší než hlavní tlačítko, konkrétně mají 2~$\times$~2~cm a jsou taktéž 
-čtvercová se zaoblenými rohy. Tato tlačítka jsou proto umístěna po stranách hlavního tlačítka a jsou popsána BTN\_ENTER, BTN\_UP, BTN\_DOWN, BTN\_RIGHT a BTN\_LEFT.
+Slouží tedy primárně, když účastník u Univerzálního modulu stojí, nebo sedí, a vyklikává. Díky tomu mohou být tlačítka menší než hlavní tlačítko, konkrétně mají 2~$\times$~2~cm 
+a jsou taktéž čtvercová se zaoblenými rohy. Tato tlačítka jsou proto umístěna po stranách hlavního tlačítka a jsou popsána BTN\_ENTER, BTN\_UP, BTN\_DOWN, BTN\_RIGHT a BTN\_LEFT.
 
 V oblastech kapacitních tlačítek nejsou umístěny žádné další součástky a v jejich okolí je rozmístěna země kvůli odstínění. 
 
@@ -458,7 +463,7 @@ Otvory pro připojení vypínače jsou umístěny u konektoru USB-C a otvory pro
 Z přední strany DPS je také umístěn bzučák. 
 
 \section{Průběh návrhu}
-Při návrhu DPS byla dodržována pravidla a dobré způsoby správného návrhu. %upravit tuto větu
+Při návrhu DPS byla dodržována pravidla a konvence dobrého návrhu DPS.
 
 V oblasti antény od ESP32-C3 mikrokontroléru nejsou taženy žádné dráhy, ani pod ní není rozlitá žádná měď. Je to z důvodu zaručení většího dosahu signálu a pro snížení rušení. 
 
@@ -471,7 +476,7 @@ Komunikační piny D+ a D- pro programování jsou taženy jako diferenciální 
 DPS byla taktéž strojově osazena u firmy JLCPCB. Z důvodu nedostupnosti některých součástek byly některé komponenty zakoupeny v jiných obchodních řetězcích a doosazeny ručně. 
 Jednalo se o držák na baterie, piezo, kondenzátor C3 v pouzdře 0805 o hodnotě 100 $\mu$F, čip pro kapacitní tlačítka AT42QT1070, vypínač a LoRa modul. 
 
-Nebyl sehnán přesný typ držáku, pro který byl modul navržen, proto byly nožičky držáku roztaženy, aby byla jejich rozteč zvětšena a mohlo dojít k zapájení. U pieza také chybělo 
+Nebyl sehnán přesný typ držáku, pro který byl Univerzální modul navržen, proto byly nožičky držáku roztaženy, aby byla jejich rozteč zvětšena a mohlo dojít k zapájení. U pieza také chybělo 
 označení polarity. Do finální verze bylo tedy přidáno do popisové vrstvy plus u správného vývodu. Vypínač byl kvůli testovacím účelům realizován pinheady a na ně byla nasazena 
 propojka. Na místo LoRa modulu byly připájeny dutinky a LoRa modul byl pouze zasunut do dutinek. Hlavním důvodem byla cena tohoto modulu. LoRa modul bude z prototypu přesunut 
 na finální výrobek a nedojde tak k plýtvání součástek ani peněz.
@@ -496,7 +501,7 @@ zapojení pieza a vibračního motoru. Obě zapojení byla funkční.
 
 Dále bylo testováno zapojení kapacitních tlačítek a jejich čtení. Pro komunikaci s čipem AT42QT1070 byla použita knihovna AtTouch, která je primárně určena pro Arduino \cite{AtTouch}. 
 Knihovny pro Arduino bývají převážně s mikrokontroléry ESP32 kompatibilní. Nejdříve bylo zjištěno, že knihovna předpokládá připojení I2C na konkrétních pinech, tj. SCL na GPIO9 a SDA 
-na GPIO8 \cite{AtTouch}. Mnou navržený modul má piny připojené naopak, tj. SCL na GPIO8 a SDA na GPIO9. Došlo tedy k upravení knihovny, aby jako vstupní parametry byly přebírány i GPIO 
+na GPIO8 \cite{AtTouch}. Mnou navržený Univerzální modul má piny připojené naopak, tj. SCL na GPIO8 a SDA na GPIO9. Došlo tedy k upravení knihovny, aby jako vstupní parametry byly přebírány i GPIO 
 piny I2C. Testovací software, který používal upravenou knihovnu AtTouch ale nebyl funkční. Nedocházelo k detekci stisku tlačítka a ani pin /CHANGE neměnil svůj stav. Ani po zapnutí 
 softwarového pullup rezistoru nezačal pin /CHANGE generovat správné pulzy. Proto byla DPS 
 připojena k osciloskopu. Nejdříve byla sledována komunikace po I2C pomocí pinů SCL a SDA. Díky tomu bylo zjištěno, že počáteční ustavovací komunikace probíhá v pořádku a mikrokontrolér 
@@ -508,7 +513,7 @@ Při tvorbě knihovny bylo zapotřebí otestovat funkci jednotlivých registrů.
 registr čten, tak pin /CHANGE negeneruje pulzy a zůstává v klidové pozici, tj. logické jedničce. Bylo tedy rozhodnuto, že pokud se bude daná informace používat, tak to bude právě z registru 
 Detection Status a díky tomu se uvolní pin na mikrokontroléru, který bude moci být použit pro připojení dalších periferií. Registr Key Status indikuje pouze stisk jednoho tlačítka. Pokud 
 je jich stisknuto více, tak se celý vynuluje. Toto chování může být způsobeno velikostí kapacitních tlačítek, jejich návrhem, nebo může být chyba v čipu AT42QT1070. Registry Key Signal 
-uchovávají aktuální měřenou informaci o měřené kapacitě ve 2 bytech pro každé tlačítko. Tyto hodnoty se mění v závislosti na prostředí, ve kterém se modul nachází, a také v závislosti 
+uchovávají aktuální měřenou informaci o měřené kapacitě ve 2 bytech pro každé tlačítko. Tyto hodnoty se mění v závislosti na prostředí, ve kterém se Univerzální modul nachází, a také v závislosti 
 na stisknu. Při stisku jsou hodnoty změněny skokově a hodnota měřené kapacity se výrazně změní. 
 Registry Reference Data uchovávají data po kalibraci. Při testování se stávalo, že se kalibrace spouštěla sama ve chvílích, kdy bylo některé z tlačítek stisknuto. Zejména dělalo problémy hlavní
 velké tlačítko. Proto byla v knihovně využívána data pouze z registrů Key Signal a změna byla detekována pouze pomocí tohoto registru. Díky tomu, že změna prostředí nedělá tak velké a prudké 
@@ -518,8 +523,8 @@ hodnot. Registry pro tlačítka 5 a 6 jsou vynulovány, a tím jsou tyto vstupy 
 
 Pro práci s kapacitními tlačítky jsou tedy primárně využívány registry Key Signal a informace o stisku jsou z nich dopočítávány. 
 
-Byla otestována komunikace s E22-900T22D LoRa modulem. Vyčítání informací z LoRa modulu probíhalo v pořádku, ale kvůli nepřipojení pinů M0, M1 a AUX k mikrokontroléru nemohl být modul nastaven
-tak, aby komunikoval s dalšími moduly. Tyto chyby byly opraveny do finální verze a další testování tohoto modulu probíhalo až na hardwaru finální verze DPS. 
+Byla otestována komunikace s E22-900T22D LoRa modulem. Vyčítání informací z LoRa modulu probíhalo v pořádku, ale kvůli nepřipojení pinů M0, M1 a AUX k mikrokontroléru nemohl být Univerzální modul 
+nastaven tak, aby komunikoval s dalšími Univerzálními moduly. Tyto chyby byly opraveny do finální verze a další testování tohoto Univerzálního modulu probíhalo až na hardwaru finální verze DPS. 
 %testování LoRa modulu
 
 \chapter{Finální verze DPS}
@@ -528,7 +533,7 @@ Kvůli tomuto zmenšení ale nebylo dost místa
 kolem kapacitních tlačítek, aby nedocházelo k jejich rušení z okolních obvodů. Zároveň by musely být tlačítka moc blízko u sebe, takže by mohlo docházet k jejich přeslechům. Routování takové 
 DPS, aby dráhy nevedly v blízkosti kapacitních tlačítek ani pod nimi bylo takřka nemožné. Proto bylo přistoupeno k řešení 2 spojených DPS. Díky tomu mohly být obě DPS osazeny pouze z jedné strany,
 což ušetří další nemalé peníze. I při výrobě 2 kusů DPS o průměru 10 cm místo jedné velké byla cena výhodnější. Na spodní DPS je tedy veškerá řídicí elektronika a na vrchní DPS jsou pouze tlačítka 
-a programovatelné LED. Kolem kapacitních tlačítek byla také vytvořena tzv. "guard" zóna, která slouží pro lepší odstínění tlačítek od ostatních signálů. Tato zóna byla připojena k převodníku AT42QT1070 
+a programovatelné LED. Kolem kapacitních tlačítek byla také vytvořena tzv. ochranná zóna, která slouží pro lepší odstínění tlačítek od ostatních signálů. Tato zóna byla připojena k převodníku AT42QT1070 
 dle datasheetu na pozici prvního tlačítka - pin KEY0 \cite{conv_cap_but_AT42QT1070_dtsh}. 
 
 Po konzultaci bylo domluveno, že při napájení z baterie a možnosti napájení přes konektor USB-C není konektor USB-A zapotřebí. Rozměry DPS by se tím také opět zvětšily a výrobní náklady by tím 
@@ -537,8 +542,8 @@ stouply.
 Do finální verze byl také přidán fototranzistor, který bude následně využíván pro regulaci jasu programovatelných LED typu WS2812C. Fototranzistor byl připojen na GPIO01 mikrokontroléru ESP32-C3. Na tomto 
 pinu je k dispozici AD převodník \cite{ESP_C3_dtsh}. Byl vybrán fototranzistor s označením SMD3528C-50, který je citlivý na viditelné světlo. %citace https://jlcpcb.com/partdetail/Senba_SensingTech-SMD3528C50/C250859
 Tento fototranzistor byl umístěn také na vrchní DP. Dále byl také 
-přidán konektor pro připojení dalších programovatelných LED typu WS2812C, které budou na pásku, který bude připevněn po obvodu univerzálního modulu. Tyto LED budou zajišťovat, aby modul mohl svítit 
-nejen dopředu, ale i do stran. Tato funkcionalita opět rozšiřuje možnosti využití tohoto modulu. Na datový pin těchto programovatelných LED byl připojen do série rezistor, který zabraňuje zničení pinu 
+přidán konektor pro připojení dalších programovatelných LED typu WS2812C, které budou na pásku, který bude připevněn po obvodu Univerzálního modulu. Tyto LED budou zajišťovat, aby Univerzální modul mohl svítit 
+nejen dopředu, ale i do stran. Tato funkcionalita opět rozšiřuje možnosti využití tohoto Univerzálního modulu. Na datový pin těchto programovatelných LED byl připojen do série rezistor, který zabraňuje zničení pinu 
 mikrokontroléru EPS32-C3, kdyby byly omylem zkratován s napájecím napětí. 
 
 Bylo zapotřebí připojit k mikrokontroléru i piny M0, M1 a AUX od LoRa modulu E22-900T22D. Na mikrokontroléru ale nebylo již dostatek volných pinů a tak byl použit expander GPIO pinů. Vybraný expander
@@ -548,7 +553,7 @@ a GPIO1 expanderu. Protože byly ještě volné GPIO piny na expanderu, bylo rea
 %citace expanderu PCA9536D
 
 Ve finální verzi DPS byl použit posuvný vypínač se zahnutými vývody. Díky tomu mohl být vypínač umístěn na okraj DPS a nemusel být ručně pájen na drátkách. LED indikující přítomnost napájecího napětí 
-3,3 V a LED indikující nabíjení nebo plné nabití baterie byly dány na okraj spodní DPS tak, aby bylo možné je vidět, ale zároveň aby při používání modulu při hře nemohly zmást. LED indikující přítomnost 
+3,3 V a LED indikující nabíjení nebo plné nabití baterie byly dány na okraj spodní DPS tak, aby bylo možné je vidět, ale zároveň aby při používání Univerzálního modulu při hře nemohly zmást. LED indikující přítomnost 
 napájecího napětí 5 V byla odstraněna pro její nadbytečnost. 
 
 Byly přidány také zkratovací prokovy na EN pinu mikrokontroléru s GND. Při zkratování je restartován mikrokontrolér. Tyto prokovy slouží pro snazší oživování a testování softwaru. Při proovozu nebude propojka 
@@ -568,14 +573,12 @@ DPS byla následně opět vyrobena a osazena u firmy JLCPCB.
 %napsat i oživení 
 
 \chapter{Firmware}
-V následující kapitole je popsán firmware univerzálního modulu. Jsou zde popsány veškeré vytvořené funkce a moduly, které jsou potřebné pro následnou tvorbu softwaru univerzálního modulu. 
+V následující kapitole je popsán firmware Univerzálního modulu. Jsou zde popsány veškeré vytvořené funkce a moduly, které jsou potřebné pro následnou tvorbu softwaru Univerzálního modulu. 
 %napěti 936 mV pri plnem napeti baterie
 %napsat odpojovani napeti pri nizkem napeti baterie
 
-%popsat celkovou funkci - vývojový diagram
-
 \section{Tvorba hlavní knihovny}
-Hlavní knihovna lib.h a lib.cpp slouží pro sdružování veškerých funkcí, které jsou univerzálnímu modulu k dispozici. Funkce init slouží pro počáteční inicializaci univerzálního modulu. Jsou zde 
+Hlavní knihovna lib.h a lib.cpp slouží pro sdružování veškerých funkcí, které jsou Univerzálnímu modulu k dispozici. Funkce init slouží pro počáteční inicializaci Univerzálního modulu. Jsou zde 
 zadefinovány piny mikrokontroléru, zda jsou vstupní, nebo výstupní, případně je zapnut softwarový pullup rezistor. Jsou zde nastaveny počáteční hodnoty výstupních pinů, vypnut vibrační motor, vypnuto 
 piezo a zhasnuty všechny programovatelné LED. Jsou zde také vytvořeny všechny potřebné objekty, jako jsou tlačítka a programovatelné LED. 
 
@@ -587,10 +590,13 @@ a zhasnutím LED. Tato funkce přebírá jako parametr právě barvu, kterou má
 se všemi LED yly vytvořeny také funkce LEDs\_all\_off, která zhasne všechny LED, LEDs\_all\_on, která přebírá jako parametr barvu a tou barvou poté rozsvítí všechny LED, a LEDs\_all\_toggle, která přebírá 
 jako parametr barvu, kterou blikají všechny LED. Přepínání zhasnutí LED a rozsvícení danou barvou probíhá při každém zavolání této funkce. 
 
-%zacházení s tlačítky 
-%piezo
-%motor
+Pro práci s tlačítky byly implementovány funkce, které dokáží zjistit, zda je některé z tlačítek zmáčknuto. Každé tlačítko má svoji funkci. Lze také zjistit, zda je alespoň nějaké tlačítko stisknuto, bez 
+ohledu na to které. 
+
+Dále byly vytvořeny funkce pro zapnutí a vypnutí pieza a zároveň pro zapnutí a vypnutí vibračního motoru. 
+
 %LoRa
+
 Pro hlídání stavu nabití baterií byly vytořeny 2 funkce. První funkce measure\_battery\_voltage měří napětí na baterie ve voltech, tato hodnota je také návratovou hodnotou této funkce. Druhou funkcí je 
 is\_battery\_voltage\_ok, která vrací informaci, zda je baterie dostatečně nabitá. Pokud by vrátila informaci, že baterie je málo nabitá, tak na tento stav může program reagovat. Například je vytvořena 
 funkce switch\_off\_voltage\_periferies, která odpojí od napětí periferie, které mají vyšší spotřebu. Jsou to například programovatelné LED nebo LoRa modul. 
@@ -600,7 +606,7 @@ Pro převodník AT42QT1070, který převádí signál z kapacitních tlačítek 
 práci s tlačítky a usnadňují ji. 
 
 Třída s názvem AT42QT1070Touch obsahuje funkci begin, která slouží pro nastavení čipu AT42QT1070, rozděluje tlačítka do jednotlivých skupin a dělá počáteční kalibraci. Z tohoto důvodu nesmí být při 
-zapnutí modulu stisknuto žádné tlačítko. Pokud by tomu tak bylo, tak by se tlačítka chybně zkalibrovala a docházelo by tak k falešným stiskům. Funkce tick musí být volána pravidelně, aby docházelo 
+zapnutí Univerzálního modulu stisknuto žádné tlačítko. Pokud by tomu tak bylo, tak by se tlačítka chybně zkalibrovala a docházelo by tak k falešným stiskům. Funkce tick musí být volána pravidelně, aby docházelo 
 k neustálé obnově dat a kalibraci tlačítek. Díky tomu nejsou vyvolány falešný stisky při změně prostředí, která může způsobovat pozvolnou změnu kapacity. Funkce get\_raw\_data\_btn berejako parametr 
 index tlačítka a vrátí hodnotu kapacity tlačítka přímo z registru čipu AT42QT1070. Funkce is\_touched\_btn přebírá jako parametr index tlačítka a vrací informaci o tom, zda je tlačítko stisknuto 
 či nikoli.  
@@ -622,13 +628,24 @@ stránky. Telefon byl připojen k vytvořené WiFi síti a poté byl přesměrov
 
 
 %celkovy popis FW
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.75]{obrazky/blokove_schema_modu_PLAY.png}
-  \end{center}
-  \caption[Blokové schéma herního módu]{Blokové schéma herního módu.}
-\end{figure}
 
+\section{Celková funkce}
+Univerzální modul po zapnutí nastaví všechno GPIO na vstupní nebo výstupní dne potřeby, případně zapne softwarové pullup rezistory. Poté je načtena konfigurace z permamentní paměti. V té je uložena poslední hra 
+i s její konfigurací. Pokud je Univerzální modul spouštěn poprvé, tak je načtena výchozí přednastavená hra s nějakou konfigurací. Zároveň je tato konfigurace uložena do permanentní paměti. Po dalším startu 
+Univerzálního modulu pak bude z permanentní paměti načítána poslední konfigurace. 
+
+Poté je nastaven odpočet doby, po kterou může být přepnut Univerzální modul do konfiguračního módu. Tento čas je nastaven proto, aby se při hře nemohlo omylem stát, že by byl Univerzální modul přepnut do 
+konfiguračního módu, protože do tohoto módu se přechází kombinací stisknutých tlačítek. 
+
+Univerzální modul pak přechází do herního módu. V herním módu je neustále dokola spouštěna hra, která byla nastavena v konfiguraci. Zároveň, pokud ještě nevypršel čas, do kdy je možné přejít do režimu konfigurace, tak 
+je kontrolováno, zda není stisknuta kombinace tlačítek, kterou je zapnut konfigurační mód. V každém cyklu je také čten stav tlačítek. Tato funkce je důležitá pro správné vyhodnocování stisku kapacitních tlačítek. 
+
+Pokud jsou na Univerzálním modulu stisknuta tlačítka "UP" a "DOWN" současně, tak je Univerzální modul přepnut do konfiguračního módu. Tento mód je signalizován blikáním všech LED modrou barvou. V tomto módu je zapnuta WiFi a server. Na 
+tuto WiFi se lze připojit telefonem nebo notebookem. Po připojení k WiFi a napsání IP adresy Univerzálního modulu je načtena webová stránka s konfiguračním menu Univerzálního modulu. Po nastavení parametrů dané hry a stisku 
+tlačítka pro spuštění dnaé hry je konfigurace sdílena pomocí WiFi. Konfigurace je tak k dispozici ke stažení pro další Univerzální moduly, které jsou v blízkosti konfigurovaného Univerzálního modulu a neuběhl u nich daný čas o jejich 
+startu. Následně je server i WiFi vypnuta a Univerzální modul přechází zpět do herního módu. Je spuštěna hra, která byla nakonfigurována. Konfigurace této hry je uložena do permanentní paměti.
+
+%předělat, aby to nebylo dolů, ale doprava
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[scale=0.75]{obrazky/blokove_schema_modu_CONFIGURATION.png}
@@ -636,30 +653,44 @@ stránky. Telefon byl připojen k vytvořené WiFi síti a poté byl přesměrov
   \caption[Blokové schéma konfiguračního módu]{Blokové schéma konfiguračního módu.}
 \end{figure}
 
+Pokud je dostupná WiFi jiného Univerzálního modulu, tak je Univerzální modul připojen na tuto WiFi a snaží se z ní stáhnout novou konfiguraci. Pokud se podaří konfiguraci stáhnout, tak je zapnuta hra s konfigurací,
+která byla stažena z WiFi jiného Univerzálního modulu. Konfigurace této hry je uložena do permanentní paměti. Stažení nové konfigurace je signalizováno půlvteřinovým probliknutím všech LED modrou barvou. 
+
+Přepnutí do konfiguračního módu nebo stažení konfigurace z jiného Univerzálního modulu je možné pouze 5 minut po zapnutí. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.75]{obrazky/blokove_schema_modu_PLAY.png}
+  \end{center}
+  \caption[Blokové schéma herního módu]{Blokové schéma herního módu.}
+\end{figure}
+
+
+\chapter{Software}
 
 \chapter{Hry a jejich metodika}
 
 \section{Odpočítávadlo}
 %o hře - k čemu je možno využít
-\underline{Funkce Semaforu ve hře:}
+\underline{Funkce Univerzálního modulu ve hře:}
 
 V konfiguraci je nastavena délka časového limitu. Poté je vysvícena dvanáctina času, který zbývá do konce časového limitu. Stisknutím prostředního tlačítka je odpočet zastaven. 
 Zastavení času je signalizováno blikáním daného počtu LED červenou barvou. Opětovným stiskem prostředního tlačítka odpočet pokračuje. 
 
 \section{Vábnička}
 %o hře
-\underline{Funkce Semaforu ve hře:}
+\underline{Funkce Univerzálního modulu ve hře:}
 
 Hru Vábnička lze hrát ve třech režimech. Nastavení režimu probíhá v konfiguračním menu. 
 
 Režimy hry Vábnička: 
 \begin{itemize} 
-  \item Boční tlačítka mají charakter barev jednotlivých týmů. Po zmáčknutí daného tlačítka se Semafor rozsvítí danou barvou. 
-  \item Středové tlačítko slouží pro přepnutí barvy na náhodnou jinou barvu, než kterou Semafor svítil do teď.  
+  \item Boční tlačítka mají charakter barev jednotlivých týmů. Po zmáčknutí daného tlačítka se Univerzální modul rozsvítí danou barvou. 
+  \item Středové tlačítko slouží pro přepnutí barvy na náhodnou jinou barvu, než kterou Univerzální modul svítil do teď.  
   \item Středové tlačítko slouží pro přepnutí barvy na následující barvu, která je aktuálně v pořadí. 
 \end{itemize}	
-V konfiguraci lze také zapnout probíhání kontroly, aby jednotlivé Semafory nikdy nesvítily všechny stejnou barvou. Alespoň jeden Semafor musí svítit jinou barvou než ostatní. 
-K tomu slouží komunikace mezi jednotlivými Semafory.
+V konfiguraci lze také zapnout probíhání kontroly, aby jednotlivé Univerzální moduly nikdy nesvítily všechny stejnou barvou. Alespoň jeden Univerzální modul musí svítit jinou 
+barvou než ostatní. K tomu slouží komunikace mezi jednotlivými Univerzálními moduly.
 
 \section{Pán hory}
 Hra Pán hory spočívá v délce času, jak dlouho který tým na hoře panuje. Každý tým musí doběhnout na horu a stisknout tlačítko svého týmu. Poté se počítá čas jeho týmu na úkor 
@@ -667,7 +698,7 @@ ostatních. Cílem je držet horu co nejdéle v rámci herního času. Hra je pr
 
 Na počátku hry je čas všech týmů držení hory stejný. 
 
-\underline{Funkce Semaforu ve hře:}
+\underline{Funkce Univerzálního modulu ve hře:}
 
 Jednotlivá boční tlačítka reprezentují barvy jednotlivých týmů a po stisku daného tlačítka se zahajuje přidávání času pro daný tým na úkor ostatních týmů. Kruh LED vždy svítí celý 
 a barvy v něm jsou rozděleny právě v poměru časů držení hory daných týmů. Středové tlačítko slouží pro zastavení času. Žádný tým se nikam neposouvá. Boční LED slouží pro zobrazení 
@@ -676,21 +707,85 @@ barvy týmu, který je aktuálně pánem hory. Počet týmů je nastavován v ko
 \section{Semafor}
 Jde o naprogramování funkce klasického dopravního semaforu. 
 
-\underline{Funkce Semaforu ve hře:}
+\underline{Funkce Univerzálního modulu ve hře:}
 Kruh je rozdělen na třetiny a každá třetina svítí jednou z barev klasického dopravního semaforu. Délka trvání jednotlivých stavů je náhodná v rozsahu 10 – 60 sekund. 
 
+%předchozí kapitola tam nebude, je nahrazena kapitolou Módy a využití
 
-\chapter{Software}
-%konkrétní hry 
+\chapter{Módy a využití}
+V této kapitole jsou popsány jednotlivé módy, které byly pro Univerzální modul vyvinuty, jako příklad využití tohoto zařízení. Všechny parametry, které dané módy přebírají, jsou zadávány 
+v rámci nastavení na konfigurační webové stránce.
+
+\section{Klasický semafor}
+Tento herní mód přebírá jako parametry minimální a maximální čas změny barvy svícení. 
+
+Na začátku hry se s pravděpodobností 0,5 rozsvítí všechny LED zelenou nebo červenou barvou. Následně je nastaven odpočet času, který je náhodný v rozmezí minimálního a maximálního času změny. 
+Po uplynutí tohoto času svítí na polovině LED žlutá barva. Na druhé polovině zůstává původní barva. Tento stav trvá 2 sekund. Následně se všechny LED přepnout do opačné barvy než byla původní. 
+Pokud tedy v prvním stavu svítily všechny LED červeně, tak nyní budou svítit zeleně a naopak. Tento stav bude opět aktivní po náhodně dlouhou dobu v rozmezí minimálního a maximálního času. Poté 
+opět následuje stav, kdy jedna polovina LED zůstává stejná a druhá svítí žlutou barvou. Tento stav opět trvá 2 sekundy. Tato funkce se neustále opakuje. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.7]{obrazky/Klasicky_semafor_diagram.png}
+  \end{center}
+  \caption[Blokové schéma herního módu Klasický semafor]{Blokové schéma herního módu Klasický semafor.}
+\end{figure}
+
+Tento mód nahrazuje instruktora při omezování aktivit účastníků v různých herních prvcích. Může sloužit jako omezovač přístupu k surovinám ve strategických hrách, jako brána města, která se zavírá 
+a otvírá a zamezuje nebo povoluje přístup k tržišti. Osvědčuje se jako faktor náhody při časově omezených úkolech, například oběh hřiště. V tomto módu mohou také Univerzální moduly náhodně řídit 
+přístup do tzv. domečků - bezpečných zón, kde se lze ukrýt před útoky ostatních týmů v bojových hrách.
+
+\section{Odpočítávání}
+Tento herní mód přebírá jako parametr čas k odpočtu.
+
+Hra je odstartována zmáčknutím středového tlačítka. Tím je spuštěn odpočet času, který byl předán tomuto módu jako parametr. V tuto chvíli všechny LED svítí zelenou barvou a postupně, po uplynutí každé 
+dvanáctiny času, se přepne jedna LED na červenou. Pokud zbývá z nastaveného času poslední minuta, tak se všechny dosud zeleně svítící LED přepnou do žluté barvy a blikají v intervalu 5 sekund po dobu jedné 
+sekundy. Po uplynutí natstaveného času všechny LED svítí červeně. 
+Po stisku středového tlačítka je odpočet znovu nastaven a celá funkčnost se opakuje.  
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.65]{obrazky/Odpocitavani_diagram.png}
+  \end{center}
+  \caption[Blokové schéma herního módu Odpočítávání]{Blokové schéma herního módu Odpočítávání.}
+\end{figure}
+
+Univerzální modul v tomto módu může plně nahrazovat instruktora, který hlídá penalizaci hráčů, kteří mají strávit trestný čas mimo hru. Po spuštění se jim odpočítává penalizace, aniž by na místě musel 
+někdo nastavovat stopky. Toto je velmi důležitou součástí výchovy k fair-play. Univerzální modul může omezovat využitelnost herního místa nebo prvku. Například představovat odpočet do zasypání chodby, 
+exploze výbušniny, nebo odjezdu vlaku. Opět platí, že se snižuje náročnost na instruktory, protože se herní místa mohou zavírat bez jejich přičinění, paralelně, nebo ve velkých vzdálenostech od sebe. 
+Ve strategické hře tak například mohou simulovat postupné zavírání zdrojů surovin a přesouvat tak hru v herním prostoru.
+
+\section{Vábnička}
+Tento herní mód přebírá jako parametr počet možných barev svícení a zda má být posloupnost barev náhodná či nikoli.
+
+Po prvním stisku se náhodně rozsvítí jedna z možných barev. Pokud je náhodnost zakázána, tak se po každém stisku středového tlačítka rozsvítí Univerzální modul barvou, která v sekvenci následuje. Pokud 
+je náhodnost povolena, tak se Univerzální modul rozsvítí náhodně vygenerovanou barvou, ne však barvou, kterou svítí. V obou případech jako jedna z barev figuruje barva černá, tj. nesvítí. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.75]{obrazky/Vabnicka_diagram.png}
+  \end{center}
+  \caption[Blokové schéma herního módu Vábnička]{Blokové schéma herního módu Vábnička.}
+\end{figure}
+
+Univerzální modul v tomto módu může sloužit jako vizuálně atraktivní, nebo v noci použitelná, hrací kostka. V náhodném střídání barev může fungovat jako omezovač průběhu herním prostorem s podmínkou 
+vlastnění klíče ve stejné barvě. V přesném střídání barev může fungovat jako stopa posledního hráče. Hráč přepne Univerzální modul na svou barvu a dává tak na vědomí, že nikdo z jeho týmu nemůže na 
+stejné herní lokaci provádět herní úkony, dokud některý z jiných týmů Univerzální modul nepřepne. Pro účely nočních her to řeší omezující pravidlo - na stejném stanovišti nesmí herní mechaniku použít 
+stejný tým dvakrát za sebou. Odsud jméno módu - vábí k truhle s pokladem všechny, krom vysvíceného týmu.
+
+
+
+
 
 
 
 \chapter{Voděodolnost}
 %podkapitolu prototyp
 Pro zajištění voděodolnosti byl zvolen obal z průhledného silikonu. Do silikonu je DPS zalita, proto musela být navržena forma pro následné odlití. V následující části je popsán postup 
-návrhu formy a následná výroba silikonového pouzdra. Nejdříve byl celý proces otestován na prototypových DPS: Po odladění bylo vše překresleno podle finální verze DPS a byly zapouzdřeny
-i finální verze univerzálního modulu.  
+návrhu formy a následná výroba silikonového pouzdra. Nejdříve byl celý proces otestován na prototypových DPS. Po odladění bylo vše překresleno podle finální verze DPS a byly zapouzdřeny
+i finální verze Univerzálního modulu.  
 
+\section{Prototyp}
 Nejprve byl vyexportován z programu KiCad 3D model celé DPS včetně všech součástek, které měly 3D model již z interní knihovny. Pro součástky, které neměly 3D model a zároveň byly důležité 
 pro výsledný vzhled pouzdra, byly 3D modely dokresleny v programu SolidWorks. Pouzdra byla kreslena bez větších detailů. S přesností byla kreslena pouze kritická místa, kde součástka ovlivňuje 
 rozměry pouzdra nebo kde musí procházet pouzdrem až na povrch.
@@ -699,7 +794,7 @@ rozměry pouzdra nebo kde musí procházet pouzdrem až na povrch.
 %ukázka celé DPS - 3D model  
 
 Následně byl nakreslen model pouzdra, jak by mělo vypadat bez vložené DPS. Poté byla vytvořena sestava, kde byla DPS již vložené v pouzdře. Z pouzdra musely vyčnívat součásti, které nesmí být 
-zality v silikonu. Nesmí být zalit USB konektor, prostřednictvím něhož je modul napájen a programován, dále vypínač a piezo, protože by jinak nemohlo vydávat zvuk. 
+zality v silikonu. Nesmí být zalit USB konektor, prostřednictvím něhož je Univerzální modul napájen a programován, dále vypínač a piezo, protože by jinak nemohlo vydávat zvuk. 
 %ukázka DPS + obalu
 
 Z takto vytvořeného modelu byla vytvořena forma. Byl nakreslen válec, který byl z každé strany o 3 mm větší než DPS s obalem. Poté byl použit nástroj "Kombinovat", který umožnil odečtení vytvořeného 
@@ -717,31 +812,34 @@ se při vstřikování silikonu po naplnění formy dostane silikon. Při proces
 Forma na silikonový obal byla vytištěna na FMD 3D tiskárně. Nemohla být použita 3D tiskárna typu SLA, protože resin, ze kterého se v SLA tiskárnách tiskne, zabraňuje tuhnutí použitého typu silikonu. 
 %fotka vytisknuté formy
 
-Před zalitím modulu do formy byly pomocí epoxidové pryskyřice zalepeny boční otvory v konektoru USB-C, aby silikon nevtekl těmito otvory dovnitř a neucpal tak tento konektor. 
-%jaký typ silikonu je využit - na jaké bázi, jaké jsou jiné možnosti, výhody použitého typu 
+Před zalitím Univerzálního modulu do formy byly pomocí vteřinového lepidla zalepeny boční otvory v konektoru USB-C, aby silikon nevtekl těmito otvory dovnitř a neucpal tak tento konektor. DPS byla 
+vložena do formy, utěsněna tavným lepidlem a stlačena pomocí svorek.
 
-Byl umíchán silikon z XXX v poměru 1:1. Pomocí stříkačky byl vtlačen silikon XXX. 
-Tvrdnutí této silikonové směsi trvalo XXX. 
+%jaký typ silikonu je využit - na jaké bázi, jaké jsou jiné možnosti, výhody použitého typu 
+Byl použit dvousložkový průhledný silikon GMS A30, který se míchá v poměru 1:1 \cite{silikon}. Pomocí stříkačky byl silikon vtlačen do formy. Díky tomu, že otvor byl ve spodní části formy a zásobník 
+nahoře, tak hladina postupně stoupala a nemohlo dak dojít ke vzniku vzduchových kapes. Až byl naplněn i vrchní zásobník, tak byl nátlakový otvor ucpán, aby silikon nevytekl. Tuhnutí tohoto silikonu 
+při pokojové teplotě trvalo asi 5 hodin \cite{silikon}. Tuhnutí silikonu vyvolává exotermní reakci a zmenšuje se tak jeho objem. Proto byl postupně to vrchního zásobníku přidávám silikon, aby byl 
+Univerzální modul zalit celý. 
 %fotka výsledného prototypu i s obalem
 
-%podkapitolu finalni verze
+\section{Finální verze}
 
+%do příloh
 \chapter{Uživatelský manuál}
-Po zapnutí Semaforu vypínačem je načtena poslední hraná hra. 
+Univerzální modul je zapnut pomocí posuvného vypínače. Zapnutí je indikováno rozsvícením LED uprostřed Univerzálního modulu. Při zapínání Univerzálního modulu nesmí být stisknuto žándé tlačítko. Po zapnutí je načtena 
+poslední hraná hra. 
 
-Po dobu XXX je možné přepnout modul do konfiguračního módu. Tento mód je k dispozici pomocí současného stisku tlačítek XXX. Konfigurační mód signalizován XXX. Po zapnutí tohoto módu je zapotřebí telefon 
+Po dobu XXX je možné přepnout Univerzální modul do konfiguračního módu. Tento mód je k dispozici pomocí současného stisku tlačítek XXX. Konfigurační mód signalizován XXX. Po zapnutí tohoto módu je zapotřebí telefon 
 nebo notebook, který má možnost připojit se k WiFi síti. V zařízení je zapotřebí najít WiFi síť s názvem XXX. Připojení proběhne po zadání hesla XXX. Po připojení k této WiFi síti přejďete do internetového 
 vyhledávače. Do něj napište XXX. 
 
-Zobrazí se webová stránka s konfiguračním menu modulu. Zde si můžete najít konkrétní hru i s jejím popisem. Pokud lze u dané hry nastavit nějaké parametry, jako je například počet hrajících týmů apod., tak 
-jsou u této hry místa, kam lze daný parametr vyplnit. Pro nastavení dané hry stiskněte tlačítko dané hry. V tuto chvíli se spustí daná hra na nastavovaném modulu a zároveň na všech modulech, které jsou v danou
-chvíli zapnuty, v blízkosti konfigurovaného modulu a neuběhl u nich čas XXX od jejich zapnutí. 
+Zobrazí se webová stránka s konfiguračním menu Univerzálního modulu. Zde si můžete najít konkrétní hru i s jejím popisem. Pokud lze u dané hry nastavit nějaké parametry, jako je například počet hrajících týmů apod., tak 
+jsou u této hry místa, kam lze daný parametr vyplnit. Pro nastavení dané hry stiskněte tlačítko dané hry. V tuto chvíli se spustí daná hra na nastavovaném Univerzálním modulu a zároveň na všech Univerzálních modulech, 
+které jsou v danou chvíli zapnuty, v blízkosti konfigurovaného Univerzálního modulu a neuběhl u nich čas XXX od jejich zapnutí. 
 
-Tímto způsobem lze konfigurovat až 9 modulů současně. 
+Tímto způsobem lze konfigurovat až 9 Univerzálních modulů současně. 
 
-Krátký popis funkce modulu v jednotlivých hrách je popsána na konfigurační webové stránce. 
-
-\section{Funkce modulu v jednotlivých hrách}
+Krátký popis funkce Univerzálního modulu v jednotlivých hrách je popsána na konfigurační webové stránce. 
 
 
 
