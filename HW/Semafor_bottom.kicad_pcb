@@ -2646,6 +2646,11 @@
       (net 1 "Board_0-+3V3") (pinfunction "C") (pintype "passive") (tstamp 1086d048-3243-4586-bfaa-42d45648c095))
     (pad "4" thru_hole circle (at 2.225 0 335) (size 1.8 1.8) (drill 0.9) (layers *.Cu *.Mask) (tstamp 87a801bf-efaf-467e-91e7-37c90827f647))
     (pad "5" thru_hole circle (at -2.225 0 335) (size 1.8 1.8) (drill 0.9) (layers *.Cu *.Mask) (tstamp 8febdff5-f10b-405e-8db9-f40cfe7265c3))
+    (model "D:/School/FEKT/Magisterske/Diplomka/Semafor/forma_na_silikon/soucastky/Vypinac.STEP"
+      (offset (xyz 0 3 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz -90 0 0))
+    )
   )
 
   (footprint "Resistor_SMD:R_0603_1608Metric" (layer "F.Cu")
