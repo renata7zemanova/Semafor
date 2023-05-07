@@ -5,12 +5,20 @@ na tom vše ostatní.
 \section{Bezdrátová technologie}
 Ke komunikaci Univerzálních modulů mezi sebou byla zvolena technologie LoRa a pro bezdrátovou konfiguraci Univerzálních modulů byla zvolena technologie WiFi. 
 
+\subsection{WiFi}
+Pro bezdrátovou konfiguraci byla vybrána WiFi technologie, protože ji má k dispozici každý ve svém telefonu a notebooku. Zároveň ji každý laik umí základně ovládát. Jedná se 
+o~rozšířenou technologii. 
+Propojení bude tedy jednoduché a nastavování her může probíhat na webové stránce, kde bude seznam her, které Univerzální modul umí. U~jednotlivých her se poté budou moci nastavovat 
+další parametry. Po nastavení se konfigurace pošle právě pomocí WiFi do Univerzálního modulu. Některé mikrokontroléry mají WiFi zabudovanou, takže jedním z kritérií pro výběr 
+mikrokontroléru se stala právě WiFi, která musí být jeho součástí. 
+
 \subsection{LoRa}
- Tato technologie byla zvolena především kvůli komunikačnímu dosahu. Jedná se sice o~dražší technologii, 
-ale na tolik, aby ji nebylo možné v~tomto zařízení použít. Táborové hry se většinou hrají na loukách, které mají rozlohu několik stovek metrů čtverečných. LoRa je jedinou
-dostupnou technologií, která na tyto vzdálenosti spolehlivě komunikuje. Bezdrátové propojení Univerzálních modulů bude použito pro posílání informací o~aktuálně svítící 
-barvě, či stisku tlačítka v~závislosti na hře, která se aktuálně hraje. U~některých her například může být žádoucí, aby po přepínání nesvítily všechny Univerzální moduly 
-stejnou barvou a díky této komunikaci bude moci být takovým stavům zabráněno. 
+Tato technologie byla zvolena především pro možnost rozšíření využití Univerzálního modulu. Pro toto využití byla vybrána technologie LoRa především kvůli komunikačnímu dosahu. 
+Může být využita pro komunikaci Univerzálních modulů mezi sebou. Mohou si tak předávat informace například o aktuálně svítící barvě nebo o stisknutých tlačítkách. Využití je
+závislé na konkrétní aktivitě. U některých her může být například žádoucí, aby po přepínání nesvítily všechny Univerzální moduly stejnou barvou a díky této komunikaci bude moci 
+být takovým stavům zabráněno. Jedná se sice o~dražší technologii, 
+ale ne na tolik, aby ji nebylo možné v~tomto zařízení použít. Outdoorové aktivity se většinou odehrávají na prostranství, která mají velkou rozlohu. LoRa je jedinou
+dostupnou technologií, která na velké vzdálenosti spolehlivě komunikuje.  
 
 Byl vybrán bezdrátový LoRa modul E22-900T22D od firmy EBYTE. Tento modul komunikuje s mikrokontrolérem pomocí UART sběrnice \cite{LoRa_ebyte}. Jeho napájecí napětí je od 
 2,1 V do 5,5 V a komunikační napětí je 3,3 V \cite{LoRa_ebyte}. Rozsah komunikačních frekvencí bezdrátového modulu E22-900T22D je 850,125 MHz až 930,125 MHz a ve výchozím 
@@ -51,22 +59,14 @@ provozován pouze v normálním režimu, a proto jsou piny M0 a M1 připojeny k 
 
 %obrazek se zapojenim LoRa modulu
 
-\subsection{WiFi}
-K~propojení Univerzálního modulu s~telefonem a dalšími zařízeními byla vybrána technologie WiFi. Jedná se o~rozšířenou technologii, která je v~telefonech a noteboocích zabudovaná. 
-Propojení bude tedy jednoduché a nastavovat hry se mohou na webové stránce, kde bude seznam her, které Univerzální modul umí. U~jednotlivých her se poté budou moci nastavovat 
-další parametry. Po nastavení se konfigurace pošle právě pomocí WiFi do Univerzálního modulu. Některé mikrokontroléry mají WiFi zabudovanou, takže jedním z kritérií pro výběr 
-mikrokontroléru se stala právě WiFi, která musí být jeho součástí. 
-
 \section{Mikrokontrolér}
-WiFi modul obsahuje jako jediný mikrokontrolér od firmy Espressif z~řady ESP32. Konkrétně jde o~typ ESP32-C3-MINI-1, dále již jen ESP32-C3. Je také nabízen za cenu, která 
+WiFi modul obsahují mikrokontroléry od firmy Espressif z~řady ESP32. Vybrán byl typ ESP32-C3-MINI-1, dále již jen ESP32-C3. Tento mikrokontrolér je nabízen za cenu, která 
 je v~porovnání s~ostatními nízká a v~porovnání s~nabízenými parametry bezkonkurenční. Pro zařízení Univerzálního modulu je také se svým počtem periferií dostačující. ESP32-C3 má 
 384 kB ROM a 4 MB flash paměti \cite{ESP_C3_dtsh}. Dále obsahuje WiFi modul pracující na frekvenci 2,4 GHz a Bluetooth \cite{ESP_C3_dtsh}. ESP32-C3 obsahuje mnoho periferií
 jako je SPI, UART, $I^2C$, USB a další \cite{ESP_C3_dtsh}. Mikrokontrolér má vyvedeno 13 GPIO pinů, které je možno softwarově nastavit jako vstupní nebo výstupní. Tyto piny
-slouží pro připojení senzorů, díky kterým je zprostředkována komunikace mezi mikrokontrolérem a okolním světem. V~mikrokontroléru je také zabudován krystal s~vlastní frekvencí 
+slouží pro připojení senzorů, díky kterým je zprostředkována komunikace mezi mikrokontrolérem a okolním prostředím. Na pinech GPIO0, GPIO1, GPIO2, GPIO3, GPIO4 a GPIO5 jsou 
+k dispozici AD převodníky \cite{ESP_C3_tech_ref}. V~mikrokontroléru je také zabudován krystal s~vlastní frekvencí 
 40 MHz a v~rámci pouzdra je také anténa pro WiFi \cite{ESP_C3_dtsh}.
-
-Rozsah napájecího napětí je 3~až 3,6~V~\cite{ESP_C3_dtsh}. Jeho maximální proudový odběr je 0,5~A~\cite{ESP_C3_dtsh}. Mikrokontrolér ESP32-C3 garantuje pracovní teplotu 
-od -45~°C až do 85~°C \cite{ESP_C3_dtsh}.
 
 \begin{figure}[!h]
   \begin{center}
@@ -75,18 +75,14 @@ od -45~°C až do 85~°C \cite{ESP_C3_dtsh}.
   \caption[Blokové schéma mikrokontroléru ESP32-C3]{Blokové schéma mikrokontroléru ESP32-C3 \cite{ESP_C3_dtsh}.}
 \end{figure}
 
-K~pinu 3V3, který slouží pro připojení napájecího napětí jsou také připojeny kondenzátory o~hodnotě 10 $\mu$F a 100 nF dle doporučení z~dokumentace \cite{ESP_C3_dtsh}. Tyto 
+Rozsah napájecího napětí je 3~až 3,6~V~\cite{ESP_C3_dtsh}. Jeho maximální proudový odběr je 0,5~A~\cite{ESP_C3_dtsh}. Mikrokontrolér ESP32-C3 garantuje pracovní teplotu 
+od -45~°C až do 85~°C \cite{ESP_C3_dtsh}.
+
+K~pinu 3V3, který slouží pro připojení napájecího napětí, je připojeno bateriové napětí, a také jsou k němu připojeny kondenzátory o~hodnotě 10 $\mu$F a 100 nF dle doporučení z~dokumentace \cite{ESP_C3_dtsh}. Tyto 
 kondenzátory slouží pro filtraci napájecího napětí, aby bylo vyfiltrováno případné rušení o~různých frekvencích.
 
 Pin EN slouží pro povolení funkce mikrokontroléru. Tento pin nesmí zůstat nezapojený, tzv. floating. Jeho zapojení je převzato z~dokumentace, tj. pullup rezistor o~hodnotě 
 10 k$\Omega$ a ke GND je připojen přes kondenzátor o~hodnotě 1 $\mu$F \cite{ESP_C3_dtsh}.
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.5]{obrazky/ESP32-C3.png}
-  \end{center}
-  \caption[Schéma zapojení mikrokontroléru ESP32-C3]{Schéma zapojení mikrokontroléru ESP32-C3.}
-\end{figure}
 
 ESP32-C3 má konfigurační piny, které slouží při restartu pro určení, odkud bude načten program pro mikrokontrolér. Tyto piny musí být při restartu v~daném nastavení. 
 Konfiguračními piny jsou GPIO2, GPIO8 a GPIO9. Piny GPIO8 a GPIO9 nesmí být nikdy nastaveny současně do logické nuly. 
@@ -113,6 +109,19 @@ Konfiguračními piny jsou GPIO2, GPIO8 a GPIO9. Piny GPIO8 a GPIO9 nesmí být 
 Protože bude využito programování přes USB piny D+ a D-, tak není zapotřebí načtení z~bootloaderu a je tedy zapotřebí všechny konfigurační piny při restartu připojit do 
 logické jedničky. Do logické jedničky lze připojit přes pullup rezistor. Pullup rezistory má sběrnice $I^2C$, takže na GPIO8 a GPIO9 byla připojena právě sběrnice $I^2C$.
 Pin GPIO2 nebyl využit pro připojení žádného senzoru, a proto byl připojen přes pullup rezistor o~hodnotě 10 k$\Omega$ k~napájecímu napětí.
+
+Na pin GPIO4 je připojeno měření napětí na baterii. Na tomto pinu je k dispozici AD převodník s hodnotou referenčního napětí XXX \cite{ESP_C3_tech_ref}. Hodnota rezistorového 
+děliče byla tedy přizpůsobena tomuto rozsahu možného měřeného napětí. 
+
+Na piny GPIO18 a GPIO19 je možné připojení pinů D+ a D-, takže USB piny byly připojeny k mikrokontroléru napřímo bez použití jakéhokoli převodníku \cite{ESP_C3_dtsh}. Díky 
+tomu také mohou být piny sériové linky RX a TX využity pro připojení LoRa modulu E22-900T22D.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.5]{obrazky/ESP32-C3.png}
+  \end{center}
+  \caption[Schéma zapojení mikrokontroléru ESP32-C3]{Schéma zapojení mikrokontroléru ESP32-C3.}
+\end{figure}
 
 \section{Napájení}
 Zabudování baterie přináší kompaktnost řešení a pro použití není třeba dalších komponent. Pokud je ale na táboře větší využití, tak se baterie vybije.
@@ -328,6 +337,13 @@ srovnatelný. Cívka CDRH3D18NP-4R7NC má feritové jádro, které je pro funkci
 1A a její indukčnost by měla být 4,7 $\mu$H nebo 10 $\mu$H \cite{LT1930_dtsh}. Vybraná cívka má indukčnost 4,7 $\mu$H, proud, který jí může protékat, je 1,35 A~a její rozměry 
 jsou 3,8 $\times$ 3,8 $\times$ 2 mm \cite{civka_dtsh}.
 
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.7]{obrazky/LT1930.png}
+  \end{center}
+  \caption[Zapojení zvyšovače napětí LT1930]{Zapojení zvyšovače napětí LT1930.}
+\end{figure}
+
 Pin FB slouží  pro zapojení zpětné vazby napětí na baterii. Jeho referenční napětí musí být nastaveno v~rozmezí 1,240~V až 1,270 V, typická hodnota je však 1,255~V \cite{LT1930_dtsh}. 
 Pro výstupní napětí 5 V~byl zvolen rezistor R10 o~hodnotě 13 k$\Omega$ z~rezistorové řady E24 \cite{rezistorova_rada}. Řada E24 byla zvolena kvůli požadované přesnosti
 napětí na pinu FB obvodu LT1930. Napětí na rezistoru R10 musí být tedy 1.255 V. Na rezistoru R9 je tedy úbytek napětí 3,745 V. Pomocí trojčlenky byla dopočítána hodnota 
@@ -355,13 +371,6 @@ Přesné výstupní napětí se spočítá podle vzorce:
 \label{eq:VOUT_LT1930}
 \end{equation}
 
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.7]{obrazky/LT1930.png}
-  \end{center}
-  \caption[Zapojení zvyšovače napětí LT1930]{Zapojení zvyšovače napětí LT1930.}
-\end{figure}
-
 \section{Zvuková signalizace}
 Zvuková signalizace může sloužit například pro potvrzení správnosti hesla, možnosti odejít na další stanoviště, vypršení času pro daný úkol a mnoho dalších. 
 
@@ -376,7 +385,7 @@ je 2,3 kHz \cite{piezo_dtsh}. Intenzita zvuku pieza je ve vzdálenosti 10 cm od 
 \end{figure}
 
 \section{Konektor}
-Jako programovací konektor byl zvolen konektor USB-C. Tento konektor je v~dnešní době velmi rozšířený a jeho použití se v~následující době stále rozšiřuje. 
+Jako programovací a zároveň nabíjecí konektor byl zvolen konektor USB-C. Tento konektor je v~dnešní době velmi rozšířený a jeho použití se v~následující době stále rozšiřuje. 
 
 Konektoru USB-C je využíván pouze jako standardní a dostupný konektor, který je mezi běžnou
 populací rozšířený a v~následujících letech se bude rozšiřovat stále více. Je využito standardního jmenovitého napětí 5 V~pro nabíjení baterií a nadále pinů D+ a D-, 
@@ -431,10 +440,7 @@ zapojeno dle následujícího blokového schématu.
 Byl zvolen kruhový tvar desky s průměrem téměř 15 cm a s výběžkem USB-A pro připojení powerbanky. Deska plošného spoje byla navržena v programu KiCad 6.0 a má 2 vrstvy mědi. 
 Některé součástky jsou natočeny tak, aby byly co nejvíce na kraji kulaté DPS.
 
-Komunikační dráhy jsou vedeny o tloušťce 0,150 mm a napájecí dráhy jsou vedeny o tloušťce 0,5 mm. 
-
-Výrobní podklady byly vygenerovány pomocí programu Kikit. Deska byla vyrobena u firmy JLCPCB, protože je bezkonkurenčně nejlevnější a její dodání je rychlé a bezproblémové. 
-Jejich výrobky také dosahují vysoké kvality. 
+Komunikační dráhy jsou vedeny o tloušťce 0,150 mm a napájecí dráhy jsou vedeny o tloušťce 0,5 mm. Celý návrh byl přizpůsoben výrobním možnostem firmy JLCPCB, kde byla DPS vyrobena.
 
 \section{Kapacitní tlačítka} 
 Byl požadavek na 5 tlačítek. Jedno tlačítko je uprostřed a slouží jako hlavní tlačítko. U her bude používáno např. jako registrace průchodu místem apod. Bude tedy nejčastěji
@@ -472,7 +478,12 @@ je provedeno dle doporučení z dokumentace.
 
 Komunikační piny D+ a D- pro programování jsou taženy jako diferenciální pár.
 
-\section{Osazení, oživení a testování DPS}
+\chapter{Osazení, oživení a testování DPS}
+Výrobní podklady byly vygenerovány pomocí programu Kikit. Deska byla vyrobena u firmy JLCPCB, protože je bezkonkurenčně nejlevnější a její dodání je rychlé a bezproblémové. 
+Jejich výrobky také dosahují vysoké kvality. 
+
+%fotka vyrobené DPS
+
 DPS byla taktéž strojově osazena u firmy JLCPCB. Z důvodu nedostupnosti některých součástek byly některé komponenty zakoupeny v jiných obchodních řetězcích a doosazeny ručně. 
 Jednalo se o držák na baterie, piezo, kondenzátor C3 v pouzdře 0805 o hodnotě 100 $\mu$F, čip pro kapacitní tlačítka AT42QT1070, vypínač a LoRa modul. 
 
@@ -481,7 +492,7 @@ označení polarity. Do finální verze bylo tedy přidáno do popisové vrstvy 
 propojka. Na místo LoRa modulu byly připájeny dutinky a LoRa modul byl pouze zasunut do dutinek. Hlavním důvodem byla cena tohoto modulu. LoRa modul bude z prototypu přesunut 
 na finální výrobek a nedojde tak k plýtvání součástek ani peněz.
 
-\subsection{Oživení}
+\section{Oživení}
 Po připájení všech součástek byla do pouzdra vložena baterie LiFePO4 a DPS byla pomocí propojky zapnuta. Po zapnutí DPS se rozsvítila LED indikující přítomnost napětí 3,3 V. 
 Po připojení konektoru USB-C s napájecím napětím se rozsvítila i LED indikující napětí 5 V. Také se rozsvítila červená LED indikující nabíjení baterie. Baterie byla pod dohledem 
 nabíjena v DPS. Nedošlo k zahřátí DPS ani baterie a po čase se u nabíjecího obvodu rozsvítila místo červené LED zelená LED. Tato LED indikuje plně nabitou baterii. Na plně nabité 
@@ -494,7 +505,7 @@ a do finální verze byla chyba opravena. Byla vyměněna schématická značka 
 
 Po opravě již mělo napájecí napětí pro inteligentní LED hodnotu 5 V. Díky tomu bylo zjištěno, že zvyšovač napětí funguje správně. 
 
-\subsection{Testování}
+\section{Testování}
 DPS byla naprogramována a komunikace mezi počítačem a mikrokontrolérem proběhla bezproblémově. Byl napsán testovací SW pro programovatelné LED 
 a další periferie. Díky tomu mohly být otestovány programovatelné LED. Všechny inteligentní LED bylo možné rozsvítit různými barvami, takže jsou plně funkční. Byla otestování funkčnost 
 zapojení pieza a vibračního motoru. Obě zapojení byla funkční. 
@@ -665,9 +676,6 @@ Přepnutí do konfiguračního módu nebo stažení konfigurace z jiného Univer
   \caption[Blokové schéma herního módu]{Blokové schéma herního módu.}
 \end{figure}
 
-
-\chapter{Software}
-
 \chapter{Hry a jejich metodika}
 
 \section{Odpočítávadlo}
@@ -691,24 +699,6 @@ Režimy hry Vábnička:
 \end{itemize}	
 V konfiguraci lze také zapnout probíhání kontroly, aby jednotlivé Univerzální moduly nikdy nesvítily všechny stejnou barvou. Alespoň jeden Univerzální modul musí svítit jinou 
 barvou než ostatní. K tomu slouží komunikace mezi jednotlivými Univerzálními moduly.
-
-\section{Pán hory}
-Hra Pán hory spočívá v délce času, jak dlouho který tým na hoře panuje. Každý tým musí doběhnout na horu a stisknout tlačítko svého týmu. Poté se počítá čas jeho týmu na úkor 
-ostatních. Cílem je držet horu co nejdéle v rámci herního času. Hra je pro 2 až 4 týmy. 
-
-Na počátku hry je čas všech týmů držení hory stejný. 
-
-\underline{Funkce Univerzálního modulu ve hře:}
-
-Jednotlivá boční tlačítka reprezentují barvy jednotlivých týmů a po stisku daného tlačítka se zahajuje přidávání času pro daný tým na úkor ostatních týmů. Kruh LED vždy svítí celý 
-a barvy v něm jsou rozděleny právě v poměru časů držení hory daných týmů. Středové tlačítko slouží pro zastavení času. Žádný tým se nikam neposouvá. Boční LED slouží pro zobrazení 
-barvy týmu, který je aktuálně pánem hory. Počet týmů je nastavován v konfiguračním menu. 
-
-\section{Semafor}
-Jde o naprogramování funkce klasického dopravního semaforu. 
-
-\underline{Funkce Univerzálního modulu ve hře:}
-Kruh je rozdělen na třetiny a každá třetina svítí jednou z barev klasického dopravního semaforu. Délka trvání jednotlivých stavů je náhodná v rozsahu 10 – 60 sekund. 
 
 %předchozí kapitola tam nebude, je nahrazena kapitolou Módy a využití
 
@@ -823,24 +813,6 @@ Univerzální modul zalit celý.
 %fotka výsledného prototypu i s obalem
 
 \section{Finální verze}
-
-%do příloh
-\chapter{Uživatelský manuál}
-Univerzální modul je zapnut pomocí posuvného vypínače. Zapnutí je indikováno rozsvícením LED uprostřed Univerzálního modulu. Při zapínání Univerzálního modulu nesmí být stisknuto žándé tlačítko. Po zapnutí je načtena 
-poslední hraná hra. 
-
-Po dobu XXX je možné přepnout Univerzální modul do konfiguračního módu. Tento mód je k dispozici pomocí současného stisku tlačítek XXX. Konfigurační mód signalizován XXX. Po zapnutí tohoto módu je zapotřebí telefon 
-nebo notebook, který má možnost připojit se k WiFi síti. V zařízení je zapotřebí najít WiFi síť s názvem XXX. Připojení proběhne po zadání hesla XXX. Po připojení k této WiFi síti přejďete do internetového 
-vyhledávače. Do něj napište XXX. 
-
-Zobrazí se webová stránka s konfiguračním menu Univerzálního modulu. Zde si můžete najít konkrétní hru i s jejím popisem. Pokud lze u dané hry nastavit nějaké parametry, jako je například počet hrajících týmů apod., tak 
-jsou u této hry místa, kam lze daný parametr vyplnit. Pro nastavení dané hry stiskněte tlačítko dané hry. V tuto chvíli se spustí daná hra na nastavovaném Univerzálním modulu a zároveň na všech Univerzálních modulech, 
-které jsou v danou chvíli zapnuty, v blízkosti konfigurovaného Univerzálního modulu a neuběhl u nich čas XXX od jejich zapnutí. 
-
-Tímto způsobem lze konfigurovat až 9 Univerzálních modulů současně. 
-
-Krátký popis funkce Univerzálního modulu v jednotlivých hrách je popsána na konfigurační webové stránce. 
-
 
 
 

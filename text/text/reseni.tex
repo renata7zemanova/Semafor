@@ -1,8 +1,8 @@
 \chapter{Motivace}
-Proč jsem se rozhodla vytvořit univerzální modul pro podporu týmových her? 
+Proč jsem se rozhodla vytvořit Univerzální modul pro podporu týmových her? 
 
 Již několik let vedu pobytové letní tábory. Snad každý vedoucí tábora to zná, celý den je zapotřebí na hlídání dětí pár organizátorů 
-a pak najednou chcete udělat stezku odvahy, noční hru nebo velkou závěrečnou hru. Jenže na to máte organizátorů málo, a tak hledáte lidi, 
+a pak najednou chcete udělat stezku odvahy, noční hru nebo velkou závěrečnou hru. Jenže na to máte málo organizátorů, a tak hledáte lidi, 
 kteří by vám přijeli pomoct na jeden konkrétní den nebo večer. Ten člověk má pak za úkol někde celou noc sedět a jen dětem předávat 
 informaci, kam mají dál jít, nebo mu děti předají nějaký kód a on jim na základě správnosti předá další informace, kam a jak postupovat. 
 
@@ -19,24 +19,24 @@ dětství, proto je táborové prostředí velmi vhodným a zároveň možná tr
 
 Technika je budoucnost lidstva a svět bude potřebovat čím dál více lidí, kteří se jí zabývají a rozumí jí. Na to je ale zapotřebí pro ně děti 
 nadchnout. Je zapotřebí dětem ukázat, že technika může být zábavná, že se s ní dají dělat zajímavé věci a že nemá místo jen v průmyslu, ale může 
-mít zastoupení i na takových místech, jako jsou dětské tábory.  
+mít zastoupení i na takových místech, jako jsou dětské tábory a outdoorové aktivity.  
 
 Poslední důvod pro tvorbu tohoto zařízení je školství. V dnešní době prochází výuka informatiky velkou reformou a většina učitelů tak sahá po 
 edukačních jezdících robotech, které se žáci učí programovat. S tímto zařízením by se žáci mohli snadno učit programování na základě „wow efektu“. 
 Stačí 2 příkazy a rozsvítí se LED, pak mohou přidat ovládání LED pomocí tlačítka atd. Žáci tedy poznají zase jiný způsob programování, a také, že 
 se nemusí programovat pouze jezdící roboti. Zároveň je možné modul naprogramovat a vytvořit z něj pomocníka do dalších předmětů, např. pro rozvoj 
-logického myšlení. Je možné jej také využit pro hru v rámci adaptačních kurzů. 
+logického myšlení. Je možné jej také využít pro hru v rámci adaptačních kurzů. 
 
 Myšlenkou je tedy vytvořit jednoduchý a zároveň univerzální hardware, který se bude moci rozvíjet po softwarové stránce a díky tomu bude mít velkou 
 oblast využití. 
 
 
 \chapter{Rešerše elektronických komponent}
-Základní návrh se skládá především z~výběru bezdrátové komunikace, která je důležitou součástí Univerzálního modulu. Díky ní budou moci Univerzální 
-moduly komunikovat mezi sebou, takže si například budou moci předávat informace o~barvě, kterou svítí, nebo o~stisku tlačítek apod. 
+Základní návrh se skládá především z~výběru bezdrátové komunikace, která je důležitou součástí Univerzálního modulu. Díky ní budou moci být Univerzální 
+moduly bezdrátově konfigurovány a nastavování tka bude pro obsluhu jednodušší. 
 
 Další nedílnou součástí je mikrokontrolér, který řídí veškerou činnost každého Univerzálního modulu. U~Univerzálního modulu je také nutné řešit způsob napájení,
-takže i to je součástí návrhu.
+takže i to je součástí návrhu. Musí být vrána v úvahu délka her i outdoorové využití, kde se mohou provozní podmínky hodně měnit. 
 
 Celkový návrh obsahuje také výběr senzorů doteku, zvukových a vizuálních signalizací a případných potřebných převodníků. 
 
@@ -47,6 +47,7 @@ Celkový návrh obsahuje také výběr senzorů doteku, zvukových a vizuálníc
   \caption[Základní blokové schéma Univerzálního modulu]{Základní blokové schéma Univerzálního modulu.}
 \end{figure}
 
+%přepsat
 \section{Bezdrátová komunikace}
 Použití na táborech a outdoorových akcích vyřadilo z~výběru drátovou komunikaci. K~DPS by muselo být ještě velké množství kabelů 
 o~délce několika stovek metrů. Bezdrátová komunikace je z~tohoto hlediska velmi praktická. Je to také moderní řešení 
@@ -188,8 +189,8 @@ Výhody bezdrátové technologie ZigBee jsou \cite{ZigBee_smart}:
 Nevýhodou je nutnost centrálního rozbočovače \cite{ZigBee_smart}.
 
 \section{Světelná signalizace}
-Jedním z~nejdůležitějších požadavků na Univerzální modul bylo, aby mohl svítit. Čím více možností jak svítit, tím bude využití při hrách a táborových 
-programech různorodější. Pro světelnou signalizaci se nejvíce hodí použití LED. LED se výrabí programovatelné a neprogramovatelné. 
+Jedním z~nejdůležitějších požadavků na Univerzální modul bylo, aby mohl svítit. Čím více možností jak svítit, tím bude využití při 
+outdoorových aktivitách větší a různorodější. Pro světelnou signalizaci se nejvíce hodí použití LED. LED se výrabí programovatelné a neprogramovatelné. 
 
 Neprogramovatelné LED jsou běžné LED, které mají 2 vývody - katodu a anodu. Barva LED je dána výrobou a každá LED má pouze jednu 
 barvu. Přiložením daného prahového napětí na diodu v~propustném směru se LED rozsvítí danou barvou. Velikost prahového napětí je dána
@@ -201,7 +202,7 @@ Programovatelné LED mají datový vstup a napájecí napětí není závislé n
 Barva je určována programem, taktéž její jas. To tedy znamená, že je zapotřebí je řídit 
 pomocí MCU. Programovatelné LED typu WS2812C lze také spojovat za sebe, takže jsou všechny potřebné LED připojeny k~jednomu pinu 
 MCU \cite{WS2812C_dtsh}. Každá LED má pin pro vstupní napětí, GND, vstupní datový pin a výstupní datový pin. Typ inteligentních LED 
-WS2812C je vhodný pro bateriová zařízení. Oproti častěji používanému typu WS2812B mají 3~$\times$~ menší spotřebu elektrické energie. 
+WS2812C je vhodný pro bateriová zařízení. Oproti častěji používanému typu WS2812B mají 3$\times$~menší spotřebu elektrické energie. 
 Napájecí napětí těchto LED by se mělo pohybovat v~rozmezí 4,5 až 5,5 V~\cite{WS2812C_dtsh}. 
 
 \section{Senzor doteku}
@@ -298,7 +299,7 @@ možné softwarově upravovat v~závislosti na aktuálních dlouhodobějších s
 Pro odlišení tlačítek může být místo označeno například barevným potiskem. 
 
 \section{Napájení}
-Vzhledem k~použití Univerzálních modulů při hrách na táborech byly možné pouze 2 způsoby napájení, pomocí powerbanky nebo baterií. 
+Vzhledem k~použití Univerzálních modulů při outdoorových aktivitách byly možné pouze 2 způsoby napájení, pomocí powerbanky nebo baterií. 
 
 Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Požadavkem je také možnost nabíjení. Při použití na táboře by jinak musely být stále 
 nové baterie v~balení a musely by se neustále doplňovat a udržovat.
@@ -389,7 +390,7 @@ Výhody LiFePO4 baterií jsou \cite{LiFePO4_smart}:
   \item bez využití toxických prvků.
 \end{itemize}
 
-
+%dopsat 
 \section{Mikrokontrolér}
 Mikrokontrolér je hlavním prvkem každého zařízení včetně Univerzálního modulu. Mikrokontrolérů existuje nespočetné množství od mnoha výrobců a při výběru je nutno brát v~potaz
 množství požadovaných parametrů a požadované periferie. 
@@ -400,7 +401,6 @@ Cenu mikrokontroléru určuje především počet periferií, počet GPIO pinů 
 
 Známými výrobci mikrokontrolérů jsou Microchip, Motorola, NXP nebo \\STMicroelectronics. 
 
-\newpage
 Faktory ovlivňující výběr řídicího mikrokontroléru:
 \begin{itemize}
   \item dostatečný počet GPIO pinů,

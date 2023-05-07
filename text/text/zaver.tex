@@ -2,21 +2,22 @@
 \phantomsection
 \addcontentsline{toc}{chapter}{Závěr}
 %přizpůsobit zadání 
-Tato práce se zabývá návrhem zařízení Semafor, které slouží jako doplněk pro táborové hry a také pro edukační účely. Byla navržena kompletní 
-elektronika potřebná pro funkce, které má Semafor splňovat. 
+Tato práce se zabývá návrhem zařízení Univerzálního modulu, které slouží jako doplněk pro outdoorové aktivity, a také pro edukační účely. Byla navržena kompletní 
+elektronika potřebná pro funkce, které má Univerzální modul poskytovat. 
 
-V~první části jsou rozebrány možnosti použitých komponent, které mohou být využity při výrobě Semaforu. Následně jsou z~výběru použity 
-nejvhodnější komponenty dle periferií, ceny i možností použití v~outdoorových aplikacích.
-Pro komunikaci Semaforů mezi sebou je připojen LoRa modul, který zajišťuje komunikaci na dostatečnou vzdálenost při použití na táborech. 
+V~první části jsou rozebrány možnosti použitých komponent, které mohou být využity při výrobě Univerzálního modulu. Následně jsou z~výběru použity 
+nejvhodnější komponenty dle periferií, ceny i možností použití v~outdoorových aplikacích. Pro bezdrátové nastavení byla zvolena konfigurace pomocí telefonu nebo 
+notebooku. Proto byla vybrána WiFi technologie, která je v těchto zařízeních již zabudována. Konfigurace Univerzálního modulu pak probíhá na vytvořené webové stránce. 
+Pro možnou komunikaci jednotlivých Univerzálních modulů mezi sebou je připojen LoRa modul E22-900T22D, který zajišťuje komunikaci na dostatečnou vzdálenost při použití 
+v outdoorovém prostředí. 
 
-Výsledné schéma je přiloženo v~příloze. 
+Bylo vytvořeno schéma zapojení elektroniky pro Univerzální modul, které se skládá z~mikrokontroléru ESP32-C3 ve verzi s~anténou a LoRa modulu pro 
+bezdrátovou komunikaci jednotlivých Univerzálních modulů mezi sebou. Napájení je realizováno pomocí baterie LiFePO4 a~USB-C konektoru pomocí powerbanky. Baterie 
+jsou nabíjeny pomocí nabíjecího obvodu CN3058E. Komunikace s~okolním světem je zajištěna kapacitními tlačítky, 
+vibračním motorem, piezem a programovatelnými LED typu WS2812C. Výsledné schéma zapojení elektroniky Univerzálního modulu je přiloženo v~příloze. 
 
-Pro konfiguraci her, např. nastavení, která hra se hraje a s~jakými parametry, slouží kapacitní dotyková tlačítka a do budoucna bude také 
-vytvořena webová stránka, ke které se bude připojovat pomocí WiFi. Konfigurace bude probíhat na vytvořené webové stránce. 
+Byla navržena, vyrobena a osazena DPS Univerzálního modulu. 
 
-Bylo vytvořeno schéma zapojení elektroniky pro Semafor, které se skládá z~mikrokontroléru ESP32-C3 ve verzi s~anténou a LoRa modulu pro 
-bezdrátovou komunikaci mezi jednotlivými Semafory. Napájení je realizováno pomocí baterie LiFePO4 a~USB konektoru pomocí powerbanky. Baterie 
-jsou nabíjeny pomocí nabíjecího obvodu CN3058E a konektoru USB-C nebo USB-A. Komunikace s~okolním světem je zajištěna kapacitními tlačítky, 
-vibračním motorem, piezem a inteligentními LED typu WS2812C. Mikrokontrolér ESP32-C3 nemá kapacitní vstupy, a proto je použit převodník AT42QT1070.
-Pro napájení inteligentních LED je využit převodník napětí LT1930. 
+Pro Univerzální modul byl také vytvořen základní firmware, který usnadňuje uživatelům programování tohoto zařízení. Byly také vytvořeny 3 herná módy, které slouží jako ukázka 
+využití Univerzálního modulu. 
 
