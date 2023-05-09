@@ -49,38 +49,14 @@ Celkový návrh obsahuje také výběr senzorů doteku, zvukových a vizuálníc
 
 %přepsat
 \section{Bezdrátová komunikace}
-Použití na táborech a outdoorových akcích vyřadilo z~výběru drátovou komunikaci. K~DPS by muselo být ještě velké množství kabelů 
-o~délce několika stovek metrů. Bezdrátová komunikace je z~tohoto hlediska velmi praktická. Je to také moderní řešení 
-náležící dnešní době. 
-
-Jedním ze základních požadavků bylo, že jednotlivé DPS mezi sebou musí být schopny komunikovat. Proto byl nejdříve vybrán komunikační 
-protokol a následně k~němu přizpůsoben hardware. 
+Bezdrátová komunikace bude primárně využita pro konfiguraci Univerzálního modulu. Je zapotřebí nastavit konkrétní mód, ve kterém bude při dané 
+aktivitě Univerzální modul pracovat, a také případné parametry daného módu. Dále je také možné pomocí bezdrátové komunikace propojit jednotlivé 
+Univerzální moduly mezi sebou. Mohou spolu tak při některých aktivitách komunikovat a předávat si informace, např. o stisknutých tlačítkách, nebo 
+o svítící barvě. Tato funkcionalita rozšíří možnosti využití tohoto zařízení. Bezdrátová komunikace je z~tohoto hlediska velmi praktická. 
 
 Práce tedy započala tím, že byla udělána rešerše existujících bezdrátových komunikačních protokolů a následně byly tyto protokoly 
-mezi sebou porovnány. Vzhledem k~použití na outdoorových akcích byl kladem důraz na komunikační vzdálenost, náročnost na výkon 
+mezi sebou porovnány. Vzhledem k~použití na outdoorových akcích byl kladem důraz na komunikační vzdálenost, náročnost na výkon, cenu, 
 a také na dostupnost. 
-
-Dalším požadavkem bylo bezdrátové nastavování, tedy připojení k~Univerzálnímu modulu např. přes telefon a odeslání konfigurace. Nastavení hry,
-která se hraje a např. čas, jak dlouho se bude hrát, nebo v~kolika týmech, je tedy zapotřebí také dělat bezdrátově. 
-
-\subsection{WiFi}
-Komunikace pomocí WiFi sítě je jednou z~nejznámějších a nejpoužívanějších bezdrátových komunikací užívaných širokou veřejností. 
-WiFi je dnes na každém pracovišti, na veřejných místech i v~každé domácnosti. Využívána je především pro připojení k~internetu. 
-Přes WiFi lze přenášet velké objemy dat vysokou rychlostí. Pracuje v~pásmech v~okolí frekvencí 2,4 GHz a 5,0 GHz s~dosahem 
-desítek až nižších stovek metrů \cite{Bezdrat_muni}. 
-
-Výhody bezdrátové technologie WiFi jsou \cite{Bezdrat_muni}:
-\begin{itemize}
-  \item pracuje v~bezlicenčním pásmu, 
-  \item levná, 
-  \item velmi rozšířená.
-\end{itemize}
-
-Nevýhody jsou \cite{Bezdrat_muni}:
-\begin{itemize}
-  \item omezený výkon (není možné pokrýt rozsáhlejší oblasti), 
-  \item vyšší spotřeba energie.
-\end{itemize}
 
 \subsection{Bluetooth}
 Bluetooth je také velmi rozšířenou technologií bezdrátové komunikace. Používá se na přenos dat na krátké vzdálenosti. V~dnešní době 
@@ -99,6 +75,27 @@ Nevýhody jsou \cite{Bezdrat_muni}:
 \begin{itemize}
   \item krátký dosah,
   \item možnost propojení pouze 2 zařízení.
+\end{itemize}
+
+\subsection{LoRa}
+LoRa je technologie, která moduluje data do elektomagnetických vln na fyzické vrstvě (rádio) umožňující komunikaci na velké vzdálenosti \cite{LoRa_eman}. 
+
+LoRaWAN je komunikační protokol a architektura celé sítě \cite{LoRa_eman}. Je vhodná pro komunikaci mezi pohybujícími se předměty a její komunikace je 
+zabezpečená \cite{LoRa_eman}. Tato síť má topologii hvězdy a pracuje v~bezlicenčním pásmu \cite{LoRa_eman}. V~České republice je povolená frekvence v~pásmu 
+okolo 868~MHz zdarma.
+
+LoRa je technologie vyvinutá primárně pro IoT, takže je bezpečná a spolehlivá \cite{LoRa_IoT_PORT}. Zajišťuje také připojení na velkou vzdálenost (20~km na 
+volném prostranství a~2~km v~zastavěné oblasti) \cite{LoRa_IoT_PORT}. LoRa je také vyvinutá pro bateriová zařízení, takže je energeticky úsporná a na baterie
+ vydrží zařízení až 10 let \cite{LoRa_IoT_PORT}.
+
+Výhody bezdrátové technologie LoRa jsou \cite{LoRa_IoT_PORT}:
+\begin{itemize}
+  \item bezlicenční pásmo,
+  \item spolehlivost,
+  \item komunikace na velké vzdálenosti,
+  \item obousměrná komunikace,
+  \item dobrý poměr cena/výkon,
+  \item energeticky úsporná.
 \end{itemize}
 
 \subsection{NFC}
@@ -145,27 +142,24 @@ Nevýhody jsou \cite{Sigfox_cz}:
   \item omezený počet zpráv na den.
 \end{itemize}
 
-\subsection{LoRa}
-LoRa je technologie, která moduluje data do elektomagnetických vln na fyzické vrstvě (rádio) umožňující komunikaci na velké vzdálenosti \cite{LoRa_eman}. 
+\subsection{WiFi}
+Komunikace pomocí WiFi sítě je jednou z~nejznámějších a nejpoužívanějších bezdrátových komunikací užívaných širokou veřejností. 
+WiFi je dnes na každém pracovišti, na veřejných místech i v~každé domácnosti. Využívána je především pro připojení k~internetu. 
+Přes WiFi lze přenášet velké objemy dat vysokou rychlostí. Pracuje v~pásmech v~okolí frekvencí 2,4 GHz a 5,0 GHz s~dosahem 
+desítek až nižších stovek metrů \cite{Bezdrat_muni}. 
 
-LoRaWAN je komunikační protokol a architektura celé sítě \cite{LoRa_eman}. Je vhodná pro komunikaci mezi pohybujícími se předměty a její komunikace je 
-zabezpečená \cite{LoRa_eman}. Tato síť má topologii hvězdy a pracuje v~bezlicenčním pásmu \cite{LoRa_eman}. V~České republice je povolená frekvence v~pásmu 
-okolo 868~MHz zdarma.
-
-LoRa je technologie vyvinutá primárně pro IoT, takže je bezpečná a spolehlivá \cite{LoRa_IoT_PORT}. Zajišťuje také připojení na velkou vzdálenost (20~km na 
-volném prostranství a~2~km v~zastavěné oblasti) \cite{LoRa_IoT_PORT}. LoRa je také vyvinutá pro bateriová zařízení, takže je energeticky úsporná a na baterie
- vydrží zařízení až 10 let \cite{LoRa_IoT_PORT}.
-
-Výhody bezdrátové technologie LoRa jsou \cite{LoRa_IoT_PORT}:
+Výhody bezdrátové technologie WiFi jsou \cite{Bezdrat_muni}:
 \begin{itemize}
-  \item bezlicenční pásmo,
-  \item spolehlivost,
-  \item komunikace na velké vzdálenosti,
-  \item obousměrná komunikace,
-  \item dobrý poměr cena/výkon,
-  \item energeticky úsporná.
+  \item pracuje v~bezlicenčním pásmu, 
+  \item levná, 
+  \item velmi rozšířená.
 \end{itemize}
 
+Nevýhody jsou \cite{Bezdrat_muni}:
+\begin{itemize}
+  \item omezený výkon (není možné pokrýt rozsáhlejší oblasti), 
+  \item vyšší spotřeba energie.
+\end{itemize}
 
 \subsection{ZigBee}
 ZigBee technologie je používána pro vytvoření malých sítí, kde může signál snadno přeskakovat z~jednoho zařízení na druhé \cite{ZigBee_smart}.
@@ -311,63 +305,6 @@ bez možnosti výměny uživatelem.
 
 Z~nabíjecích baterií je možno vybírat z~olověných baterií, Ni-MH, Li-Ion, Li-Pol a LiFePO4 baterií.
 
-\subsection{Olověné baterie}
-Maximální životnost olověné baterie je 300 až 400 cyklů \cite{LiFePO4_malina}. Nominální hodnota jednoho článku jsou 2 V~\cite{olovene}. Jejich výroba je oproti
-lithiovým bateriím velmi nenáročná \cite{olovene}. Jejich kapacita je závislá na konkrétním typu baterie \cite{olovene}. Tyto baterie jsou schopny dodávat vysoké
-rázové proudy \cite{akumulatory}. Olověné akumulátory jsou velké a~těžké a pro přenosná zařízení se tedy spíše nehodí. Hlavní nevýhodou je, že je potřeba je udržovat 
-neustále v~nabitém stavu \cite{olovene}. Její účinnost je závislá na odebíraném proudu a její životnost je závislá na teplotě \cite{olovene}. Mají dlouhou dobu 
-nabíjení a~obsahují toxické olovo, které je škodlivé pro životní prostředí \cite{olovene}. Olověné baterie se používají především v~automobilech jako startovací 
-baterie, v~zabezpečovacích systémech atd. \cite{olovene}.
-
-Výhody olověných baterií jsou \cite{olovene}:
-\begin{itemize}
-  \item cena,
-  \item bezpečnost provozu,
-  \item možnost recyklace,
-  \item spolehlivost. 
-\end{itemize}
-
-\subsection{Ni-MH}
-Baterie Ni-MH mají jmenovité napětí 1,2 V~a jejich životnost je cca 1000 nabíjecích cyklů \cite{akumulatory}. Tyto akumulátory je zapotřebí před prvním použití, nebo po 
-dlouhém nepoužívání, tzv. naformátovat \cite{akumulatory}. 
-Jedná se o~pozvolné nabíjení s~nízkým nabíjecím proudem \cite{akumulatory}. Pro optimální použití je také doporučeno baterii nabít nejpozději 2~hodiny před použitím, aby se 
-snížil vnitřní odpor Ni-MH baterie \cite{akumulatory}.
-
-Výhody Ni-MH baterií jsou \cite{akumulatory}:
-\begin{itemize}
-  \item cena,
-  \item malé samovybíjení,
-  \item vysoká mechanická odolnost.
-\end{itemize}
-
-\subsection{Li-Pol}
-Li-Pol baterie poskytují vysoké nabíjecí proudy a vysokou kapacitu a jejich jmenovité napětí je 3,7 V~\cite{akumulatory}. Tyto baterie jsou citlivé na přesné nabití, a proto 
-je možné používat pouze nabíječky určené pro nabíjení těchto baterií \cite{akumulatory}. Tyto nabíječky mají také balancer \cite{akumulatory}. Při skladování je také nutné 
-udržovat nabití na 50 \% kapacity \cite{akumulatory}. Údržba takové baterie je proto velmi náročná a nehodí se do podobných zařízení, jako je tento Univerzální modul. Při 
-mechanickém poškození také hrozí požár těchto baterií \cite{akumulatory}.
-
-Výhody Li-Pol baterií jsou \cite{akumulatory}:
-\begin{itemize}
-  \item vysoké nabíjecí proudy, 
-  \item vysoká kapacita, 
-  \item nízké samovybíjení,
-  \item cena.
-\end{itemize}
-
-\subsection{Li-Ion}
-Jmenovité napětí Li-Ion baterie je 3,6 V~a její životnost je cca 2000 nabíjecích cyklů \cite{Li-Ion}. Tento typ baterie trpí tzv. stárnutím. Jde o~proces, kdy ztrácí 
-svoji kapacitu bez ohledu na používání \cite{Li-Ion}. Jejich kapacita je tedy závislá na reálném čase a na frekvenci používání. Jejich velkou nevýhodou je nebezpečí 
-výbuchu při špatné manipulaci, např. zkratu apod. \cite{Li-Ion}. 
-
-Výhody Li-Ion baterií jsou \cite{Li-Ion}:
-\begin{itemize}
-  \item nízká hmotnost,
-  \item malé rozměry,
-  \item vysoká kapacita,
-  \item rychlé nabíjení,
-  \item šetrné k~životnímu prostředí. 
-\end{itemize}
-
 \subsection{LiFePO4}
 LiFePO4 baterie mají jmenovité napětí v~rozsahu 3 až 3,3 V~\cite{LiFePO4_malina}. Její minimální provozní napětí je pak 2,5 V~a maximální je 3,65 V~\cite{LiFePO4_malina}.
 LiFePO4 je dnes baterie známá jako nejbezpečnější, nejspolehlivější a nejstabilnější baterie obsahující lithium \cite{LiFePO4_malina}. Je to nejvhodnější baterie pro 
@@ -390,16 +327,72 @@ Výhody LiFePO4 baterií jsou \cite{LiFePO4_smart}:
   \item bez využití toxických prvků.
 \end{itemize}
 
-%dopsat 
+\subsection{Li-Ion}
+Jmenovité napětí Li-Ion baterie je 3,6 V~a její životnost je cca 2000 nabíjecích cyklů \cite{Li-Ion}. Tento typ baterie trpí tzv. stárnutím. Jde o~proces, kdy ztrácí 
+svoji kapacitu bez ohledu na používání \cite{Li-Ion}. Jejich kapacita je tedy závislá na reálném čase a na frekvenci používání. Jejich velkou nevýhodou je nebezpečí 
+výbuchu při špatné manipulaci, např. zkratu apod. \cite{Li-Ion}. 
+
+Výhody Li-Ion baterií jsou \cite{Li-Ion}:
+\begin{itemize}
+  \item nízká hmotnost,
+  \item malé rozměry,
+  \item vysoká kapacita,
+  \item rychlé nabíjení,
+  \item šetrné k~životnímu prostředí. 
+\end{itemize}
+
+\subsection{Li-Pol}
+Li-Pol baterie poskytují vysoké nabíjecí proudy a vysokou kapacitu a jejich jmenovité napětí je 3,7 V~\cite{akumulatory}. Tyto baterie jsou citlivé na přesné nabití, a proto 
+je možné používat pouze nabíječky určené pro nabíjení těchto baterií \cite{akumulatory}. Tyto nabíječky mají také balancer \cite{akumulatory}. Při skladování je také nutné 
+udržovat nabití na 50 \% kapacity \cite{akumulatory}. Údržba takové baterie je proto velmi náročná a nehodí se do podobných zařízení, jako je tento Univerzální modul. Při 
+mechanickém poškození také hrozí požár těchto baterií \cite{akumulatory}.
+
+Výhody Li-Pol baterií jsou \cite{akumulatory}:
+\begin{itemize}
+  \item vysoké nabíjecí proudy, 
+  \item vysoká kapacita, 
+  \item nízké samovybíjení,
+  \item cena.
+\end{itemize}
+
+\subsection{Ni-MH}
+Baterie Ni-MH mají jmenovité napětí 1,2 V~a jejich životnost je cca 1000 nabíjecích cyklů \cite{akumulatory}. Tyto akumulátory je zapotřebí před prvním použití, nebo po 
+dlouhém nepoužívání, tzv. naformátovat \cite{akumulatory}. 
+Jedná se o~pozvolné nabíjení s~nízkým nabíjecím proudem \cite{akumulatory}. Pro optimální použití je také doporučeno baterii nabít nejpozději 2~hodiny před použitím, aby se 
+snížil vnitřní odpor Ni-MH baterie \cite{akumulatory}.
+
+Výhody Ni-MH baterií jsou \cite{akumulatory}:
+\begin{itemize}
+  \item cena,
+  \item malé samovybíjení,
+  \item vysoká mechanická odolnost.
+\end{itemize}
+
+\subsection{Olověné baterie}
+Maximální životnost olověné baterie je 300 až 400 cyklů \cite{LiFePO4_malina}. Nominální hodnota jednoho článku jsou 2 V~\cite{olovene}. Jejich výroba je oproti
+lithiovým bateriím velmi nenáročná \cite{olovene}. Jejich kapacita je závislá na konkrétním typu baterie \cite{olovene}. Tyto baterie jsou schopny dodávat vysoké
+rázové proudy \cite{akumulatory}. Olověné akumulátory jsou velké a~těžké a pro přenosná zařízení se tedy spíše nehodí. Hlavní nevýhodou je, že je potřeba je udržovat 
+neustále v~nabitém stavu \cite{olovene}. Její účinnost je závislá na odebíraném proudu a její životnost je závislá na teplotě \cite{olovene}. Mají dlouhou dobu 
+nabíjení a~obsahují toxické olovo, které je škodlivé pro životní prostředí \cite{olovene}. Olověné baterie se používají především v~automobilech jako startovací 
+baterie, v~zabezpečovacích systémech atd. \cite{olovene}.
+
+Výhody olověných baterií jsou \cite{olovene}:
+\begin{itemize}
+  \item cena,
+  \item bezpečnost provozu,
+  \item možnost recyklace,
+  \item spolehlivost. 
+\end{itemize}
+ 
 \section{Mikrokontrolér}
 Mikrokontrolér je hlavním prvkem každého zařízení včetně Univerzálního modulu. Mikrokontrolérů existuje nespočetné množství od mnoha výrobců a při výběru je nutno brát v~potaz
 množství požadovaných parametrů a požadované periferie. 
 Komunikační moduly pro bezdrátovou komunikaci se připojují nejčastěji pomocí $I^2C$ nebo UART rozhraní. Pro připojení zvukových a vibračních periferií jsou zapotřebí 
-GPIO piny.
+digitální GPIO piny a pro připojení analogových vstupů, např. měření napětí na baterii, jsou zapotřebí GPIO piny s AD převodníky. 
 
-Cenu mikrokontroléru určuje především počet periferií, počet GPIO pinů a~výpočetní výkon.
+Cenu mikrokontroléru určuje především počet periferií, počet GPIO pinů, velikost paměti a~výpočetní výkon.
 
-Známými výrobci mikrokontrolérů jsou Microchip, Motorola, NXP nebo \\STMicroelectronics. 
+Známými výrobci mikrokontrolérů jsou Microchip, Motorola, NXP, Espressif nebo \\STMicroelectronics. 
 
 Faktory ovlivňující výběr řídicího mikrokontroléru:
 \begin{itemize}
@@ -407,9 +400,7 @@ Faktory ovlivňující výběr řídicího mikrokontroléru:
   \item dostatek paměti,
   \item nízká spotřeba,
   \item WiFi,
-  \item ADC,
-  \item $I^2C$,
-  \item UART,
+  \item ADC, $I^2C$, UART,
   \item cena.
 \end{itemize}
 

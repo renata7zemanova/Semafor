@@ -110,11 +110,8 @@ Protože bude využito programování přes USB piny D+ a D-, tak není zapotře
 logické jedničky. Do logické jedničky lze připojit přes pullup rezistor. Pullup rezistory má sběrnice $I^2C$, takže na GPIO8 a GPIO9 byla připojena právě sběrnice $I^2C$.
 Pin GPIO2 nebyl využit pro připojení žádného senzoru, a proto byl připojen přes pullup rezistor o~hodnotě 10 k$\Omega$ k~napájecímu napětí.
 
-Na pin GPIO4 je připojeno měření napětí na baterii. Na tomto pinu je k dispozici AD převodník s hodnotou referenčního napětí XXX \cite{ESP_C3_tech_ref}. Hodnota rezistorového 
-děliče byla tedy přizpůsobena tomuto rozsahu možného měřeného napětí. 
-
-Na piny GPIO18 a GPIO19 je možné připojení pinů D+ a D-, takže USB piny byly připojeny k mikrokontroléru napřímo bez použití jakéhokoli převodníku \cite{ESP_C3_dtsh}. Díky 
-tomu také mohou být piny sériové linky RX a TX využity pro připojení LoRa modulu E22-900T22D.
+Na pin GPIO4 je připojeno měření napětí na baterii. Na tomto pinu je k dispozici AD převodník s nastavitelnou hodnotou referenčního napětí \cite{ESP_C3_tech_ref}. Hodnota 
+rezistorového děliče byla tedy přizpůsobena tomuto rozsahu možného měřeného napětí. 
 
 \begin{figure}[!h]
   \begin{center}
@@ -122,6 +119,12 @@ tomu také mohou být piny sériové linky RX a TX využity pro připojení LoRa
   \end{center}
   \caption[Schéma zapojení mikrokontroléru ESP32-C3]{Schéma zapojení mikrokontroléru ESP32-C3.}
 \end{figure}
+
+Na piny GPIO18 a GPIO19 je možné připojení pinů D+ a D-, takže USB piny byly připojeny k mikrokontroléru napřímo bez použití jakéhokoli převodníku \cite{ESP_C3_dtsh}. Díky 
+tomu také mohou být piny sériové linky RX a TX využity pro připojení LoRa modulu E22-900T22D.
+
+K pinu GPIO5 je připojen PMOS tranzistor, který spíná napájecí napětí některým periferiím, které mají vyšší spotřebu. Napájecí napětí tak může být odpojováno například v době,
+kdy je na baterii nízké napětí. Provozní doba Univerzálního modulu se tak proudlouží a nedojde tak k podvybití baterie a k jejímu možnému následnému poškození. 
 
 \section{Napájení}
 Zabudování baterie přináší kompaktnost řešení a pro použití není třeba dalších komponent. Pokud je ale na táboře větší využití, tak se baterie vybije.
@@ -136,12 +139,11 @@ převodník napětí.
 Napětí na baterii je měřeno pomocí děliče a připojeno na pin GPIO4, který má k~dispozici AD převodník \cite{ESP_C3_dtsh}. V~softwaru bude nastaven útlum na 0 dB, to 
 odpovídá rozsahu měřeného napětí od 0 do 700 mV \cite{ESP_C3_tech_ref}.
 Proto je napětí z~baterie pomocí rezistorového děliče převedeno na rozsah od 0 do 600 mV. Zde je pomocí AD převodníku napětí na baterii měřeno. Spodní rezistor děliče byl
-zvolen o~hodnotě 10 k$\Omega$ a druhý byl dopočítán na hodnotu 50 k$\Omega$ podle maximálního napětí baterií LiFePO4 3,6 V. Nejbližší hodnota rezistoru je 47 k$\Omega$
+zvolen o~hodnotě 10 k$\Omega$ a druhý byl dopočítán na hodnotu 50 k$\Omega$ podle maximálního napětí baterií LiFePO4, tj. 3,6 V. Nejbližší hodnota rezistoru je 47 k$\Omega$
 \cite{rezistorova_rada}. Tomu odpovídá maximální napětí na AD převodníku 0,63 V, což je stále v~možném měřeném rozsahu. 
 
 %tuhle větu upravit - přesunout někam 
-Při nízkém napětí baterie jsou softwarově odpojovány periferie a senzory od jejich napájecího napětí. Děje se tak pomocí pinu GPIO5, na který je připojen spínací 
-tranzistor.
+Při nízkém napětí baterie je díky měření možno softwarově zareagovat. Lze například odpojit napájecí napětí některým periferiím s vyšší spotřebou.
 
 \subsection{Nabíjecí obvod}
 Nabíjecí obvody jsou závislé na konkrétním typu baterií, které budou nabíjeny. Vzhledem k~vybranému typu baterií LiFePO4 byly uvažovány pouze komerčně
@@ -252,7 +254,14 @@ omezení elektrostatických výbojů a potlačení radiofrekvenčního rušení 
 
 Převodník má kondenzátory C3 a C4 připojeny na napájecím pinu vůči GND, aby nebyly případné proudové špičky přivedeny na napájení převodníku. Rezistory
 R17 a R18 slouží jako pullup rezistory při komunikaci pomocí sběrnice $I^2C$ s~mikrokontrolérem EP32-C3. Na piny KEY0 až KEY4 jsou připojena kapacitní 
-dotyková tlačítka.  
+dotyková tlačítka. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{obrazky/AT42QT1070.png}
+  \end{center}
+  \caption[Zapojení převodníku AT42QT1070 pro kapacitní tlačítka]{Zapojení převodníku AT42QT1070 pro kapacitní tlačítka.}
+\end{figure}
 
 Pin MODE je připojen k~signálu GND, protože převodník je provozován v~režimu komunikujícím přes $I^2C$ sběrnici \cite{conv_cap_but_AT42QT1070_dtsh}.
 
@@ -263,13 +272,6 @@ Pin KEY0 může být také využit pro tzv. ochrannou zónu \cite{conv_cap_but_A
 detekcím \cite{conv_cap_but_AT42QT1070_dtsh}. Tento pin je citlivější než ostatní \cite{conv_cap_but_AT42QT1070_dtsh}. Ochranná zóna by měla být také větší 
 než použitá tlačítka. Této funkce nebylo do prototypu DPS využito. 
 
-\begin{figure}[!h]
-    \begin{center}
-      \includegraphics[scale=0.4]{obrazky/AT42QT1070.png}
-    \end{center}
-    \caption[Zapojení převodníku AT42QT1070 pro kapacitní tlačítka]{Zapojení převodníku AT42QT1070 pro kapacitní tlačítka.}
-\end{figure}
-
 \section{Světelná signalizace}
 Pro realizaci signalizace přítomnosti napájecího napětí byly vybrány neprogramovatelné LED. Zelené LED byly vybrány dvě, jedna pro 
 indikaci přítomnosti napětí 5~V a druhá pro indikaci přítomnosti napětí 3,3 V~z~baterií. Tyto LED budou použity pouze na prototypu 
@@ -279,6 +281,13 @@ tzv. power LED by také mohla mást při hře nebo různých úkolech.
 Pro realizaci světelné signalizace pro hry byly vybrány inteligentní programovatelné LED typu WS2812C. Bylo jich použito 12, protože 
 z~dvanácti LED lze jednoduše zhotovit ciferník pro odpočítávání času a také je lze rozdělit na segmenty na třetiny nebo čtvrtiny. 
 
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/prevodnik_urovni_pro_WS2812C.png}
+  \end{center}
+  \caption[Zapojení převodníku úrovní pro WS2812C]{Zapojení převodníku úrovní pro WS2812C.}
+\end{figure} 
+
 Komunikační napěťová úroveň logické jedničky těchto LED by měla být alespoň na úrovni 70 \% napájecího napětí \cite{WS2812C_dtsh}. 
 Protože použitý mikrokontrolér ESP32-C3 má komunikační napěťovou úroveň logické jedničky jeho napájecí napětí, což je 3 až 3,6 V, 
 tak je zapotřebí využít převodník napěťové úrovně \cite{ESP_C3_dtsh}. Komunikace je v~tomto případě pouze jednosměrná, 
@@ -287,16 +296,9 @@ a~jedním pullup rezistorem. Rezistor je připojen k~napájecímu napětí intel
 Tranzistor Q1 má gate připojený k~napájecímu napětí MCU. Pokud bude mikrokontrolér do LED posílat logickou jedničku, tak bude rozdíl
 mezi gate a~source 0 V. Tím pádem bude tranzistor uzavřený a tím se přes rezistor R4 připojí k~LED jejich napájecí napětí. Toto napětí 
 je pro inteligentní LED logickou jedničkou. Pokud bude MCU posílat logickou nulu, tedy 0 V, tak je rozdíl napětí mezi gate a~source 
-napájecí napětí mikrokontroléru. Tranzistor je tedy otevřený a tím se napětí 0 V~dostane k~inteligentním LED a na rezistoru se objeví
+napájecí napětí mikrokontroléru. Tranzistor je tedy otevřený, a tím se napětí 0 V~dostane k~inteligentním LED a na rezistoru se objeví
 úbytek napětí o~velikosti napájecího napětí inteligentních LED. Napětí 0 V~je logickou nulou i pro inteligentní LED. Tento převodník
 je určen pouze pro komunikaci jedním směrem. 
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.6]{obrazky/prevodnik_urovni_pro_WS2812C.png}
-  \end{center}
-  \caption[Zapojení převodníku úrovní pro WS2812C]{Zapojení převodníku úrovní pro WS2812C.}
-\end{figure} 
 
 \begin{figure}[!h]
   \begin{center}
@@ -391,17 +393,17 @@ Konektoru USB-C je využíván pouze jako standardní a dostupný konektor, kter
 populací rozšířený a v~následujících letech se bude rozšiřovat stále více. Je využito standardního jmenovitého napětí 5 V~pro nabíjení baterií a nadále pinů D+ a D-, 
 které jsou využity pro komunikaci při programování. 
 
-Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k~tak častému poškození, jak by mohlo být např. u~konektoru Micro USB. Při používání běžnou veřejností
-se jedná o~vítaný bonus. 
-
-Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}.
-
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[scale=0.6]{obrazky/USB_C.png}
   \end{center}
   \caption[Zapojení konektoru USB-C]{Zapojení konektoru USB-C.}
 \end{figure}
+
+Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k~tak častému poškození, jak by mohlo být např. u~konektoru Micro USB. Při používání běžnou veřejností
+se jedná o~vítaný bonus. 
+
+Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}.
 
 \begin{figure}[!h]
   \begin{center}
@@ -430,9 +432,9 @@ zapojeno dle následujícího blokového schématu.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.65]{obrazky/vysledne_blokove_schema.jpg}
+    \includegraphics[scale=0.65]{obrazky/vysledne_blokove_schema.png}
   \end{center}
-  \caption[Výsledné blokové schéma Univerzálního modulu]{Výsledné blokové schéma Univerzálního modulu.}
+  \caption[Blokové schéma Univerzálního modulu]{Blokové schéma Univerzálního modulu.}
 \end{figure}
 
 
@@ -541,34 +543,48 @@ nastaven tak, aby komunikoval s dalšími Univerzálními moduly. Tyto chyby byl
 \chapter{Finální verze DPS}
 Finální verze DPS byla zmenšena na průměr 10 cm, protože DPS od firmy JLCPCB jsou mnohem levnější, když mají maximální rozměry 10$\times$10 cm. Také jejich skladovací nároky jsou mnohem  menší. 
 Kvůli tomuto zmenšení ale nebylo dost místa 
-kolem kapacitních tlačítek, aby nedocházelo k jejich rušení z okolních obvodů. Zároveň by musely být tlačítka moc blízko u sebe, takže by mohlo docházet k jejich přeslechům. Routování takové 
+kolem kapacitních tlačítek, aby nedocházelo k jejich rušení z okolních obvodů. Zároveň by musela být tlačítka moc blízko u sebe, takže by mohlo docházet k jejich přeslechům. Routování takové 
 DPS, aby dráhy nevedly v blízkosti kapacitních tlačítek ani pod nimi bylo takřka nemožné. Proto bylo přistoupeno k řešení 2 spojených DPS. Díky tomu mohly být obě DPS osazeny pouze z jedné strany,
 což ušetří další nemalé peníze. I při výrobě 2 kusů DPS o průměru 10 cm místo jedné velké byla cena výhodnější. Na spodní DPS je tedy veškerá řídicí elektronika a na vrchní DPS jsou pouze tlačítka 
-a programovatelné LED. Kolem kapacitních tlačítek byla také vytvořena tzv. ochranná zóna, která slouží pro lepší odstínění tlačítek od ostatních signálů. Tato zóna byla připojena k převodníku AT42QT1070 
-dle datasheetu na pozici prvního tlačítka - pin KEY0 \cite{conv_cap_but_AT42QT1070_dtsh}. 
+a programovatelné LED. Kolem kapacitních tlačítek byla také vytvořena tzv. ochranná zóna, která slouží pro lepší odstínění tlačítek od ostatních signálů \cite{conv_cap_but_AT42QT1070_dtsh}. Tato zóna 
+byla připojena k převodníku AT42QT1070 dle datasheetu na pozici prvního tlačítka - pin KEY0 \cite{conv_cap_but_AT42QT1070_dtsh}. 
 
 Po konzultaci bylo domluveno, že při napájení z baterie a možnosti napájení přes konektor USB-C není konektor USB-A zapotřebí. Rozměry DPS by se tím také opět zvětšily a výrobní náklady by tím 
 stouply. 
 
-Do finální verze byl také přidán fototranzistor, který bude následně využíván pro regulaci jasu programovatelných LED typu WS2812C. Fototranzistor byl připojen na GPIO01 mikrokontroléru ESP32-C3. Na tomto 
-pinu je k dispozici AD převodník \cite{ESP_C3_dtsh}. Byl vybrán fototranzistor s označením SMD3528C-50, který je citlivý na viditelné světlo. %citace https://jlcpcb.com/partdetail/Senba_SensingTech-SMD3528C50/C250859
-Tento fototranzistor byl umístěn také na vrchní DP. Dále byl také 
-přidán konektor pro připojení dalších programovatelných LED typu WS2812C, které budou na pásku, který bude připevněn po obvodu Univerzálního modulu. Tyto LED budou zajišťovat, aby Univerzální modul mohl svítit 
-nejen dopředu, ale i do stran. Tato funkcionalita opět rozšiřuje možnosti využití tohoto Univerzálního modulu. Na datový pin těchto programovatelných LED byl připojen do série rezistor, který zabraňuje zničení pinu 
-mikrokontroléru EPS32-C3, kdyby byly omylem zkratován s napájecím napětí. 
+Do finální verze byl také přidán fototranzistor, který bude následně využíván pro automatickou regulaci jasu programovatelných LED typu WS2812C. Fototranzistor byl připojen na GPIO01 mikrokontroléru ESP32-C3. Na tomto 
+pinu je k dispozici AD převodník \cite{ESP_C3_dtsh}. Byl vybrán fototranzistor s označením SMD3528C-50, který je citlivý na viditelné světlo \cite{Phototransistor}.
+Tento fototranzistor byl umístěn také na vrchní DPS. 
+%schéma zapojení fototranzistoru
 
-Bylo zapotřebí připojit k mikrokontroléru i piny M0, M1 a AUX od LoRa modulu E22-900T22D. Na mikrokontroléru ale nebylo již dostatek volných pinů a tak byl použit expander GPIO pinů. Vybraný expander
-PCA9536D umožňuje připojení 4 GPIO a zároveň komunikuje s mikrokontrolérem přes sběrnici $I^2C$. Pin AUX byl tedy připojen k mikrokontroléru přímo přes GPIO05 a piny M0 a M1 byly připojeny k GPIO0 
+Dále byl také 
+přidán konektor pro připojení dalších programovatelných LED typu WS2812C, které mohou být na pásku připevněném po obvodu Univerzálního modulu. Tyto LED mohou zajišťovat, aby Univerzální modul mohl svítit 
+nejen dopředu, ale i do stran. Tato funkcionalita opět rozšíří možnosti využití tohoto Univerzálního modulu. Na datový pin těchto programovatelných LED byl připojen do série ochranný rezistor, který 
+zabraňuje zničení pinu mikrokontroléru EPS32-C3, kdyby byly omylem zkratován s napájecím napětí. 
+
+Bylo zapotřebí připojit k mikrokontroléru i piny M0, M1 a AUX od LoRa modulu E22-900T22D. Na mikrokontroléru ale nebylo již dostatek volných GPIO pinů, a tak byl použit expander GPIO pinů. Vybraný expander
+PCA9536D umožňuje připojení 4 GPIO a zároveň komunikuje s mikrokontrolérem přes sběrnici $I^2C$ \cite{expander}. Pin AUX byl tedy připojen k mikrokontroléru přímo přes GPIO05 a piny M0 a M1 byly připojeny k GPIO0 
 a GPIO1 expanderu. Protože byly ještě volné GPIO piny na expanderu, bylo realizováno ještě samostatné vypínání napájení programovatelných LED, protože i když tyto LED nesvítí, tak mají stále spotřebu 
-0,3 mA na jednu LED \cite{WS2812C_dtsh}. při bateriově napájení aplikaci je to stále nemalý proud, a proto byl realizován právě samostatný vypínač napájení. 
-%citace expanderu PCA9536D
+0,3 mA na jednu LED \cite{WS2812C_dtsh}. Při bateriově napájené aplikaci je to stále nemalý proud, a proto byl realizován právě tento samostatný vypínač napájení. 
+%schéma zapojení expanderu
 
 Ve finální verzi DPS byl použit posuvný vypínač se zahnutými vývody. Díky tomu mohl být vypínač umístěn na okraj DPS a nemusel být ručně pájen na drátkách. LED indikující přítomnost napájecího napětí 
 3,3 V a LED indikující nabíjení nebo plné nabití baterie byly dány na okraj spodní DPS tak, aby bylo možné je vidět, ale zároveň aby při používání Univerzálního modulu při hře nemohly zmást. LED indikující přítomnost 
 napájecího napětí 5 V byla odstraněna pro její nadbytečnost. 
 
-Byly přidány také zkratovací prokovy na EN pinu mikrokontroléru s GND. Při zkratování je restartován mikrokontrolér. Tyto prokovy slouží pro snazší oživování a testování softwaru. Při proovozu nebude propojka 
-zkratována a bude zabráněno jejímu náhodnomu zkratování díky obalu. 
+Byly přidány také zkratovací prokovy na EN pinu mikrokontroléru s GND. Při zkratování je restartován mikrokontrolér. Tyto prokovy slouží pro snazší oživování a testování softwaru. Při provozu nebude propojka 
+zkratována a bude zabráněno jejímu náhodnému zkratování. 
+
+%změny  na GPIO pinech, kam bylo co přepojeno, proč to mohlo být přepojeno
+
+%odůvodnit pozici baterie
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.65]{obrazky/blokove_schema_finalni_verze.png}
+  \end{center}
+  \caption[Výsledné blokové schéma Univerzálního modulu]{Výsledné blokové schéma Univerzálního modulu.}
+\end{figure}
 
 Při návrhu byly také brány v potaz tekoucí proudy danými drahami. Tloušťky drah tomu byly přizpůsobeny a případné prokovy také. Například dráhy od baterie, jak k nabíjecímu obvodu, tak k USB mají tloušťku
 2 mm, signálové dráhy mají tloušťku 0,125 mm a ostatní napájení dráhy mají tloušťku 1 mm. Prokovy mají vždy vrtanou díru stejně velkou, jako je tloušťka dráhy a okolní měď má průměr alespoň o 0,2 mm větší 
@@ -578,47 +594,48 @@ než vrtaná díra. U dvounožičkových součástek byl také řešen thombston
 Rozložení součástek zvyšovače napětí bylo realizováno dle doporučení z datasheetu. Prokovy k signálu GND byly umístěny co nejblíže k vstupnímu i výstupnímu kondenzátoru. Propojovací konektory byly 
 umístěny po obvodu a byly na ně připojeny všechny potřebné signály. Napájecí napětí a GND signál byly přivedeny přes jeden konektor, aby se tak zlepšilo EMC. 
 
-DPS byla následně opět vyrobena a osazena u firmy JLCPCB. 
+%Blokové schéma finální verze
+
+\section{Výroba a oživení}
+
+DPS byla následně opět vyrobena a osazena u firmy JLCPCB. Opět nebyly k dispoziciu firmy JLCPCB všechny potřebné součástky, takže některé byly osazeny ručně. Šlo o XXX.
 %propojení DPS realizováno prodlouženými pinheady, aby se mezi DPS vešla baterie. 
 %napsat co jsem ručně osazovala
 %napsat i oživení 
 
+%fotka vyrobené a hotové DPS finální verze
+
 \chapter{Firmware}
-V následující kapitole je popsán firmware Univerzálního modulu. Jsou zde popsány veškeré vytvořené funkce a moduly, které jsou potřebné pro následnou tvorbu softwaru Univerzálního modulu. 
-%napěti 936 mV pri plnem napeti baterie
-%napsat odpojovani napeti pri nizkem napeti baterie
+V následující kapitole je popsán firmware Univerzálního modulu. Jsou zde popsány funkce, které byly vytvořeny pro následnou tvorbu softwaru Univerzálního modulu a pro usnadnění práce s ním. Univerzální 
+modul je programován v jazyce C++ a je využit Arduino framework, který mikrokontroléry ESP32 podporují.  
 
-\section{Tvorba hlavní knihovny}
-Hlavní knihovna lib.h a lib.cpp slouží pro sdružování veškerých funkcí, které jsou Univerzálnímu modulu k dispozici. Funkce init slouží pro počáteční inicializaci Univerzálního modulu. Jsou zde 
-zadefinovány piny mikrokontroléru, zda jsou vstupní, nebo výstupní, případně je zapnut softwarový pullup rezistor. Jsou zde nastaveny počáteční hodnoty výstupních pinů, vypnut vibrační motor, vypnuto 
-piezo a zhasnuty všechny programovatelné LED. Jsou zde také vytvořeny všechny potřebné objekty, jako jsou tlačítka a programovatelné LED. 
+\section{Hlavní knihovna}
+Hlavní knihovna sdružuje veškeré funkce, které jsou Univerzálnímu modulu k dispozici. Tato knihovna obsahuje funkce pro práci s kapacitními tlačítky, programovatelnými LED, WiFi, piezem, vibračním 
+motorem i fototranzistorem. 
 
-Pro programování LED byla využita již existující knihovna Adafruit\_NeoPixel.h. Nad touto knihovnou byly vytvořeny nádstavbové funkce, aby práce s programovatelnými LED byla ještě snazší. 
-Pro práci s programovatelnými LED byly vytvořeny následující funkce. Funkce set\_brightness vyčítá hodnotu z fototranzistoru a dle ní nastavuje jas programovatelných LED. Funkce colors přebírá jako
-parametr název barvy a ten převádí do RBG kódu, se kterým již knihovna NeoPixel umí pracovat. Funkce get\_color přebírá jako parametr index LED a vrací barvu, kterou daná LED aktuálně svítí. 
-Pomocí funkce LED\_light, která přebírá jako parametr index LED a barvu, lze rozsvítit LED na dané pozici danou barvou. Funkce LED\_toggle při každém volání funkce přepíná barvu LED mezi zadanou barvou 
-a zhasnutím LED. Tato funkce přebírá jako parametr právě barvu, kterou má blikat a pozici LED, která má blikat. Funkce LED\_off zhasne LED na pozici, která je předána parametrem. Pro usnadnění práce 
-se všemi LED yly vytvořeny také funkce LEDs\_all\_off, která zhasne všechny LED, LEDs\_all\_on, která přebírá jako parametr barvu a tou barvou poté rozsvítí všechny LED, a LEDs\_all\_toggle, která přebírá 
-jako parametr barvu, kterou blikají všechny LED. Přepínání zhasnutí LED a rozsvícení danou barvou probíhá při každém zavolání této funkce. 
+Pro práci s programovatelnými LED byla využita knihovna Adafruit\_NeoPixel.h. V hlavní knihovně byly vytvořeny funkce, které umožňují rozsvítit konkrétní barvou jednotlivé LED nebo všechny současně. Také 
+je lze jednotlivě nebo všechny zhasnout. Byly vytvořeny také funkce pro blikání. 
 
-Pro práci s tlačítky byly implementovány funkce, které dokáží zjistit, zda je některé z tlačítek zmáčknuto. Každé tlačítko má svoji funkci. Lze také zjistit, zda je alespoň nějaké tlačítko stisknuto, bez 
-ohledu na to které. 
+Pro práci s tlačítky byly implementovány funkce, které zjišťují, zda je některé z tlačítek stisknuto. Každé tlačítko má svoji funkci. V některých případech není zapotřebí vědět, které z tlačítek je stisknuto, 
+ale zda je vůbec některé z nich stisknuto. Pro tyto účely vznikla funkce, která to umí zjistit. 
 
 Dále byly vytvořeny funkce pro zapnutí a vypnutí pieza a zároveň pro zapnutí a vypnutí vibračního motoru. 
 
-%LoRa
+%LoRa - asi nebude
 
-Pro hlídání stavu nabití baterií byly vytořeny 2 funkce. První funkce measure\_battery\_voltage měří napětí na baterie ve voltech, tato hodnota je také návratovou hodnotou této funkce. Druhou funkcí je 
-is\_battery\_voltage\_ok, která vrací informaci, zda je baterie dostatečně nabitá. Pokud by vrátila informaci, že baterie je málo nabitá, tak na tento stav může program reagovat. Například je vytvořena 
-funkce switch\_off\_voltage\_periferies, která odpojí od napětí periferie, které mají vyšší spotřebu. Jsou to například programovatelné LED nebo LoRa modul. 
+%WiFi
 
-\section{Knihovna pro AT42QT1070}
+Pro hlídání stavu nabití baterií byly vytořeny funkce, které měří napětí na baterii a zjišťují, zda je baterie dostatečně nabitá, či nikoli. 
+
+Dále knihovna obsahuje funkci pro vypnutí napájení periferiím, které jsou náročnější na spotřebu. Tato funkce může být využita právě při indikaci nízkého bateriového napětí.
+
+\section{Práce s kapacitními tlačítky}
 Pro převodník AT42QT1070, který převádí signál z kapacitních tlačítek na komunikaci po sběrnici $I^2C$, byla připravena knihovna AT42QT1070.h. Tato knihovna obsahuje 3 třídy, které dopomáhají 
 práci s tlačítky a usnadňují ji. 
 
 Třída s názvem AT42QT1070Touch obsahuje funkci begin, která slouží pro nastavení čipu AT42QT1070, rozděluje tlačítka do jednotlivých skupin a dělá počáteční kalibraci. Z tohoto důvodu nesmí být při 
 zapnutí Univerzálního modulu stisknuto žádné tlačítko. Pokud by tomu tak bylo, tak by se tlačítka chybně zkalibrovala a docházelo by tak k falešným stiskům. Funkce tick musí být volána pravidelně, aby docházelo 
-k neustálé obnově dat a kalibraci tlačítek. Díky tomu nejsou vyvolány falešný stisky při změně prostředí, která může způsobovat pozvolnou změnu kapacity. Funkce get\_raw\_data\_btn berejako parametr 
+k neustálé obnově dat a kalibraci tlačítek. Díky tomu nejsou vyvolány falešný stisky při změně prostředí, která může způsobovat pozvolnou změnu kapacity. Funkce get\_raw\_data\_btn bere jako parametr 
 index tlačítka a vrátí hodnotu kapacity tlačítka přímo z registru čipu AT42QT1070. Funkce is\_touched\_btn přebírá jako parametr index tlačítka a vrací informaci o tom, zda je tlačítko stisknuto 
 či nikoli.  
 
@@ -671,7 +688,7 @@ Přepnutí do konfiguračního módu nebo stažení konfigurace z jiného Univer
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.75]{obrazky/blokove_schema_modu_PLAY.png}
+    \includegraphics[scale=0.65]{obrazky/blokove_schema_modu_PLAY.png}
   \end{center}
   \caption[Blokové schéma herního módu]{Blokové schéma herního módu.}
 \end{figure}
@@ -763,14 +780,7 @@ vlastnění klíče ve stejné barvě. V přesném střídání barev může fun
 stejné herní lokaci provádět herní úkony, dokud některý z jiných týmů Univerzální modul nepřepne. Pro účely nočních her to řeší omezující pravidlo - na stejném stanovišti nesmí herní mechaniku použít 
 stejný tým dvakrát za sebou. Odsud jméno módu - vábí k truhle s pokladem všechny, krom vysvíceného týmu.
 
-
-
-
-
-
-
 \chapter{Voděodolnost}
-%podkapitolu prototyp
 Pro zajištění voděodolnosti byl zvolen obal z průhledného silikonu. Do silikonu je DPS zalita, proto musela být navržena forma pro následné odlití. V následující části je popsán postup 
 návrhu formy a následná výroba silikonového pouzdra. Nejdříve byl celý proces otestován na prototypových DPS. Po odladění bylo vše překresleno podle finální verze DPS a byly zapouzdřeny
 i finální verze Univerzálního modulu.  
@@ -779,17 +789,27 @@ i finální verze Univerzálního modulu.
 Nejprve byl vyexportován z programu KiCad 3D model celé DPS včetně všech součástek, které měly 3D model již z interní knihovny. Pro součástky, které neměly 3D model a zároveň byly důležité 
 pro výsledný vzhled pouzdra, byly 3D modely dokresleny v programu SolidWorks. Pouzdra byla kreslena bez větších detailů. S přesností byla kreslena pouze kritická místa, kde součástka ovlivňuje 
 rozměry pouzdra nebo kde musí procházet pouzdrem až na povrch.
-
-%ukázka některého mnou kresleného pouzdra
-%ukázka celé DPS - 3D model  
+  
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{obrazky/3D_model_predni.jpg}
+  \end{center}
+  \caption[3D model přední části DPS]{3D model přední části DPS.}
+\end{figure}
 
 Následně byl nakreslen model pouzdra, jak by mělo vypadat bez vložené DPS. Poté byla vytvořena sestava, kde byla DPS již vložené v pouzdře. Z pouzdra musely vyčnívat součásti, které nesmí být 
 zality v silikonu. Nesmí být zalit USB konektor, prostřednictvím něhož je Univerzální modul napájen a programován, dále vypínač a piezo, protože by jinak nemohlo vydávat zvuk. 
-%ukázka DPS + obalu
 
 Z takto vytvořeného modelu byla vytvořena forma. Byl nakreslen válec, který byl z každé strany o 3 mm větší než DPS s obalem. Poté byl použit nástroj "Kombinovat", který umožnil odečtení vytvořeného 
 modelu DPS s obalem, takže vznikla dutá forma pro potřebný tvar. Následně byla forma rozdělena na 2 díly, které na sebe pasují a protínají v polovině všechny otvory tak, aby se do těchto půlek 
 dala DPS zavřít.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{obrazky/3D_model_zadni.jpg}
+  \end{center}
+  \caption[3D model zadní části DPS]{3D model zadní části DPS.}
+\end{figure}
 
 V předním dílu formy byl ve spodní části vytvořen otvor o průměru 2 mm pro vstřik silikonu. Ve spodní části byl proto, aby hladina silikonu postupně stoupala a nevznikaly tak při vstřiku vzduchové 
 kapsy a obal byl jednolitý. Do obou dílů formy byly vytvořeny také odvzdušňovací otvory. Tyto otvory mají průměr 0,5 mm a jsou rozmístěny po cca 2 cm, aby byl zajištěn odvod vzduchu a nevznikaly tak 
@@ -797,13 +817,18 @@ v obalu vzduchové kapsy a silikon se dostal do všech potřebných míst.
 
 Protože silikon při tuhnutí zmenšuje svůj objem, musela být vytvořena zásobárna na silikon, který samospádem bude v průběhu tuhnutí vtékat do formy. V horní části byl tedy vytvořen zásobník, do kterého 
 se při vstřikování silikonu po naplnění formy dostane silikon. Při procesu tuhnutí pak může silikon ze zásobníku přitékat do formy díky gravitaci. 
-%fotka modelu formy - obě části 
 
 Forma na silikonový obal byla vytištěna na FMD 3D tiskárně. Nemohla být použita 3D tiskárna typu SLA, protože resin, ze kterého se v SLA tiskárnách tiskne, zabraňuje tuhnutí použitého typu silikonu. 
-%fotka vytisknuté formy
 
 Před zalitím Univerzálního modulu do formy byly pomocí vteřinového lepidla zalepeny boční otvory v konektoru USB-C, aby silikon nevtekl těmito otvory dovnitř a neucpal tak tento konektor. DPS byla 
 vložena do formy, utěsněna tavným lepidlem a stlačena pomocí svorek.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{obrazky/forma_predni.jpg}
+  \end{center}
+  \caption[3D model přední části formy]{3D model přední části formy.}
+\end{figure}
 
 %jaký typ silikonu je využit - na jaké bázi, jaké jsou jiné možnosti, výhody použitého typu 
 Byl použit dvousložkový průhledný silikon GMS A30, který se míchá v poměru 1:1 \cite{silikon}. Pomocí stříkačky byl silikon vtlačen do formy. Díky tomu, že otvor byl ve spodní části formy a zásobník 
@@ -813,7 +838,11 @@ Univerzální modul zalit celý.
 %fotka výsledného prototypu i s obalem
 
 \section{Finální verze}
+Pro finální verzi DPS byla vytvořena nová fomra pro odlévání silikonu. DPS finální verze má totiž jiné rozměry a součástky na ní jsou jinak naskládány. 
 
+Pro 3D model DPS byl vytvořen ještě model posuvného vypínače, který u prototypu nebyl. Postup tvorby formy byl stejný jako u prototypu.
 
+%možná model 
+%fotka finální verze hotové i s obalem
 
 
