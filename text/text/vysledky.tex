@@ -484,7 +484,12 @@ Komunikační piny D+ a D- pro programování jsou taženy jako diferenciální 
 Výrobní podklady byly vygenerovány pomocí programu Kikit. Deska byla vyrobena u firmy JLCPCB, protože je bezkonkurenčně nejlevnější a její dodání je rychlé a bezproblémové. 
 Jejich výrobky také dosahují vysoké kvality. 
 
-%fotka vyrobené DPS
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.13]{obrazky/DPS_prototyp_top.jpg}
+  \end{center}
+  \caption[Výsledná DPS prototypu - přední strana]{Výsledná DPS prototypu - přední strana.}
+\end{figure}
 
 DPS byla taktéž strojově osazena u firmy JLCPCB. Z důvodu nedostupnosti některých součástek byly některé komponenty zakoupeny v jiných obchodních řetězcích a doosazeny ručně. 
 Jednalo se o držák na baterie, piezo, kondenzátor C3 v pouzdře 0805 o hodnotě 100 $\mu$F, čip pro kapacitní tlačítka AT42QT1070, vypínač a LoRa modul. 
@@ -493,6 +498,13 @@ Nebyl sehnán přesný typ držáku, pro který byl Univerzální modul navržen
 označení polarity. Do finální verze bylo tedy přidáno do popisové vrstvy plus u správného vývodu. Vypínač byl kvůli testovacím účelům realizován pinheady a na ně byla nasazena 
 propojka. Na místo LoRa modulu byly připájeny dutinky a LoRa modul byl pouze zasunut do dutinek. Hlavním důvodem byla cena tohoto modulu. LoRa modul bude z prototypu přesunut 
 na finální výrobek a nedojde tak k plýtvání součástek ani peněz.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.13]{obrazky/DPS_prototyp_bottom.jpg}
+  \end{center}
+  \caption[Výsledná DPS prototypu - zadní strana]{Výsledná DPS prototypu - zadní strana.}
+\end{figure}
 
 \section{Oživení}
 Po připájení všech součástek byla do pouzdra vložena baterie LiFePO4 a DPS byla pomocí propojky zapnuta. Po zapnutí DPS se rozsvítila LED indikující přítomnost napětí 3,3 V. 
