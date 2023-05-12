@@ -65,18 +65,18 @@
 Univerzální modul je zapnut pomocí posuvného vypínače. Zapnutí je indikováno rozsvícením LED uprostřed Univerzálního modulu. Při zapínání Univerzálního modulu nesmí být stisknuto žádné tlačítko. Po zapnutí je načten 
 poslední používaný mód. 
 
-Po dobu 5 minut od zapnutí je možné přepnout Univerzální modul do konfiguračního módu. Tento mód je k dispozici pomocí současného stisku horního a spodního tlačítka. Konfigurační mód je signalizován blikáním všech 
+Po dobu 5 minut od zapnutí je možné přepnout Univerzální modul do konfiguračního módu. Tento mód je k~dispozici pomocí současného stisku horního a~spodního tlačítka. Konfigurační mód je signalizován blikáním všech 
 LED modře. Po zapnutí tohoto módu je zapotřebí telefon 
-nebo notebook, který má možnost připojit se k WiFi síti. V zařízení je zapotřebí najít WiFi síť s názvem UniverzalniModul. Připojení proběhne po zadání hesla univerzalnimodul. Po připojení k této WiFi síti přejďete 
-do internetového vyhledávače. Do něj napište IP adresu Univerzálního modulu, tj. 192.168.4.1. 
+nebo notebook, který má možnost připojit se k~WiFi síti. V~zařízení je zapotřebí najít WiFi síť s~názvem UniverzalniModul. Připojení proběhne po zadání hesla univerzalnimodul. Po připojení k~této WiFi síti přejďete 
+do internetového vyhledávače. Do něj napište IP adresu Univerzálního modulu, tj.~192.168.4.1. 
 
-Zobrazí se webová stránka s konfiguračním menu Univerzálního modulu. Zde si můžete najít konkrétní hru i s jejím popisem. Pokud lze u dané hry nastavit nějaké parametry, jako je například počet hrajících týmů apod., tak 
-jsou u této hry místa, kam lze daný parametr vyplnit. Pro nastavení dané hry stiskněte tlačítko dané hry. V tuto chvíli se spustí daný mód na všech Univerzálních modulech, 
-které jsou v danou chvíli zapnuty, v blízkosti konfigurovaného Univerzálního modulu a neuběhlo u nich 5 minut od jejich zapnutí. Po restartu konfigurovaného Univerzálního modulu je i u něj spuštěn nastavený mód. 
+Zobrazí se webová stránka s~konfiguračním menu Univerzálního modulu. Zde si můžete najít konkrétní hru i s~jejím popisem. Pokud lze u~dané hry nastavit nějaké parametry, jako je například počet hrajících týmů apod., tak 
+jsou u~této hry místa, kam lze daný parametr vyplnit. Pro nastavení dané hry stiskněte tlačítko dané hry. V~tuto chvíli se spustí daný mód na všech Univerzálních modulech, 
+které jsou v~danou chvíli zapnuty, v~blízkosti konfigurovaného Univerzálního modulu a neuběhlo u~nich 5 minut od jejich zapnutí. Po restartu konfigurovaného Univerzálního modulu je i~u~něj spuštěn nastavený mód. 
 
 Tímto způsobem lze konfigurovat až 9 Univerzálních modulů současně. 
 
-\chapter{Příklad outdoorové aktivity s využitím \\Univerzálního modulu}
+\chapter{Příklad outdoorové aktivity s~využitím \\Univerzálního modulu}
 %outdoorových aktivit
 
 
@@ -251,7 +251,7 @@ short fxdf2t( short coef[][5], short sample)
 	short k;
 
 	x = sample;
-	for( k = 0; k < SECTIONS; k++){
+	for( k~= 0; k~< SECTIONS; k++){
 		accu = v1[k] >> 1;
 		y = _sadd( accu, _smpy( coef[k][0], x));
 		y = _sshl(y, 1) >> 16;
