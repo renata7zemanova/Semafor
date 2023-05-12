@@ -7,6 +7,10 @@ void setup() {
   Serial.begin(115200);
 
   _init_();
+  /*LEDs_all_on(ORANGE);
+  while(true){
+    delay(1000);
+  }*/
 
   States state = CONFIGURATION_DOWNLOAD; //na zacatku musi byt PLAY
   download_permanently_pref();

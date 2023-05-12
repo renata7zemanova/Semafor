@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-const char wifi_ssid[] = "Semafor";
-const char wifi_password[] = "adminadmin";
+const char wifi_ssid[] = "UniverzalniModul";
+const char wifi_password[] = "univerzalnimodul";
 
 LoRa_E22 LoRa(RX, TX, &Serial1, UART_BPS_RATE_9600);
 led_t LED(NUM_OF_LEDS, LED_PIN_TOP);
@@ -18,6 +18,8 @@ ArduinoMetronome LED_delay(800);
 
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
+
+//vycteni z fototranzistoru
 
 void set_brightness(){
   uint8_t brightness = 255; //vycteni hodnot z fototranzistoru 
@@ -164,37 +166,27 @@ void piezo_off(){
 }
 
 bool is_touched_enter(){
-  if(Touch_AT42.is_touched_btn(0))
-    return true;
-  return false; 
+  return Touch_AT42.is_touched_btn(1);
 }
 
 bool is_touched_up(){
-  if(Touch_AT42.is_touched_btn(1))
-    return true;
-  return false; 
+  return Touch_AT42.is_touched_btn(2);
 }
 
 bool is_touched_down(){
-  if(Touch_AT42.is_touched_btn(2))
-    return true;
-  return false; 
+  return Touch_AT42.is_touched_btn(3); 
 }
 
 bool is_touched_right(){
-  if(Touch_AT42.is_touched_btn(3))
-    return true;
-  return false; 
+  return Touch_AT42.is_touched_btn(4);
 }
  
 bool is_touched_left(){
-  if(Touch_AT42.is_touched_btn(4))
-    return true;
-  return false; 
+  return Touch_AT42.is_touched_btn(5);
 }
 
 bool is_touched_some_btn(){
-  for(int i = 0; i < NUM_OF_BUTTONS; ++i){
+  for(int i = 1; i < NUM_OF_BUTTONS + 1; ++i){
     if(Touch_AT42.is_touched_btn(i))
       return true;
   }
@@ -220,21 +212,38 @@ void tick_for_buttons(){ //musim volat pravidelne a casto
   Touch_AT42.tick();
 }
 
+void init_expander(){
+  Wire.begin(GPIO_SDA, GPIO_SCL);
+  Wire.beginTransmission(0x41); 
+  Wire.write(3);
+  //1011
+  Wire.write(11); //nastaveni 0, 1, 3 na vstupni a 2 na vystupni
+  Wire.endTransmission();
+
+  Wire.beginTransmission(0x41); 
+  Wire.write(1);
+  Wire.write(0); //nastaveni log 0 na pin 2
+  Wire.endTransmission();
+}
+
 void _init_ (){ 
   pinMode(ADC_BATTERY_PIN, INPUT);
   pinMode(SWITCH_VOLTAGE_PERIFERIES, OUTPUT);
   pinMode(MOTOR_PIN, OUTPUT);
   pinMode(PIEZO_PIN, OUTPUT);
   pinMode(LED_PIN_TOP, OUTPUT);
+  pinMode(LED_PIN_SIDE, OUTPUT);
+  pinMode(PHOTOTRANSISTOR_PIN, INPUT);
 
-  digitalWrite(SWITCH_VOLTAGE_PERIFERIES, ST_ON); 
+  //off je zapnuto 
+  digitalWrite(SWITCH_VOLTAGE_PERIFERIES, ST_OFF); 
   vibrate_motor_off(); 
   piezo_off(); 
   digitalWrite(LED_PIN_TOP, ST_OFF); 
 
   LED.leds.begin(); 
   Touch_AT42.begin();
-  
+  init_expander();  
   LEDs_all_on(BLACK);
 }
 

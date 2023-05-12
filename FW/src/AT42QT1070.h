@@ -78,7 +78,7 @@ class AT42QT1070Touch{
     gpio_num_t sda_pin;
     gpio_num_t scl_pin;
     
-    static constexpr int NUM_OF_BUTTONS = 5;  
+    static constexpr int NUM_OF_BUTTONS = 7;  
 
     TouchButton Touch_buttons[NUM_OF_BUTTONS];
 
@@ -109,14 +109,14 @@ class AT42QT1070Touch{
         Wire.write(32); 
         Wire.write(32); 
         Wire.write(32); 
+        Wire.write(32); 
         Wire.write(0); //nepouzito - deaktivace prumerovani
-        Wire.write(0);
         Wire.endTransmission();
 
         for(int i = 0; i < NUM_OF_BUTTONS; ++i){
-            int threshold = 40; 
-            if(i == 0)
-                threshold = 32;
+            int threshold = 100; 
+            if(i == 0 || i == 1)
+                threshold = 3;
             Touch_buttons[i].setup(threshold, 10, get_raw_data_btn(i)); 
         }
     }

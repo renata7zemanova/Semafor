@@ -10,10 +10,11 @@
 
 #include <WiFi.h>
 #include "esp_wifi.h"
-
 #include <WiFiUdp.h>
-
 #include <WebServer.h>
+
+#include <Wire.h>
+
 #include <LoRa_E22.h>
 
 #include <handleHttp.h>
@@ -34,10 +35,12 @@ extern ArduinoMetronome LED_delay;
 static constexpr gpio_num_t GPIO_SCL = GPIO_NUM_8;
 static constexpr gpio_num_t GPIO_SDA = GPIO_NUM_9;
 static constexpr gpio_num_t ADC_BATTERY_PIN = GPIO_NUM_4;
-static constexpr gpio_num_t SWITCH_VOLTAGE_PERIFERIES = GPIO_NUM_5;
+static constexpr gpio_num_t SWITCH_VOLTAGE_PERIFERIES = GPIO_NUM_2;
 static constexpr gpio_num_t MOTOR_PIN = GPIO_NUM_6;
 static constexpr gpio_num_t PIEZO_PIN = GPIO_NUM_7;
 static constexpr gpio_num_t LED_PIN_TOP = GPIO_NUM_10;
+static constexpr gpio_num_t LED_PIN_SIDE = GPIO_NUM_3;
+static constexpr gpio_num_t PHOTOTRANSISTOR_PIN = GPIO_NUM_1;
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
 enum States {CONFIGURATION_SHARE, CONFIGURATION_DOWNLOAD, PLAY}; //konfiguraci prijimam od Semaforu, nebo z webu
@@ -106,6 +109,8 @@ bool is_touched_some_btn();
 void handle_btn_vibration(std::vector<Buttons> button);
 
 void tick_for_buttons();
+
+void init_expander();
 void _init_ ();
 
 void upload_permanently_pref();
