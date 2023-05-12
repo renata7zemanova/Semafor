@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-08T19:44:32.933Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0" etag="Q8UqDqZw2Dl2H1wjFfBg" version="21.2.9" type="device">
+<mxfile host="app.diagrams.net" modified="2023-05-11T07:02:50.315Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0" etag="AV32SbTuYTZ26vlyPlEJ" version="21.2.9" type="device">
   <diagram id="vy-kVrL346o2ZHW0nf3q" name="Stránka-1">
-    <mxGraphModel dx="1816" dy="517" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2022" dy="660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -15,47 +15,28 @@
         <mxCell id="ogMmAw-v47WA5XelZpfH-3" value="Zapni server" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-10" y="440" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="z1CXe6EOh8OILP3nmHna-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontStyle=1" edge="1" parent="1" source="ogMmAw-v47WA5XelZpfH-4" target="ogMmAw-v47WA5XelZpfH-5">
+        <mxCell id="z1CXe6EOh8OILP3nmHna-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontStyle=1" parent="1" source="ogMmAw-v47WA5XelZpfH-4" target="ogMmAw-v47WA5XelZpfH-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ogMmAw-v47WA5XelZpfH-4" value="Server.handleClient" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" parent="1" vertex="1">
+        <mxCell id="ogMmAw-v47WA5XelZpfH-4" value="Zpracování požadavků z webového serveru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-10" y="540" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="ogMmAw-v47WA5XelZpfH-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontStyle=1" parent="1" source="ogMmAw-v47WA5XelZpfH-5" target="ogMmAw-v47WA5XelZpfH-52" edge="1">
+        <mxCell id="4SBQYmInzqHpp4c-O1Id-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ogMmAw-v47WA5XelZpfH-5" target="z1CXe6EOh8OILP3nmHna-3">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="ogMmAw-v47WA5XelZpfH-5" value="Sdílej nastavení" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="130" y="540" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="ogMmAw-v47WA5XelZpfH-51" value="&lt;div&gt;Přepni se do &lt;br&gt;&lt;/div&gt;&lt;div&gt;herního módu&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="430" y="540" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="ogMmAw-v47WA5XelZpfH-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontStyle=1" parent="1" source="ogMmAw-v47WA5XelZpfH-52" target="ogMmAw-v47WA5XelZpfH-51" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="z1CXe6EOh8OILP3nmHna-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontStyle=1" edge="1" parent="1" source="ogMmAw-v47WA5XelZpfH-52" target="z1CXe6EOh8OILP3nmHna-3">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ogMmAw-v47WA5XelZpfH-52" value="&lt;div&gt;Bylo na webu &lt;br&gt;&lt;/div&gt;&lt;div&gt;stisknuto tlačítko?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="275" y="520" width="130" height="100" as="geometry" />
-        </mxCell>
-        <mxCell id="ogMmAw-v47WA5XelZpfH-55" value="Ne" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="330" y="500" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="ogMmAw-v47WA5XelZpfH-56" value="Ano" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="384" y="540" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="z1CXe6EOh8OILP3nmHna-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontStyle=1" edge="1" parent="1" source="z1CXe6EOh8OILP3nmHna-3" target="ogMmAw-v47WA5XelZpfH-4">
+        <mxCell id="z1CXe6EOh8OILP3nmHna-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontStyle=1" parent="1" source="z1CXe6EOh8OILP3nmHna-3" target="ogMmAw-v47WA5XelZpfH-4" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="240" y="470" />
-              <mxPoint x="240" y="520" />
-              <mxPoint x="80" y="520" />
+              <mxPoint x="340" y="510" />
+              <mxPoint x="80" y="510" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="z1CXe6EOh8OILP3nmHna-3" value="Signalizuj konfigurační mód" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="280" y="440" width="120" height="60" as="geometry" />
+        <mxCell id="z1CXe6EOh8OILP3nmHna-3" value="Signalizuj konfigurační mód" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="280" y="540" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

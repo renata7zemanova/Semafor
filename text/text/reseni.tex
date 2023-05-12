@@ -8,10 +8,11 @@ informaci, kam mají dál jít, nebo mu děti předají nějaký kód a on jim n
 
 Už jen najít personální sílu je často složitý logistický úkol, nehledě na lidi, kteří s dětmi byli celý den a musejí si také někdy 
 odpočinout. Proto jsem chtěla vyvinout zařízení, díky kterému nebude zapotřebí tak velký organizační tým na jednu hru. Cílem bylo vytvořit 
-univerzální hardware, který bude moci být programován na základě požadavků zákazníka. 
+univerzální hardware, který bude moci být programován na základě požadavků zákazníka, nebo programován samotným uživatelem, který má alespoň 
+základní znalosti programování. 
 
 Myšlenka byla tedy taková, že se vezme již existující hra, modulu se přiřadí úkoly, které převezme za organizátora a podle požadavků se 
- modul naprogramuje. 
+modul naprogramuje. 
 
 Dalším důvodem, proč jsem chtěla vytvořit toto zařízení bylo, že jsem chtěla děti nadchnout pro techniku. Sama si vzpomínám na chvíle, kdy
 mě technika uchvátila. Stačilo, když to blikalo nebo dělalo zvuky, a mě to přišlo jako kouzlo. Zájem o techniku by se měl vyvinout již v útlém 
@@ -22,9 +23,10 @@ nadchnout. Je zapotřebí dětem ukázat, že technika může být zábavná, ž
 mít zastoupení i na takových místech, jako jsou dětské tábory a outdoorové aktivity.  
 
 Poslední důvod pro tvorbu tohoto zařízení je školství. V dnešní době prochází výuka informatiky velkou reformou a většina učitelů tak sahá po 
-edukačních jezdících robotech, které se žáci učí programovat. S tímto zařízením by se žáci mohli snadno učit programování na základě „wow efektu“. 
-Stačí 2 příkazy a rozsvítí se LED, pak mohou přidat ovládání LED pomocí tlačítka atd. Žáci tedy poznají zase jiný způsob programování, a také, že 
-se nemusí programovat pouze jezdící roboti. Zároveň je možné modul naprogramovat a vytvořit z něj pomocníka do dalších předmětů, např. pro rozvoj 
+edukačních jezdících robotech, které se žáci učí programovat. S tímto zařízením by se žáci mohli snadno učit programování jiného hardwaru než jsou 
+jezdící roboti. 
+Stačí 2 příkazy a rozsvítí se LED, pak mohou přidat ovládání LED pomocí tlačítka atd. Žáci tedy poznají zase jiný způsob programování.
+Zároveň je možné modul naprogramovat a vytvořit z něj pomocníka do dalších předmětů, např. pro rozvoj 
 logického myšlení. Je možné jej také využít pro hru v rámci adaptačních kurzů. 
 
 Myšlenkou je tedy vytvořit jednoduchý a zároveň univerzální hardware, který se bude moci rozvíjet po softwarové stránce a díky tomu bude mít velkou 
@@ -33,21 +35,18 @@ oblast využití.
 
 \chapter{Rešerše elektronických komponent}
 Základní návrh se skládá především z~výběru bezdrátové komunikace, která je důležitou součástí Univerzálního modulu. Díky ní budou moci být Univerzální 
-moduly bezdrátově konfigurovány a nastavování tka bude pro obsluhu jednodušší. 
+moduly bezdrátově konfigurovány a nastavování tak bude pro obsluhu jednodušší. 
 
 Další nedílnou součástí je mikrokontrolér, který řídí veškerou činnost každého Univerzálního modulu. U~Univerzálního modulu je také nutné řešit způsob napájení,
-takže i to je součástí návrhu. Musí být vrána v úvahu délka her i outdoorové využití, kde se mohou provozní podmínky hodně měnit. 
-
-Celkový návrh obsahuje také výběr senzorů doteku, zvukových a vizuálních signalizací a případných potřebných převodníků. 
+takže i to je součástí návrhu. Musí být brána v úvahu délka her i outdoorové využití, kde se mohou provozní podmínky hodně měnit. 
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.7]{obrazky/zakladni_blokove_schema.jpg}
+    \includegraphics[scale=0.75]{obrazky/zakladni_blokove_schema.jpg}
   \end{center}
   \caption[Základní blokové schéma Univerzálního modulu]{Základní blokové schéma Univerzálního modulu.}
 \end{figure}
 
-%přepsat
 \section{Bezdrátová komunikace}
 Bezdrátová komunikace bude primárně využita pro konfiguraci Univerzálního modulu. Je zapotřebí nastavit konkrétní mód, ve kterém bude při dané 
 aktivitě Univerzální modul pracovat, a také případné parametry daného módu. Dále je také možné pomocí bezdrátové komunikace propojit jednotlivé 
@@ -59,8 +58,8 @@ mezi sebou porovnány. Vzhledem k~použití na outdoorových akcích byl kladem 
 a také na dostupnost. 
 
 \subsection{Bluetooth}
-Bluetooth je také velmi rozšířenou technologií bezdrátové komunikace. Používá se na přenos dat na krátké vzdálenosti. V~dnešní době 
-rozšířené WiFi komunikace je její použití omezené. Běžně se využívala pro přenos fotografií z~jednoho zařízení do druhého apod. V~dnešní 
+Bluetooth je velmi rozšířenou technologií bezdrátové komunikace. Používá se na přenos dat na krátké vzdálenosti. V~dnešní době 
+rozšířené WiFi komunikace je použití Bluetooth technologie omezené. Běžně se využívala pro přenos fotografií z~jednoho zařízení do druhého apod. V~dnešní 
 době se spíše využívá pro připojení bezdrátových periferií jako jsou bezdrátová sluchátka, myši a klávesnice. Tato technologie je zaměřena 
 především na nízkou spotřebu, i proto je komunikační vzdálenost maximálně 100~m \cite{Bezdrat_muni}. V~praxi jde ale o~nižší desítky
 metrů. Bluetooth je také technologií pro propojení pouze 2 zařízení, kde jedno je tzv. master a druhý tzv. slave \cite{Bezdrat_muni}. 
@@ -85,8 +84,8 @@ zabezpečená \cite{LoRa_eman}. Tato síť má topologii hvězdy a pracuje v~bez
 okolo 868~MHz zdarma.
 
 LoRa je technologie vyvinutá primárně pro IoT, takže je bezpečná a spolehlivá \cite{LoRa_IoT_PORT}. Zajišťuje také připojení na velkou vzdálenost (20~km na 
-volném prostranství a~2~km v~zastavěné oblasti) \cite{LoRa_IoT_PORT}. LoRa je také vyvinutá pro bateriová zařízení, takže je energeticky úsporná a na baterie
- vydrží zařízení až 10 let \cite{LoRa_IoT_PORT}.
+volném prostranství a~2~km v~zastavěné oblasti) \cite{LoRa_IoT_PORT}. LoRa je také vyvinutá pro bateriová zařízení, takže je energeticky 
+úsporná \cite{LoRa_IoT_PORT}.
 
 Výhody bezdrátové technologie LoRa jsou \cite{LoRa_IoT_PORT}:
 \begin{itemize}
@@ -94,7 +93,7 @@ Výhody bezdrátové technologie LoRa jsou \cite{LoRa_IoT_PORT}:
   \item spolehlivost,
   \item komunikace na velké vzdálenosti,
   \item obousměrná komunikace,
-  \item dobrý poměr cena/výkon,
+  \item dobrý poměr výkonu ku ceně,
   \item energeticky úsporná.
 \end{itemize}
 
@@ -115,7 +114,6 @@ Nevýhody jsou \cite{Bezdrat_muni}:
 \begin{itemize}
   \item velmi krátká komunikační vzdálenost,
   \item možnost komunikace pouze mezi dvěma zařízeními, 
-  \item nízká rychlost přenosu,
   \item malý objem přenášených dat.
 \end{itemize}
 
@@ -131,7 +129,7 @@ nebo pro posílání dat ze senzorů.
 Výhody bezdrátové sítě Sigfox jsou \cite{Sigfox_cz} \cite{Sigfox_Zooco}:
 \begin{itemize}
   \item nízké pořizovací náklady,
-  \item nízká spotřeba energie (na baterie vydrží až 10 let),
+  \item nízká spotřeba energie,
   \item vysoké pokrytí území ČR,
   \item spolehlivost.
 \end{itemize}
@@ -152,6 +150,8 @@ Výhody bezdrátové technologie WiFi jsou \cite{Bezdrat_muni}:
 \begin{itemize}
   \item pracuje v~bezlicenčním pásmu, 
   \item levná, 
+  \item velké objemy dat,
+  \item rychlost,
   \item velmi rozšířená.
 \end{itemize}
 
@@ -188,20 +188,22 @@ outdoorových aktivitách větší a různorodější. Pro světelnou signalizac
 
 Neprogramovatelné LED jsou běžné LED, které mají 2 vývody - katodu a anodu. Barva LED je dána výrobou a každá LED má pouze jednu 
 barvu. Přiložením daného prahového napětí na diodu v~propustném směru se LED rozsvítí danou barvou. Velikost prahového napětí je dána
-právě barvou LED. Běžně se pohybuje v~rozmezí 1 až 2,5 V. Existují také RGB LED, které mají 4 vývody - 3 katody a společnou anodu. 
+právě barvou LED. Běžně se pohybuje v~rozmezí 1 až 2,5 V.
+
+Existují také RGB LED, které mají 4 vývody - 3 anody a společnou katodu. 
 Přiložením napětí na konkrétní anodu je rozsvícena konkrétní barva. Při různě nastavené velikosti proudu lze regulovat jas LED 
-a přiložením napětí na více LED lze svítit různými barvami a jejich odstíny. 
+a přiložením napětí na více anod lze svítit různými barvami a jejich odstíny. 
 
 Programovatelné LED mají datový vstup a napájecí napětí není závislé na barvě LED. 
 Barva je určována programem, taktéž její jas. To tedy znamená, že je zapotřebí je řídit 
 pomocí MCU. Programovatelné LED typu WS2812C lze také spojovat za sebe, takže jsou všechny potřebné LED připojeny k~jednomu pinu 
-MCU \cite{WS2812C_dtsh}. Každá LED má pin pro vstupní napětí, GND, vstupní datový pin a výstupní datový pin. Typ inteligentních LED 
-WS2812C je vhodný pro bateriová zařízení. Oproti častěji používanému typu WS2812B mají 3$\times$~menší spotřebu elektrické energie. 
-Napájecí napětí těchto LED by se mělo pohybovat v~rozmezí 4,5 až 5,5 V~\cite{WS2812C_dtsh}. 
+mikrokontroléru \cite{WS2812C_dtsh}. Každá LED má pin pro vstupní napětí, GND, vstupní datový pin a výstupní datový pin \cite{WS2812C_dtsh}. Typ inteligentních 
+LED WS2812C je vhodný pro bateriová zařízení \cite{WS2812C_dtsh}. Oproti častěji používanému typu WS2812B mají 3$\times$~menší spotřebu elektrické energie \cite{WS2812C_dtsh}. 
+Napájecí napětí těchto LED se pohybuje v~rozmezí 4,5 až 5,5 V~\cite{WS2812C_dtsh}. 
 
 \section{Senzor doteku}
-Senzory doteku jsou nezbytnými prvky pro ovládání Univerzálního modulu. Mohou sloužit pro přepínání módů, ovládání Univerzálního modulu
- jako takového nebo jako herní součást. Ve hře mohou plnit úlohu přepínače režimů hry, zadávání kódů, určování směru apod. 
+Senzory doteku jsou nezbytnými prvky pro ovládání Univerzálního modulu. Ve hře mohou plnit úlohu přepínače režimů hry, zadávání kódů, 
+určování směru apod. 
 
 Nejjednodušším a nejpoužívanějším senzorem doteku je tlačítko. 
 Tlačítka mohou být realizována dvěma základními způsoby, mohou být elektromechanická, nebo dotyková kapacitní. 
@@ -215,13 +217,6 @@ Po zmáčknutí mechanického tlačítka typu NO jsou 2 kovové části tlačít
 a odpor smyčky je v~ideálním případě nulový. Obvod je tedy sepnut. Když je tlačítko rozpojeno, tak je 
 elektrický obvod přerušen a odpor smyčky je v~ideálním případě nekonečný. Obvod je tedy rozpojen. U~tlačítka typu NC je to naopak. Při stisku 
 tlačítka je obvod rozepnut a při uvolnění stisku je obvod sepnut. 
-
-%\begin{figure}[!h]
-%  \begin{center}
-%    \includegraphics[scale=0.6]{obrazky/tlacitka_princip.png}
-%  \end{center}
-%  \caption[Princip mechanického tlačítka]{Princip mechanického tlačítka \cite{Mech_tl_princip}.}
-%\end{figure}
 
 Výhody mechanických tlačítek jsou:
 \begin{itemize}
@@ -240,7 +235,7 @@ Nevýhodou kapacitních tlačítek je, že nemají žádnou odezvu na dotyk. U~m
 stisk tlačítka. U~kapacitních tlačítek lze tento fakt vyřešit například rozsvícením LED nebo vibrační odezvou. Vibrační 
 odezva může být realizována pomocí vibračního motoru. 
 
-Některé mikrokontroléry nemají kapacitní vstupy, to znamená, že tlačítko nelze připojit přímo k~GPIO pinu MCU \cite{ESP_C3_dtsh}. 
+Některé mikrokontroléry nemají kapacitní vstupy, to znamená, že tlačítko nelze připojit přímo k~GPIO pinu mikrokontroléru \cite{ESP_C3_dtsh}. 
 Buď musí být vybrán mikrokontrolér, který kapacitní vstupy má, nebo může být použit převodník, který má kapacitní vstupy a~jeho 
 výstupy poté mohou být připojeny k~MCU. 
 
@@ -261,7 +256,7 @@ připojenou kapacitu přechodu tlačítka a prstu díky obsahu železa v~krvi a 
 Prst se tedy chová jako druhá uzemněná elektroda \cite{PrincipKapTl}. 
 
 Kapacita snímače se tedy volí co nejmenší, aby přiložený prst vyvolal co nejvetší změnu kapacity. Ve snímači se vyskytuje
-RC článek, jehož doba nabíjení kondenzátoru se mění, a tím je možné detekovat stisk tlačítka \cite{PrincipKapTl}. 
+RC článek, jehož doba nabíjení kondenzátoru se přiložením prstu mění, a tím je možné detekovat stisk tlačítka \cite{PrincipKapTl}. 
 
 \begin{figure}[!h]
   \begin{center}
@@ -274,7 +269,8 @@ RC článek, jehož doba nabíjení kondenzátoru se mění, a tím je možné d
 Tvar tlačítka nemá vliv na schopnost detekce dotyku \cite{PrincipKapTl}. Naopak velký vliv má plocha tlačítka, tloušťka
 izolační vrstvy, a také vzdálenost jednotlivých tlačítek od sebe \cite{PrincipKapTl}. 
 
-Čím větší je plocha tlačítka, tím je větší změna kapacity při dotyku a díky tomu je vytvořena lepší schopnost detekce 
+Čím větší je plocha tlačítka, tím je větší kapacita tlačítka. To znamená, že se zmenšující se plochou tlačítka se zvětšuje změna kapacity 
+při dotyku a díky tomu je vytvořena lepší schopnost detekce 
 dotyku \cite{PrincipKapTl}. S~rostoucí tloušťkou izolační vrstvy se naopak schopnost detekce dotyku snižuje \cite{PrincipKapTl}.
 
 Pokud jsou tlačítka příliš blízko u~sebe, tak může docházet k~jejich vzájemnému ovlivňování. Kvůli tomu pak může docházet
@@ -282,9 +278,9 @@ k~detekci dotyku špatného tlačítka, nebo k~falešné detekci dotyku. Z~dopor
 plochu pro prst 13~$\times$~13 mm a jejich vzdálenost alespoň 5 mm od sebe \cite{PrincipKapTl}. Proti vzájemnému ovlivňování tlačítek
 se používají uzemňovací meziplošky \cite{PrincipKapTl}. 
 
-U~kapacitních dotykových tlačítek je zapotřebí dbát na správné připojení k~MCU. U~vícevrstvých DPS nesmí pod tlačítky, ani pod přívody
+U~kapacitních dotykových tlačítek je zapotřebí dbát na správné připojení k~mikrokontroléru. U~vícevrstvých DPS nesmí pod tlačítky, ani pod přívody
 k~MCU, vést jiné dráhy, ani se zde nesmí vyskytovat jiné součástky \cite{PrincipKapTl}. Součástky nesmí být ani z~vrchní, ani ze spodní 
-strany DPS \cite{PrincipKapTl}. Přívody kapacitních tlačítek k~MCU by měly být odstíněny pomocí GND signálu.
+strany DPS \cite{PrincipKapTl}. Přívody kapacitních tlačítek k~mikrokontroléru by měly být odstíněny pomocí GND signálu.
 
 Voda a další nečistoty mění vlastní kapacitu tlačítka a může tak docházet k~falešným stiskům tlačítka. Tento problém lze řešit softwarově. 
 Lze využít faktu, že nečistoty působí dlouhodobě, ale stisk je krátkodobý \cite{PrincipKapTl}. Hodnotu vlastní kapacity tlačítka je tedy
@@ -296,14 +292,10 @@ Pro odlišení tlačítek může být místo označeno například barevným pot
 Vzhledem k~použití Univerzálních modulů při outdoorových aktivitách byly možné pouze 2 způsoby napájení, pomocí powerbanky nebo baterií. 
 
 Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Požadavkem je také možnost nabíjení. Při použití na táboře by jinak musely být stále 
-nové baterie v~balení a musely by se neustále doplňovat a udržovat.
-
-Moderní baterie jsou náchylné na přepólování, a proto není bezpečné, aby uživatel měnil baterie sám. Baterie by tedy musely být zabudované v~zařízení 
+nové baterie v~balení a musely by se neustále doplňovat a udržovat. Moderní baterie jsou náchylné na přepólování, a proto není bezpečné, aby uživatel měnil baterie sám. Baterie by tedy musely být zabudované v~zařízení 
 bez možnosti výměny uživatelem. 
 
-%kapacita baterie - jak dlouho by měla vydržet
-
-Z~nabíjecích baterií je možno vybírat z~olověných baterií, Ni-MH, Li-Ion, Li-Pol a LiFePO4 baterií.
+Z~nabíjecích baterií je možno vybírat baterií LiFePO4, Li-Ion, Li-Pol, Ni-MH a~olověných baterií.
 
 \subsection{LiFePO4}
 LiFePO4 baterie mají jmenovité napětí v~rozsahu 3 až 3,3 V~\cite{LiFePO4_malina}. Její minimální provozní napětí je pak 2,5 V~a maximální je 3,65 V~\cite{LiFePO4_malina}.
@@ -342,8 +334,9 @@ Výhody Li-Ion baterií jsou \cite{Li-Ion}:
 \end{itemize}
 
 \subsection{Li-Pol}
-Li-Pol baterie poskytují vysoké nabíjecí proudy a vysokou kapacitu a jejich jmenovité napětí je 3,7 V~\cite{akumulatory}. Tyto baterie jsou citlivé na přesné nabití, a proto 
-je možné používat pouze nabíječky určené pro nabíjení těchto baterií \cite{akumulatory}. Tyto nabíječky mají také balancer \cite{akumulatory}. Při skladování je také nutné 
+Li-Pol baterie poskytují vysoké nabíjecí proudy a vysokou kapacitu \cite{akumulatory}. Jejich jmenovité napětí je 3,7 V~\cite{akumulatory}. Tyto baterie jsou citlivé na 
+přesné nabití, a proto 
+je možné používat pouze nabíječky určené pro nabíjení těchto baterií \cite{akumulatory}. Tyto nabíječky mají také balancer \cite{akumulatory}. Při skladování je nutné 
 udržovat nabití na 50 \% kapacity \cite{akumulatory}. Údržba takové baterie je proto velmi náročná a nehodí se do podobných zařízení, jako je tento Univerzální modul. Při 
 mechanickém poškození také hrozí požár těchto baterií \cite{akumulatory}.
 

@@ -14,10 +14,13 @@ v outdoorovém prostředí.
 Bylo vytvořeno schéma zapojení elektroniky pro Univerzální modul, které se skládá z~mikrokontroléru ESP32-C3 ve verzi s~anténou a LoRa modulu pro 
 bezdrátovou komunikaci jednotlivých Univerzálních modulů mezi sebou. Napájení je realizováno pomocí baterie LiFePO4 a~USB-C konektoru pomocí powerbanky. Baterie 
 jsou nabíjeny pomocí nabíjecího obvodu CN3058E. Komunikace s~okolním světem je zajištěna kapacitními tlačítky, 
-vibračním motorem, piezem a programovatelnými LED typu WS2812C. Výsledné schéma zapojení elektroniky Univerzálního modulu je přiloženo v~příloze. 
+vibračním motorem, piezem, fototranzistorem a programovatelnými LED typu WS2812C. Výsledné schéma zapojení elektroniky Univerzálního modulu je přiloženo v~příloze. 
 
-Byla navržena, vyrobena a osazena DPS Univerzálního modulu. 
+Byla navržena, vyrobena a osazena DPS Univerzálního modulu, která se skládá ze 2 DPS spojených pomocí pinheadů. Na horní DPS jsou umístěna tlačítka, fototranzistor 
+a programovatelné LED. Na spodní DPS je pak umístěna veškerá zbylé elektronika včetně baterií. 
 
-Pro Univerzální modul byl také vytvořen základní firmware, který usnadňuje uživatelům programování tohoto zařízení. Byly také vytvořeny 3 herná módy, které slouží jako ukázka 
+Pro Univerzální modul byl také vytvořen základní firmware, který usnadňuje uživatelům programování tohoto zařízení. Byly také vytvořeny 3 herní módy, které slouží jako ukázka 
 využití Univerzálního modulu. 
 
+V poslední části je řešena voděodolnost Univerzálního modulu. Je vyřešena vyrobením krabičky na 3D tiskárně. DPS je do krabičky zalepena a její vrchní část je zalakována čirým
+lakem. 
