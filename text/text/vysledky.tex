@@ -88,6 +88,10 @@ Pin EN slouží pro povolení funkce mikrokontroléru. Tento pin nesmí zůstat 
 ESP32-C3 má konfigurační piny, které slouží při restartu pro určení, odkud bude načten program pro mikrokontrolér. Tyto piny musí být při restartu v~daném nastavení. 
 Konfiguračními piny jsou GPIO2, GPIO8 a GPIO9. Piny GPIO8 a GPIO9 nesmí být nikdy nastaveny současně do logické nuly. 
 
+Protože bude využito programování přes USB piny D+ a D-, tak není zapotřebí načtení z~bootloaderu a je tedy zapotřebí všechny konfigurační piny při restartu připojit do 
+logické jedničky. Do logické jedničky lze připojit přes pullup rezistor. Pullup rezistory má sběrnice $I^2C$, takže na GPIO8 a GPIO9 byla připojena právě sběrnice $I^2C$.
+Pin GPIO2 nebyl využit pro připojení žádného senzoru, a proto byl připojen přes pullup rezistor o~hodnotě 10 k$\Omega$ k~napájecímu napětí.
+
 \begin{table}[!h]
   \caption[Konfigurační piny ESP32-C3]{Konfigurační piny ESP32-C3 \cite{ESP_C3_dtsh}}
   \begin{center}
@@ -106,10 +110,6 @@ Konfiguračními piny jsou GPIO2, GPIO8 a GPIO9. Piny GPIO8 a GPIO9 nesmí být 
 	  \end{tabular}
   \end{center}
 \end{table}
-
-Protože bude využito programování přes USB piny D+ a D-, tak není zapotřebí načtení z~bootloaderu a je tedy zapotřebí všechny konfigurační piny při restartu připojit do 
-logické jedničky. Do logické jedničky lze připojit přes pullup rezistor. Pullup rezistory má sběrnice $I^2C$, takže na GPIO8 a GPIO9 byla připojena právě sběrnice $I^2C$.
-Pin GPIO2 nebyl využit pro připojení žádného senzoru, a proto byl připojen přes pullup rezistor o~hodnotě 10 k$\Omega$ k~napájecímu napětí.
 
 Na pin GPIO4 je připojeno měření napětí na baterii. Na tomto pinu je k dispozici AD převodník se softwarově nastavitelnou hodnotou referenčního napětí \cite{ESP_C3_tech_ref}. 
 Hodnota rezistorového děliče byla tedy přizpůsobena rozsahu možného měřeného napětí 0 až 700 mV. 
@@ -215,30 +215,22 @@ nedílnou součástí mnoha elektronických zařízení včetně mobilního tele
 Schottkyho dioda D22 slouží jako ochrana proti přepětí, protože motor je indukční zátěž, takže vytváří napěťové špičky. Díky diodě je mikrokontrolér chráněn 
 proti špičkovému napětí, které by se na něj mohlo dostat. Kondenzátor C25 slouží k~tomu, aby napěťové špičky eliminoval, nebo alespoň zmenšoval. 
 
+Vibrační motor je připojen k~mikrokontroléru přes NMOS tranzistor, protože maximální výstupní proud z~pinu MCU není dostatečně velký na to, aby 
+motor roztočil. Gate tranzistoru je tedy připojen k mikrokontroléru. Tranzistor se při logické jedničce na GPIO pinu sepne a motorem protéká proud, který 
+nedodává MCU, ale zdroj 3,3 V~(v~tomto případě baterie LiFePO4). Baterie tak dokáže dodat dostatek proudu, aby se motor roztočil. 
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[scale=0.4]{obrazky/Vibracni_motor.png}
   \end{center}
   \caption[Schéma zapojení vibračního motoru]{Schéma zapojení vibračního motoru.}
 \end{figure}
-
-Vibrační motor je připojen k~mikrokontroléru přes NMOS tranzistor, protože maximální výstupní proud z~pinu MCU není dostatečně velký na to, aby 
-motor roztočil. Gate tranzistoru je tedy připojen k mikrokontroléru. Tranzistor se při logické jedničce na GPIO pinu sepne a motorem protéká proud, který 
-nedodává MCU, ale zdroj 3,3 V~(v~tomto případě baterie LiFePO4). Baterie tak dokáže dodat dostatek proudu, aby se motor roztočil. 
 
 Pro Univerzální modul byl vybrán vibrační motor LCM1020A2945F. Tento motor má maximální požadovaný proud 120 mA \cite{vib_motor_dtsh}. Maximální 
 proud, který lze odebírat z~pinu mikrokontroléru ESP32-C3, je 40 mA \cite{ESP_C3_dtsh}. Vibrační motor lze pouze spínat, nebo je možné jej připojit 
 k~pinu, který dokáže generovat PWM a lze tím regulovat jeho otáčky. 
 
 Vibrační motor slouží jako odezva na dotyk kapacitního tlačítka. 
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.4]{obrazky/Vibracni_motor.png}
-  \end{center}
-  \caption[Schéma zapojení vibračního motoru]{Schéma zapojení vibračního motoru.}
-\end{figure}
-%fotka vybraného motoru
 
 \section{Převodník pro kapacitní tlačítka}
 Mikrokontrolér ESP32-C3 nemá kapacitní vstupy, proto je zapotřebí kapacitní dotyková tlačítka připojit přes převodník. Je zapotřebí připojit 
@@ -340,6 +332,13 @@ Byl vybrán zvyšovač napětí LT1930, díky své lepší dostupnosti v~této d
 Pin /SHDN slouží k~zapínání a vypínání obvodu. Pomocí přiloženého napětí 2,4 V~a více na tento pin je obvod zapnut \cite{LT1930_dtsh}. Pin SW slouží pro  připojení cívky, 
 případně diody, aby se snížilo elektromagnetické rušení \cite{LT1930_dtsh}. 
 
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/LT1930.png}
+  \end{center}
+  \caption[Zapojení zvyšovače napětí LT1930]{Zapojení zvyšovače napětí LT1930.}
+\end{figure}
+
 Shottkyho dioda byla vybrána dle doporučení z~dokumentace. Byla vybrána dioda typu MBR0520, protože maximální napětí na diodě nepřekročí 20 V~a protékající proud nepřesáhne 
 0,5 A~\cite{LT1930_dtsh}.
 
@@ -347,13 +346,6 @@ Byla vybrána cívka, která odpovídá doporučení z~dokumentace. Přesný typ
 srovnatelný. Cívka CDRH3D18NP-4R7NC má feritové jádro, které je pro funkci požadováno \cite{LT1930_dtsh}, \cite{civka_dtsh}. Pro zvyšovač napětí LT1930 by měl být proud, který cívkou může protékat, 
 alespoň 1A a její indukčnost by měla být 4,7 $\mu$H nebo 10 $\mu$H \cite{LT1930_dtsh}. Vybraná cívka má indukčnost 4,7 $\mu$H \cite{civka_dtsh}. Proud, který jí může protékat, je 1,35 A~a její rozměry 
 jsou 3,8 $\times$ 3,8 $\times$ 2 mm \cite{civka_dtsh}.
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.6]{obrazky/LT1930.png}
-  \end{center}
-  \caption[Zapojení zvyšovače napětí LT1930]{Zapojení zvyšovače napětí LT1930.}
-\end{figure}
 
 Pin FB slouží  pro zapojení zpětné vazby napětí na baterii. Jeho referenční napětí musí být nastaveno v~rozmezí 1,240~V až 1,270 V, typická hodnota je však 1,255~V \cite{LT1930_dtsh}. 
 Pro výstupní napětí 5 V~byl zvolen spodní rezistor R10 o~hodnotě 13 k$\Omega$ z~rezistorové řady E24 \cite{rezistorova_rada}. Řada E24 byla zvolena kvůli požadované přesnosti
@@ -402,24 +394,17 @@ Konektoru USB-C je využíván pouze jako standardní a dostupný konektor, kter
 populací rozšířený a v~následujících letech se bude rozšiřovat stále více. Je využito standardního jmenovitého napětí 5 V~pro nabíjení baterií a nadále jsou také využity 
 piny D+ a D-, které jsou využity pro komunikaci při programování. 
 
+Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k~tak častému poškození, jak by mohlo být např. u~konektoru Micro USB. Při používání běžnou veřejností
+se jedná o~vítaný bonus. 
+
+Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}.
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[scale=0.5]{obrazky/USB_C.png}
   \end{center}
   \caption[Zapojení konektoru USB-C]{Zapojení konektoru USB-C.}
 \end{figure}
-
-Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k~tak častému poškození, jak by mohlo být např. u~konektoru Micro USB. Při používání běžnou veřejností
-se jedná o~vítaný bonus. 
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.6]{obrazky/USB_A.png}
-  \end{center}
-  \caption[Zapojení konektoru USB-A]{Zapojení konektoru USB-A.}
-\end{figure}
-
-Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}.
 
 Připojené Shottkyho diody k~napájecímu napětí slouží pro zadržení případného zpětného proudu. Shottkyho diody jsou dimenzovány na proud, který odebírá celé zařízení. Vybrané 
 Shottkyho diody  B5819W mají maximální napětí 20 V, jmenovitý proud 1 A~a maximální špičkový proud 9 A~\cite{shotky_dtsh}.
@@ -431,7 +416,13 @@ připojení těchto rezistorů nesmí připojit napájecí napětí 5 V~na pin V
 
 Pro napájení pomocí powerbanky bez potřeby kabelu slouží konektor USB-A. 
 
-\newpage
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/USB_A.png}
+  \end{center}
+  \caption[Zapojení konektoru USB-A]{Zapojení konektoru USB-A.}
+\end{figure}
+
 \section{Výsledné zapojení}
 Pro realizaci Univerzálního modulu byly vybrány následující komponenty: mikrokontrolér ESP32-C3, baterie LiFePO4, nabíjecí obvod CN3056E, konektory USB-C a USB-A,
 kapacitní tlačítka s~převodníkem AT42QT1070, inteligentní LED WS2812C s~převodníkem napětí LT1930, piezo BMT1205XH7.5, vibrační motor LCM1020A2945F a LoRa modul 
@@ -494,7 +485,7 @@ Jejich výrobky také dosahují vysoké kvality.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.13]{obrazky/DPS_prototyp_top.jpg}
+    \includegraphics[scale=0.15]{obrazky/DPS_prototyp_top.jpg}
   \end{center}
   \caption[Výsledná DPS prototypu - přední strana]{Výsledná DPS prototypu - přední strana.}
 \end{figure}
@@ -510,7 +501,7 @@ na finální výrobek a nedojde tak k plýtvání součástek ani peněz.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.13]{obrazky/DPS_prototyp_bottom.jpg}
+    \includegraphics[scale=0.15]{obrazky/DPS_prototyp_bottom.jpg}
   \end{center}
   \caption[Výsledná DPS prototypu - zadní strana]{Výsledná DPS prototypu - zadní strana.}
 \end{figure}
@@ -678,36 +669,26 @@ nízkého bateriového napětí.
 Pro práci s permanentní pamětí byly vytvořeny funkce, které umožňují z permanentní paměti číst, nebo do ní zapisovat. 
 
 \section{Práce s kapacitními tlačítky}
-Pro převodník AT42QT1070, který převádí signál z kapacitních tlačítek na komunikaci po sběrnici $I^2C$, byla připravena knihovna AT42QT1070.h. Tato knihovna obsahuje 3 třídy, které dopomáhají 
-práci s tlačítky a usnadňují ji. 
+Pro práci s kapacitními tlačítky byla vytvořena speciální knihovna, protože existující knihovna AtTouch.h neposkytovala funkce, které jsou pro Univerzální modul zapotřebí. V této knihovně se také 
+vyskytují chyby, které vytvořená knihovna eliminuje.
 
-Třída s názvem AT42QT1070Touch obsahuje funkci begin, která slouží pro nastavení čipu AT42QT1070, rozděluje tlačítka do jednotlivých skupin a dělá počáteční kalibraci. Z tohoto důvodu nesmí být při 
-zapnutí Univerzálního modulu stisknuto žádné tlačítko. Pokud by tomu tak bylo, tak by se tlačítka chybně zkalibrovala a docházelo by tak k falešným stiskům. Funkce tick musí být volána pravidelně, aby docházelo 
-k neustálé obnově dat a kalibraci tlačítek. Díky tomu nejsou vyvolány falešný stisky při změně prostředí, která může způsobovat pozvolnou změnu kapacity. Funkce get\_raw\_data\_btn bere jako parametr 
-index tlačítka a vrátí hodnotu kapacity tlačítka přímo z registru čipu AT42QT1070. Funkce is\_touched\_btn přebírá jako parametr index tlačítka a vrací informaci o tom, zda je tlačítko stisknuto 
-či nikoli.  
+Převodník AT42QT1070, který převádí signál z kapacitních tlačítek, komunikuje po sběrnici $I^2C$. Proto byla využita knihovna Wire.h, která poskytuje funkce pro práci se sběrnicí $I^2C$.
 
-Třída s názvem TouchButton reprezentuje tlačítko. V této třídě je definována funkce tick, která přebírá aktuální vzorek z tlačítka. Tento vzorek je porovnáván s průměrně naměřenou hodnotou. Pokud 
-je aktuálně naměřená hodnota blízká průměrné hodnotě, tak je tento vzorek započítán do průměru. Pokud je aktuálně naměřená hodnota dostatečně rozdílná oproti předchozím průměru, tak je detekován stisk. 
-Stisk je signalizován až ve chvíli, když je neměřen 3$\times$ za sebou. Díky tomu jsou vyloučeny falšené stisky, které mohou být vyvolány například okolním rušením.  
+Funkce knihovny pracují se vzorky naměřené kapacity z kapacitních tlačítek. Tyto hodnoty jsou vyčítány z registu Key Signal převodníku AT42QT1070 \cite{conv_cap_but_AT42QT1070_dtsh}. Poté jsou vyhodnoceny, zda je na 
+tlačítku detekován stisk, či nikoli. Stisk je detekován rozdílem naměřené a referenční hodnoty. 
 
-Třída s názvem MovingAverage slouží pro počítání klouzavého průměru z naměřených hodnot z tlačítek. Funkce push\_sample převezme naměřený vzorek a nahradí jím nejstarší vzorek, který je pro počítání 
-průměru využit. Funkce setup přebírá 2 parametry. První parametr size určuje, z kolika posledních naměřených vzorků bude průměr počítán, a druhý parametr initial\_value udává první hodnoty, které 
-jsou po spuštění využity pro počítání průměru. Při použití jsou poté předávány hodnoty z počáteční kalibrace. 
+Pokud je detekován stisk, tak je ještě počkáno, zda stisk trvá. Tak je zabráněno falešným detekcím. Pokud stisk trvá, tak je signalizován stisk tlačítka. Pokud netrvá, tak je vyhodnocen jako falešný a naměřený vzorek 
+není dále zpracováván.
 
-Při tvorbě knihovny bylo zapotřebí otestovat funkci jednotlivých registrů. Registr Detection Status generuje při doteku jakéhokoli tlačítka jedničku na bitu nula. Zároveň, pokud je tento 
-registr čten, tak pin /CHANGE negeneruje pulzy a zůstává v klidové pozici, tj. logické jedničce. Bylo tedy rozhodnuto, že pokud se bude daná informace používat, tak to bude právě z registru 
-Detection Status a díky tomu se uvolní pin na mikrokontroléru, který bude moci být použit pro připojení dalších periferií. Registr Key Status indikuje pouze stisk jednoho tlačítka. Pokud 
-je jich stisknuto více, tak se celý vynuluje. Toto chování může být způsobeno velikostí kapacitních tlačítek, jejich návrhem, nebo může být chyba v čipu AT42QT1070. Registry Key Signal 
-uchovávají aktuální měřenou informaci o měřené kapacitě ve 2 bytech pro každé tlačítko. Tyto hodnoty se mění v závislosti na prostředí, ve kterém se Univerzální modul nachází, a také v závislosti 
-na stisknu. Při stisku jsou hodnoty změněny skokově a hodnota měřené kapacity se výrazně změní. 
-Registry Reference Data uchovávají data po kalibraci. Při testování se stávalo, že se kalibrace spouštěla sama ve chvílích, kdy bylo některé z tlačítek stisknuto. Zejména dělalo problémy hlavní
-velké tlačítko. Proto byla v knihovně využívána data pouze z registrů Key Signal a změna byla detekována pouze pomocí tohoto registru. Díky tomu, že změna prostředí nedělá tak velké a prudké 
-změny. Tlačítka byla nadále rozdělena do jednotlivých skupin, aby mohl být detekován i multistisk. To bylo nastaveno v registrech AVE/AKS. Bity 0 a 1 byly nastaveny do nuly, což znamená, že 
-tlačítka nejsou v žádné skupině, takže je každé samostatně. Pro používaná tlačítka 0 až 4 byly nastaveny registry na hodnotu 32, což znamená, že měřená hodnota je průměrem z 8mi naměřených
-hodnot. Registry pro tlačítka 5 a 6 jsou vynulovány, a tím jsou tyto vstupy deaktivovány. 
+Pokud není detekován stisk, tak je hodnota započítána do průměru předchozích hodnot kapacity tlačítka, když není stisknuto. Tento průměr je používán jako referenční hodnota pro detekci stisku tlačítka. Je to z důvodu 
+změny prostředí. Pokud se změní prostředí, ve kterém Univerzální modul pracuje, tak se změní i vlastní kapacita tlačítek. Prostředí se ale nikdy nemění skokově. Díky tomu se referenční hodnota přizpůsobuje pracovnímu 
+prostředí a nedochází tak k falešným detekcím stisku tlačítka. 
 
-Pro práci s kapacitními tlačítky jsou tedy primárně využívány registry Key Signal a informace o stisku jsou z nich dopočítávány. 
+Funkce s názvem tick proto musí být volána pravidelně, aby neustále docházelo k obnově referenční hodnoty kapacity tlačítek. 
+
+Knihovna také zajišťuje kalibraci tlačítek po startu Univerzálního modulu. Z~tohoto důvodu nesmí být při startu stisknuto žádné tlačítko. Hodnoty tlačítek z~kalibrace jsou počáteční hodnotou reference pro detekci stisku. 
+
+Nad touto mechanikou pak existuje funkce, která přímo poskytuje informaci, zda je tlačítko stisknuto, či nikoli. 
 
 \section{Vzdálená konfigurace}
 Vzdálená konfigurace probíhá připojením telefonu přes WiFi k Univerzálnímu modulu. Pro práci s WiFi a serverem jsou použity knihovny WiFi.h, esp\_wifi.h, WiFiUdp.h a WebServer.h. 
