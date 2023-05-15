@@ -7,5 +7,6 @@
 
 void handleRoot();
 void handleDataSave();
+void handleStyle();
 
 #endif

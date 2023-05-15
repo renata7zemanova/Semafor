@@ -115,8 +115,8 @@ class AT42QT1070Touch{
 
         for(int i = 0; i < NUM_OF_BUTTONS; ++i){
             int threshold = 100; 
-            if(i == 0 || i == 1)
-                threshold = 3;
+            if((i == 0) || (i == 1))
+                threshold = 30;
             Touch_buttons[i].setup(threshold, 10, get_raw_data_btn(i)); 
         }
     }

@@ -699,7 +699,13 @@ k~Univerzálnímu modulu přes WiFi s~názvem UniverzalniModul. Heslo k~této Wi
 je 192.168.4.1. Po zadání této IP adresy je načtena konfigurační webová stránka. Tato webová stránka byla vytvořena v~HTML kódu. Na této stránce jsou jednotlivé již existující naprogramované módy, ve kterých umí 
 Univerzální modul pracovat. Všechny módy jsou ve zkratce popsány. U~většiny módů jsou také boxy pro vyplnění vstupních parametrů daného módu. Uživatelem je tedy vybrán mód, ve kterém má Univerzální modul pracovat, 
 jsou vyplněny vstupní parametry tohoto módu a poté je stisknuto tlačítko daného módu, které zapíná konkrétní mód. 
-%screen webové stránky
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{obrazky/konfiguracni_webova_stranka.jpg}
+  \end{center}
+  \caption[Konfigurační webová stránka]{Konfigurační webová stránka.}
+\end{figure}
 
 Toto nastavení je uloženo do permamentní paměti mikrokontroléru. Pro práci s~permamentní pamětí je použita knihovna Preferences.h. Nastavení je také sdíleno ostatním Univerzálním modulům, které jsou v~té době zapnuty 
 a neuběhlo u~nich 5 minut od jejich spuštění. Toto sdílení funguje tak, že nastavení je vysíláno přes WiFi na konrétním portu a může být zachyceno kýmkoli, kdo je připojen na tuto WiFi a kdo na tomto portu bude 

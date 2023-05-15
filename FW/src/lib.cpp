@@ -13,13 +13,11 @@ WiFiUDP udpSett;
 state_vector_t s_vect;
 Preferences pref;
 
-ArduinoMetronome share_delay(200);
+ArduinoMetronome share_delay(60000); //minuta
 ArduinoMetronome LED_delay(800);
 
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
-
-//vycteni z fototranzistoru
 
 void set_brightness(){
   uint8_t brightness = 255; //vycteni hodnot z fototranzistoru 
@@ -174,11 +172,11 @@ bool is_touched_up(){
 }
 
 bool is_touched_down(){
-  return Touch_AT42.is_touched_btn(3); 
+  return Touch_AT42.is_touched_btn(3);
 }
 
 bool is_touched_right(){
-  return Touch_AT42.is_touched_btn(4);
+  return Touch_AT42.is_touched_btn(4); 
 }
  
 bool is_touched_left(){
@@ -186,7 +184,7 @@ bool is_touched_left(){
 }
 
 bool is_touched_some_btn(){
-  for(int i = 1; i < NUM_OF_BUTTONS + 1; ++i){
+  for(int i = 0; i < NUM_OF_BUTTONS; ++i){
     if(Touch_AT42.is_touched_btn(i))
       return true;
   }
@@ -247,14 +245,14 @@ void _init_ (){
   LEDs_all_on(BLACK);
 }
 
-void play_vabnicka1(){//nahodne prepinani barvy po stisku enteru 
+void play_vabnicka(){//nahodne prepinani barvy po stisku enteru 
   handle_btn_vibration({{BTN_ENTER}});
   static int num_of_team = 1;
-  s_vect.vabnicka_num_of_teams = 4;  
+  s_vect.vabnicka_num_of_colors = 4;  
   static int counter = 0;
   static int old_counter = 0;
   if(is_touched_enter() && (counter == old_counter)){
-    num_of_team = random(s_vect.vabnicka_num_of_teams);
+    num_of_team = random(s_vect.vabnicka_num_of_colors);
     if(get_color(1) != Colors(num_of_team)){
       counter ++;
       LEDs_all_on(Colors(num_of_team));
@@ -262,26 +260,6 @@ void play_vabnicka1(){//nahodne prepinani barvy po stisku enteru
   }
   if(!is_touched_enter())
     old_counter = counter; 
-}
-
-void play_vabnicka2(){
-  handle_btn_vibration({{BTN_LEFT, BTN_RIGHT, BTN_UP, BTN_DOWN}});
-  if(is_touched_right()){
-    LEDs_all_on(RED);
-  }
-  if(is_touched_left()){
-    LEDs_all_on(BLUE);
-  }
-  if(is_touched_up()){
-    LEDs_all_on(GREEN);
-  }
-  if(is_touched_down()){
-    LEDs_all_on(WHITE);
-  }
-
-}
-
-void play_pan_hory(){
 }
 
 void play_semafor(){
@@ -321,8 +299,8 @@ void play_odpocitavadlo(){
   bool time_is_over = false; 
   static int counter_of_pressed = 0;
   static double start_time = 0;
-  s_vect.odpocitavadlo_timeout = 20; 
-  static ArduinoMetronome timeout(s_vect.odpocitavadlo_timeout);
+  s_vect.odpocitavadlo_timeout = 2; //minuty 
+  static ArduinoMetronome timeout(s_vect.odpocitavadlo_timeout * 60);
   
   if(!is_touched_enter() && counter_of_pressed == 0){
     //LED_toggle(WHITE);
@@ -337,7 +315,7 @@ void play_odpocitavadlo(){
   double elapsed_time = double(millis() - start_time) / 1000.0;
 
   if(!timeout.loopMs() && !time_is_over){
-    for(int i = 0; i < double((elapsed_time / s_vect.odpocitavadlo_timeout) * NUM_OF_LEDS); ++i){
+    for(int i = 0; i < double((elapsed_time / (s_vect.odpocitavadlo_timeout * 60)) * NUM_OF_LEDS); ++i){
       LED_light(12 - i, BLACK);
     }
   }
@@ -355,10 +333,12 @@ void upload_permanently_pref(){
 
 void download_permanently_pref(){
   s_vect.game = ODPOCITAVADLO;
-  s_vect.odpocitavadlo_timeout = 10; 
-  s_vect.pan_hory_num_of_teams = 4;
+  s_vect.odpocitavadlo_timeout = 2;
+  s_vect.semafor_min_timeout = 5;
   s_vect.semafor_max_timeout = 10;
-  s_vect.vabnicka_num_of_teams = 4; 
+  s_vect.vabnicka_num_of_colors = 4; 
+  s_vect.vabnicka_is_black = 1;
+  s_vect.vabnicka_is_random = 1;
 
   pref.begin("init_Semafor", false);
   int counter = pref.getUInt("counter", 0);
@@ -377,11 +357,15 @@ void download_permanently_pref(){
   Serial.print(" ");
   Serial.print(s_vect.odpocitavadlo_timeout);
   Serial.print(" ");
-  Serial.print(s_vect.pan_hory_num_of_teams);
+  Serial.print(s_vect.semafor_min_timeout);
   Serial.print(" ");
   Serial.print(s_vect.semafor_max_timeout);
   Serial.print(" ");
-  Serial.println(s_vect.vabnicka_num_of_teams);
+  Serial.print(s_vect.vabnicka_num_of_colors);
+  Serial.print(" ");
+  Serial.print(s_vect.vabnicka_is_black);
+  Serial.print(" ");
+  Serial.println(s_vect.vabnicka_is_random);
   pref.end();
 }
 
@@ -395,7 +379,7 @@ void start_server(){
     //server.on("/upload", handleUpload);//
     //server.on("/addparam", handleAddParam);
     server.onNotFound(handleRoot);
-    //server.on("/style.css", handleStyle); //spusteni serveru a na nem je webovka
+    server.on("/style.css", handleStyle); //spusteni serveru a na nem je webovka
 
     server.begin();
 
@@ -465,11 +449,10 @@ bool receive_settings(){
     int packetSize = udpSett.parsePacket();
     if (packetSize) { 
       int len = udpSett.read((char *) &receive_vector, sizeof(receive_vector)); //cteni dat + kam chci nacist data (receive_vector)
-      if(len>0) { //jestli mi vubec neco prislo
+      if(len > 0) { //jestli mi vubec neco prislo
         s_vect = receive_vector;
         upload_permanently_pref(); //ulozeni do permanentni pameti
         Serial.printf("New settings recieved and updated from Semafor ID: %d", receive_vector.game);
-        
         wifi_disable();
         return true; 
       }

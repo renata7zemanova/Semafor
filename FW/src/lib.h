@@ -13,8 +13,6 @@
 #include <WiFiUdp.h>
 #include <WebServer.h>
 
-#include <Wire.h>
-
 #include <LoRa_E22.h>
 
 #include <handleHttp.h>
@@ -43,15 +41,17 @@ static constexpr gpio_num_t LED_PIN_SIDE = GPIO_NUM_3;
 static constexpr gpio_num_t PHOTOTRANSISTOR_PIN = GPIO_NUM_1;
 
 enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
-enum States {CONFIGURATION_SHARE, CONFIGURATION_DOWNLOAD, PLAY}; //konfiguraci prijimam od Semaforu, nebo z webu
-enum Games {VABNICKA1, VABNICKA2, PAN_HORY, SEMAFOR, ODPOCITAVADLO};
+enum States {CONFIGURATION, PLAY};
+enum Games {VABNICKA, SEMAFOR, ODPOCITAVADLO};
 enum Buttons {BTN_ENTER, BTN_UP, BTN_DOWN, BTN_RIGHT, BTN_LEFT, NONE};
 
 struct state_vector_t { //hlavni struktura
   Games game; 
-  int vabnicka_num_of_teams;
-  int pan_hory_num_of_teams;
+  int vabnicka_num_of_colors;
+  int vabnicka_is_black;
+  int vabnicka_is_random;
   int odpocitavadlo_timeout;
+  int semafor_min_timeout;
   int semafor_max_timeout; 
 };
 
@@ -68,9 +68,7 @@ struct leds_t{
     led_t side;
 };
 
-void play_vabnicka1();
-void play_vabnicka2();
-void play_pan_hory();
+void play_vabnicka();
 void play_semafor();
 void play_odpocitavadlo();
 
@@ -109,7 +107,6 @@ bool is_touched_some_btn();
 void handle_btn_vibration(std::vector<Buttons> button);
 
 void tick_for_buttons();
-
 void init_expander();
 void _init_ ();
 
