@@ -40,7 +40,7 @@ static constexpr gpio_num_t LED_PIN_TOP = GPIO_NUM_10;
 static constexpr gpio_num_t LED_PIN_SIDE = GPIO_NUM_3;
 static constexpr gpio_num_t PHOTOTRANSISTOR_PIN = GPIO_NUM_1;
 
-enum Colors {RED, BLUE, GREEN, YELLOW, BROWN, PURPLE, PINK, ORANGE, AZURO, BLACK, WHITE};
+enum Colors {BLACK, RED, BLUE, GREEN, YELLOW, WHITE, ORANGE, BROWN, PURPLE, PINK, AZURO};
 enum States {CONFIGURATION, PLAY};
 enum Games {VABNICKA, SEMAFOR, ODPOCITAVADLO};
 enum Buttons {BTN_ENTER, BTN_UP, BTN_DOWN, BTN_RIGHT, BTN_LEFT, NONE};

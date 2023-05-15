@@ -15,8 +15,10 @@ void setup() {
   ArduinoMetronome settings_delay(300000); //tohle je 5 minut
 
   //tohle vsechno bude nastaveno z webu
-  s_vect.game = ODPOCITAVADLO;
-  s_vect.odpocitavadlo_timeout = 2; //cas v minutach
+  s_vect.game = VABNICKA;
+  s_vect.vabnicka_num_of_colors = 3;
+  s_vect.vabnicka_is_black = 1;
+  s_vect.vabnicka_is_random = 0;
 
   while(true){
     //if(is_touched_enter())
@@ -44,6 +46,7 @@ void setup() {
       Serial.println("cas vyprsel");
     }
 
+    //tyhle podminky jsou spatne
     if(((is_touched_up() && is_touched_down()) || (state == CONFIGURATION)) && (time_counter == 0)){
       Serial.println("configuration mode");
       if(!share_delay.loopMs()){
