@@ -702,7 +702,7 @@ jsou vyplněny vstupní parametry tohoto módu a poté je stisknuto tlačítko d
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.3]{obrazky/konfiguracni_webova_stranka.jpg}
+    \includegraphics[scale=0.45]{obrazky/konfiguracni_webova_stranka.jpg}
   \end{center}
   \caption[Konfigurační webová stránka]{Konfigurační webová stránka.}
 \end{figure}
@@ -727,18 +727,19 @@ konfiguračního módu, protože do tohoto módu se přechází kombinací stisk
 Univerzální modul pak přechází do herního módu. V~herním módu je neustále spouštěn mód, který byl nastaven v~konfiguraci. Zároveň, pokud ještě nevypršel čas, do kdy je možné přejít do režimu konfigurace, tak 
 je kontrolováno, zda není stisknuta kombinace tlačítek, kterou je zapnut konfigurační mód. V~každém cyklu je také čten stav tlačítek. Tato funkce je důležitá pro správné vyhodnocování stisku kapacitních tlačítek. 
 
-Pokud jsou na Univerzálním modulu stisknuta tlačítka nahoru a dolů současně, tak je Univerzální modul přepnut do konfiguračního módu. Tento mód je signalizován blikáním všech LED modrou barvou. V~tomto módu je zapnuta WiFi a server. Na 
-tuto WiFi se lze připojit telefonem nebo notebookem. Po připojení k~WiFi a napsání IP adresy Univerzálního modulu do internetového vyhledávače je načtena webová stránka s~konfiguračním menu Univerzálního modulu. Po nastavení parametrů 
-dané hry a stisku 
-tlačítka pro spuštění dnaé hry je konfigurace sdílena pomocí WiFi. Konfigurace je tak k~dispozici ke stažení pro další Univerzální moduly, které jsou v~blízkosti konfigurovaného Univerzálního modulu a neuběhl u~nich daný čas od jejich 
-startu. Po restartu Univerzální modul přechází zpět do herního módu. Je spuštěn mód, který byl nakonfigurován. Konfigurace této hry je uložena do permanentní paměti.
-
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[scale=0.8]{obrazky/blokove_schema_modu_CONFIGURATION.png}
   \end{center}
   \caption[Blokové schéma konfiguračního módu]{Blokové schéma konfiguračního módu.}
 \end{figure}
+
+Pokud jsou na Univerzálním modulu stisknuta tlačítka nahoru a dolů současně, tak je Univerzální modul přepnut do konfiguračního módu. Tento mód je signalizován blikáním všech LED modrou barvou. V~tomto módu je zapnuta WiFi a server. Na 
+tuto WiFi se lze připojit telefonem nebo notebookem. Po připojení k~WiFi a napsání IP adresy Univerzálního modulu do internetového vyhledávače je načtena webová stránka s~konfiguračním menu Univerzálního modulu. Po nastavení parametrů 
+dané hry a stisku 
+tlačítka pro spuštění dnaé hry je konfigurace sdílena pomocí WiFi. Konfigurace je tak k~dispozici ke stažení pro další Univerzální moduly, které jsou v~blízkosti konfigurovaného Univerzálního modulu a neuběhl u~nich daný čas od jejich 
+startu. Po restartu Univerzální modul přechází zpět do herního módu. Je spuštěn mód, který byl nakonfigurován. Konfigurace této hry je uložena do permanentní paměti.
+
 
 Pokud je dostupná WiFi jiného Univerzálního modulu, tak je Univerzální modul připojen na tuto WiFi a snaží se z~ní stáhnout novou konfiguraci. Pokud se podaří konfiguraci stáhnout, tak je zapnuta hra s~konfigurací,
 která byla stažena z~WiFi jiného Univerzálního modulu. Konfigurace této hry je uložena do permanentní paměti. Stažení nové konfigurace je signalizováno půlvteřinovým probliknutím všech LED modrou barvou. 
