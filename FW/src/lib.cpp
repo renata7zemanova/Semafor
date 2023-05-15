@@ -265,61 +265,74 @@ void play_vabnicka(){//nahodne prepinani barvy po stisku enteru
 void play_semafor(){
   handle_btn_vibration({{BTN_ENTER}});
   static int counter_of_pressed = 0;
-  static double start_time = 0;
-  s_vect.semafor_max_timeout = 20; //potom bude nastaveno z webu
-  static ArduinoMetronome timeout(random(1, s_vect.semafor_max_timeout));
-  LED.pos = 1;
+  static ArduinoMetronome timeout(random(s_vect.semafor_min_timeout * 1000, s_vect.semafor_max_timeout * 1000));
+
   if(!is_touched_enter() && counter_of_pressed == 0){
+    LED_light(0, WHITE);
     return;
   }
+  
   if(is_touched_enter() && counter_of_pressed == 0){
-    LEDs_all_on(RED);
-    //start_time = millis();
-    //Serial.print("timeout ");
-    //Serial.println(timeout);
-
+    if(random(1,3) == 1)
+      LEDs_all_on(RED);
+    else
+      LEDs_all_on(GREEN);
   } 
   counter_of_pressed = 1;
-  //double elapsed_time = double(millis() - start_time) / 1000.0;
 
   if(timeout.loopMs()){ 
-    timeout.intervalSet(random(1, s_vect.semafor_max_timeout));
-    //start_time = millis();
-    if(get_color(1) == RED)
-      LEDs_all_on(ORANGE);
-    else if(get_color(1) == ORANGE)
-      LEDs_all_on(GREEN);
-    else if(get_color(1) == GREEN)
-      LEDs_all_on(RED);
+    if((get_color(1) == RED) || (get_color(1) == GREEN)){
+      timeout.intervalSet(2000); //2 sekundy
+      for(int i = 0; i <= 6; ++i){
+        LED.pos = i;
+        LED_light(LED.pos, ORANGE);
+      }
+    }
+    else{
+      timeout.intervalSet(random(s_vect.semafor_min_timeout * 1000, s_vect.semafor_max_timeout * 1000));
+      if(get_color(NUM_OF_LEDS - 1) == RED)
+        LEDs_all_on(GREEN);
+      else
+        LEDs_all_on(RED);
+    }
   }
 }
 
 void play_odpocitavadlo(){
   handle_btn_vibration({{BTN_ENTER}});
-  bool time_is_over = false; 
+  static bool time_is_over = true; 
   static int counter_of_pressed = 0;
-  static double start_time = 0;
-  s_vect.odpocitavadlo_timeout = 2; //minuty 
-  static ArduinoMetronome timeout(s_vect.odpocitavadlo_timeout * 60);
+  static double start_time = 0; 
   
   if(!is_touched_enter() && counter_of_pressed == 0){
-    //LED_toggle(WHITE);
+    LED_light(0, WHITE);
     return; 
   }
-  if(is_touched_enter()){ //&& counter_of_pressed == 0){
+  if(is_touched_enter() && time_is_over){
+    Serial.println("stisk enteru - restart");
     LEDs_all_on(GREEN);
     start_time = millis();
+    time_is_over = false;
   }
   counter_of_pressed = 1;
   
-  double elapsed_time = double(millis() - start_time) / 1000.0;
+  double elapsed_time_sec = (double(millis() - start_time) / 1000.0);
+  //Serial.print("elapsed ");
+  //Serial.println(elapsed_time_sec);
 
-  if(!timeout.loopMs() && !time_is_over){
-    for(int i = 0; i < double((elapsed_time / (s_vect.odpocitavadlo_timeout * 60)) * NUM_OF_LEDS); ++i){
-      LED_light(12 - i, BLACK);
+  double part_of_leds = double((elapsed_time_sec / (s_vect.odpocitavadlo_timeout * 60)) * NUM_OF_LEDS);
+  Serial.print("podminka ");
+  Serial.println(part_of_leds);
+
+  if(!time_is_over && (part_of_leds <= 12.01)){
+    for(int i = 0; i <= part_of_leds; ++i){
+      //Serial.print("i ve foru ");
+      //Serial.println(i);
+      LED_light(NUM_OF_LEDS - i, RED);
     }
   }
   else{
+    Serial.println("cas vyprsel");
     time_is_over = true;
   }
 }

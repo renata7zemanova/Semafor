@@ -14,24 +14,27 @@ void setup() {
   download_permanently_pref();
   ArduinoMetronome settings_delay(300000); //tohle je 5 minut
 
-  LEDs_all_on(RED);
+  //tohle vsechno bude nastaveno z webu
+  s_vect.game = ODPOCITAVADLO;
+  s_vect.odpocitavadlo_timeout = 2; //cas v minutach
 
   while(true){
-    
+    //if(is_touched_enter())
+      //Serial.println("stisk enteru");
+    //if(is_touched_up())
+      //Serial.println("stisk up");
     if(state == PLAY){
-      Serial.print("herni mod ");
-      Serial.println(s_vect.game);
+      //Serial.print("herni mod ");
+      //Serial.println(s_vect.game);
       switch(s_vect.game){
         case VABNICKA:
           Serial.println("vabnicka");
           play_vabnicka(); 
           break;
         case SEMAFOR:
-          Serial.println("semafor");
           play_semafor();
           break;
         case ODPOCITAVADLO:
-          Serial.println("odpocitavadlo");
           play_odpocitavadlo();
           break;
       }
@@ -79,7 +82,7 @@ void setup() {
     }
 
     tick_for_buttons();
-    delay(100);
+    delay(10); 
   }
 }
 
