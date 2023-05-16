@@ -19,8 +19,20 @@ ArduinoMetronome LED_delay(800);
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
 
-void set_brightness(){
-  uint8_t brightness = 255; //vycteni hodnot z fototranzistoru 
+int read_phototransistor(){
+  return analogRead(PHOTOTRANSISTOR_PIN);
+}
+
+void set_LED_brightness(){
+  int brightness = read_phototransistor(); 
+  brightness = int(brightness / 5.4);
+  if(brightness > 255){
+    brightness = 255; 
+  }
+  if(brightness < 15){
+    brightness = 15;
+  }
+  //neni to videt na LEDkach... nechapu
   LED.leds.setBrightness(brightness);
 }
 
@@ -59,7 +71,6 @@ Colors get_color(int index){
 
 void LED_light(int index, Colors COLOR){
   LED.pos = index; 
-  set_brightness();
   LED.leds.setPixelColor(LED.pos, colors(COLOR));
   LED_state[LED.pos] = COLOR;
   LED.leds.show();
@@ -105,11 +116,15 @@ void LEDs_all_toggle(Colors COLOR){
 }
 
 double measure_battery_voltage(){
-  return analogRead(ADC_BATTERY_PIN); //vzorec aby byl ve voltech
+  int measure_val = analogRead(ADC_BATTERY_PIN);
+  double voltage = (double(measure_val) - 531.0) / 100.0;
+  //Serial.print("voltage: ");
+  //Serial.println(voltage);
+  return voltage; 
 }
 
 bool is_battery_voltage_ok(double threshold){
-  if(measure_battery_voltage() < threshold){ 
+  if(measure_battery_voltage() > threshold){ 
     return true;
   }
   return false;
@@ -119,7 +134,7 @@ void warn_if_battery_discharge(){
   if(!is_battery_voltage_ok(2.6)){
     switch_off_voltage_periferies();
   }
-  if(!is_battery_voltage_ok(2.8)){
+  else if(!is_battery_voltage_ok(2.8)){
     LEDs_all_toggle(RED);
   }
 
@@ -127,24 +142,6 @@ void warn_if_battery_discharge(){
 
 void switch_off_voltage_periferies(){
   digitalWrite(SWITCH_VOLTAGE_PERIFERIES, ST_OFF);
-}
-
-void LoRa_on(){
-  LoRa.begin();
-}
-
-void LoRa_write(const String msg){
-  LoRa.sendMessage(msg);
-}
-
-ResponseContainer LoRa_read(){
-  ResponseContainer msg;
-  if(LoRa.available()){
-    //oboje jde zkompilovat
-    //msg = LoRa.receiveMessageComplete(true);
-    msg = LoRa.receiveMessage();
-  }
-  return msg; 
 }
 
 void vibrate_motor_on(){
@@ -449,9 +446,9 @@ void share_settings(){
     Serial.print("Clients IP: ");
     Serial.println(clientIP);
 
-    //udpSett.beginPacket(clientIP, 1111);
+    udpSett.beginPacket(clientIP, 1111);
     udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
-    udpSett.println("Ahoj svete"); //potom smazat a nechat to nahore 
+    //udpSett.println("Ahoj svete"); //potom smazat a nechat to nahore 
     udpSett.endPacket();   
   }  
 }
@@ -480,7 +477,7 @@ bool receive_settings(){
         s_vect = receive_vector;
         upload_permanently_pref(); //ulozeni do permanentni pameti
         Serial.printf("New settings recieved and updated from Semafor ID: %d", receive_vector.game);
-        wifi_disable();
+        //wifi_disable();
         return true; 
       }
       else {

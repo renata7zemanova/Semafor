@@ -15,12 +15,19 @@ void setup() {
   ArduinoMetronome settings_delay(300000); //tohle je 5 minut
 
   //tohle vsechno bude nastaveno z webu
-  s_vect.game = VABNICKA;
-  s_vect.vabnicka_num_of_colors = 3;
-  s_vect.vabnicka_is_black = 1;
-  s_vect.vabnicka_is_random = 0;
+  //s_vect.game = VABNICKA;
+  //s_vect.vabnicka_num_of_colors = 3;
+  //s_vect.vabnicka_is_black = 1;
+  //s_vect.vabnicka_is_random = 0;
 
   while(true){
+
+    for(int i = 1; i <= NUM_OF_BUTTONS; ++i){
+      //Serial.print(Touch_AT42.is_touched_btn(i));
+      Serial.print(Touch_AT42.get_raw_data_btn(i));
+      Serial.print("  ");
+    }
+    Serial.println();
     //if(is_touched_enter())
       //Serial.println("stisk enteru");
     //if(is_touched_up())
@@ -30,7 +37,6 @@ void setup() {
       //Serial.println(s_vect.game);
       switch(s_vect.game){
         case VABNICKA:
-          Serial.println("vabnicka");
           play_vabnicka(); 
           break;
         case SEMAFOR:
@@ -74,17 +80,20 @@ void setup() {
       }
     }
     
-    if(!share_delay.loopMs()){
-      if(receive_settings()){
-        LEDs_all_on(BLUE); //potvrzeni LEDkama
-        delay(500);
-        LEDs_all_off();
-        wifi_disable();
-        state = PLAY;
-      }
+    //if(!share_delay.loopMs()){
+    if(receive_settings()){
+      LEDs_all_on(BLUE); //potvrzeni prijeti
+      delay(500);
+      LEDs_all_off();
+      delay(500);
+      //wifi_disable();
+      //state = PLAY;
     }
+    //}
 
     tick_for_buttons();
+    set_LED_brightness();
+    //warn_if_battery_discharge();
     delay(10); 
   }
 }

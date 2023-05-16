@@ -72,7 +72,8 @@ void play_vabnicka();
 void play_semafor();
 void play_odpocitavadlo();
 
-void set_brightness();
+int read_phototransistor();
+void set_LED_brightness();
 uint32_t colors(Colors COLOR);
 Colors get_color(int index);
 
@@ -84,13 +85,10 @@ void LEDs_all_on(Colors COLOR);
 void LEDs_all_toggle(Colors COLOR);
 
 double measure_battery_voltage();
-bool is_battery_voltage_ok();
+bool is_battery_voltage_ok(double threshold);
+void warn_if_battery_discharge();
 
 void switch_off_voltage_periferies();
-
-void LoRa_on();
-void LoRa_write(const String msg);
-ResponseContainer LoRa_read();
 
 void vibrate_motor_on();
 void vibrate_motor_off();
