@@ -27,7 +27,7 @@ dostupnou technologií, která na velké vzdálenosti spolehlivě komunikuje.
 Byl vybrán bezdrátový LoRa modul E22-900T22D od firmy EBYTE. Tento modul komunikuje s~mikrokontrolérem pomocí UART sběrnice \cite{LoRa_ebyte}. Jeho napájecí napětí je od 
 2,1 V~do 5,5 V~a komunikační napětí je 3,3 V~\cite{LoRa_ebyte}. Rozsah komunikačních frekvencí bezdrátového modulu E22-900T22D je 850,125 MHz až 930,125 MHz a~ve výchozím 
 stavu je nastavena na 868,125 MHz \cite{LoRa_ebyte}. Toto je frekvence, na které je v~ČR povoleno komunikovat a to s~maximálním vyzařovaným výkonem 25 mW \cite{CTU}. 
-Maximální povolený klíčovací poměr je 1 \% \cite{CTU}. %klíčovací poměr = max duty cycle 
+Maximální povolený pracovní cyklus je 1 \% \cite{CTU}. %pracovní cyklus = max duty cycle 
 V~běžném režimu je spotřeba přibližně 151 mA a v~režimu spánku 2 $\mu$A \cite{LoRa_ebyte}. Tento bezdrátový modul má externě připojitelnou anténu typu SMA-K s~50 $\Omega$ 
 impedancí \cite{LoRa_ebyte}.
 
@@ -618,6 +618,8 @@ umístěny po obvodu a byly na ně připojeny všechny potřebné signály. Nap�
 
 Pouzdro na baterii bylo umístěno vertikálně do pravé části spodní DPS. Toto umístění bylo zvoleno kvůli možnosti připevnění Univerzálního modulu na dubové týblo. Týblo bude umístěno mezi spojenými DPS. 
 
+Na DPS byly také umístěny 4 montážní otvory s průměrem 3 mm. Tyto otvory slouží pro sešroubování obou DPS dohromady pomocí distančních sloupků, aby byla zaručena pevnost. 
+
 Při návrhu byly také brány v~potaz tekoucí proudy danými drahami. Tloušťky drah tomu byly přizpůsobeny a případné prokovy také. Například dráhy od baterie, jak k~nabíjecímu obvodu, tak k~USB mají tloušťku
 2 mm, signálové dráhy mají tloušťku 0,125 mm a ostatní napájení dráhy mají tloušťku 1 mm. Prokovy mají vždy vrtanou díru stejně velkou, jako je tloušťka dráhy a okolní měď má průměr alespoň o~0,2 mm větší 
 než vrtaná díra. U~dvounožičkových součástek byl také řešen thombstone efekt. Proto u~takových součástek byly dráhy vyvedeny stejně tlusté, případně alespoň co nejpodobnější. 
@@ -870,7 +872,7 @@ Univerzální modul zalit celý.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.15]{obrazky/DPS_prototyp_v_silikonu.jpg}
+    \includegraphics[scale=0.12]{obrazky/DPS_prototyp_v_silikonu.jpg}
   \end{center}
   \caption[Prototyp univerzálního modulu v~silikonu]{Prototyp univerzálního modulu v~silikonu.}
 \end{figure}
@@ -883,10 +885,14 @@ sám k~sobě.
 \section{Finální verze}
 Protože se silikonovým obalem u~prototypu byly problémy, tak byl obal finální verze Univerzálního modulu vytvořen jiným způsobem. Zároveň byl vybrán jednodušší postup a levnější řešení. 
 
-Byla vymodelována krabička na finální verzi, která pokrývá zadní a boční stranu Univerzálního modulu. V~bočních stranách jsou otvory pro nabíjecí konektor USB-C, vypínač a pro anténu LoRa modulu. Po vytištění 
-na 3D tiskárně byla DPS Univerzálního modulu vložena do této krabičky. Ke krabičce byla DPS přilepena a~vrchní strana Univerzálního modulu byla zalakována čirým lakem. 
+Byla vymodelována kruhová krabička na finální verzi DPS, která pokrývá zadní a boční stranu Univerzálního modulu. V~bočních stranách jsou otvory pro nabíjecí konektor USB-C, vypínač, pásek programovatelných 
+LED a pro anténu LoRa modulu. Univerzální modul také musí být nasazovatelný na dubové týblo o průměru 8 mm. Proto byl vytvořen otvor v krabičce a také byl vytištěn díl, který zabraňuje, aby týblo poškodilo 
+elektroniku. Tento díl byl po vytištění vlepen do krabičky.  
 
-Toto řešení také zaručuje určitou možnou voděodolnost a je mnohem jednodušší na výrobu. 
+Krabička byla vytištěna z PETG materiálu. Po vytištění byla DPS Univerzálního modulu sešroubována pomocí distančních sloupků o distanční délce 2 mm a šroubech M3 se zápustnou hlavou. Takto sešroubovaný Univerzální 
+modul byl vložena do vytištěné krabičky. Ke krabičce byla DPS přilepena tavným lepidlem a~vrchní strana Univerzálního modulu byla zalakována čirým lakem. 
+
+Toto řešení také zaručuje určitou možnou voděodolnost a je mnohem jednodušší na výrobu než v případě silikonové verze. 
 
 %možná model
 
