@@ -5,6 +5,10 @@
   )
 
   (paper "A4")
+  (title_block
+    (title "Universal module")
+  )
+
   (layers
     (0 "F.Cu" signal)
     (31 "B.Cu" signal)
@@ -61,7 +65,7 @@
       (creategerberjobfile true)
       (svguseinch false)
       (svgprecision 6)
-      (excludeedgelayer true)
+      (excludeedgelayer false)
       (plotframeref false)
       (viasonmask false)
       (mode 1)
@@ -77,13 +81,13 @@
       (plotreference true)
       (plotvalue true)
       (plotinvisibletext false)
-      (sketchpadsonfab false)
+      (sketchpadsonfab true)
       (subtractmaskfromsilk false)
-      (outputformat 1)
+      (outputformat 4)
       (mirror false)
-      (drillshape 1)
+      (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "")
+      (outputdirectory "D:/School/FEKT/Magisterske/Diplomka/Semafor/text/prilohy/")
     )
   )
 
