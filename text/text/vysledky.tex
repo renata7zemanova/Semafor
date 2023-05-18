@@ -394,17 +394,24 @@ Konektoru USB-C je využíván pouze jako standardní a dostupný konektor, kter
 populací rozšířený a v~následujících letech se bude rozšiřovat stále více. Je využito standardního jmenovitého napětí 5 V~pro nabíjení baterií a nadále jsou také využity 
 piny D+ a D-, které jsou využity pro komunikaci při programování. 
 
-Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k~tak častému poškození, jak by mohlo být např. u~konektoru Micro USB. Při používání běžnou veřejností
-se jedná o~vítaný bonus. 
-
-Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}.
-
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[scale=0.5]{obrazky/USB_C.png}
   \end{center}
   \caption[Zapojení konektoru USB-C]{Zapojení konektoru USB-C.}
 \end{figure}
+
+Konektor USB-C je robustní a oboustranný, díky čemuž nebude docházet k~tak častému poškození, jak by mohlo být např. u~konektoru Micro USB. Při používání běžnou veřejností
+se jedná o~vítaný bonus. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{obrazky/USB_A.png}
+  \end{center}
+  \caption[Zapojení konektoru USB-A]{Zapojení konektoru USB-A.}
+\end{figure}
+
+Vybraný mikrokontrolér ESP32-C3 umožňuje komunikaci přímo po USB protokolu a není díky tomu zapotřebí žádného převodníku pro komunikaci \cite{ESP_C3_dtsh}.
 
 Připojené Shottkyho diody k~napájecímu napětí slouží pro zadržení případného zpětného proudu. Shottkyho diody jsou dimenzovány na proud, který odebírá celé zařízení. Vybrané 
 Shottkyho diody  B5819W mají maximální napětí 20 V, jmenovitý proud 1 A~a maximální špičkový proud 9 A~\cite{shotky_dtsh}.
@@ -416,13 +423,7 @@ připojení těchto rezistorů nesmí připojit napájecí napětí 5 V~na pin V
 
 Pro napájení pomocí powerbanky bez potřeby kabelu slouží konektor USB-A. 
 
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.6]{obrazky/USB_A.png}
-  \end{center}
-  \caption[Zapojení konektoru USB-A]{Zapojení konektoru USB-A.}
-\end{figure}
-
+\newpage
 \section{Výsledné zapojení}
 Pro realizaci Univerzálního modulu byly vybrány následující komponenty: mikrokontrolér ESP32-C3, baterie LiFePO4, nabíjecí obvod CN3056E, konektory USB-C a USB-A,
 kapacitní tlačítka s~převodníkem AT42QT1070, inteligentní LED WS2812C s~převodníkem napětí LT1930, piezo BMT1205XH7.5, vibrační motor LCM1020A2945F a~LoRa modul 
@@ -629,14 +630,9 @@ než vrtaná díra. U~dvounožičkových součástek byl také řešen thombston
 
 DPS byla následně opět vyrobena a osazena u~firmy JLCPCB. Opět nebyly k~dispoziciu firmy JLCPCB všechny potřebné součástky, takže některé byly osazeny ručně. Šlo o~kondenzátor C3 o~hodnotě 100 $\mu$F v~pouzdře 
 0805, převodník pro kapacitní tlačítka AT42QT1070, piezo, posuvný vypínač, pouzdro na baterii a LoRa modul E22-900T22D. Obě DPS byly propojeny pomocí dlouhých pinheadů a dutinek. 
-%napsat i oživení 
 
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.15]{obrazky/DPS_final_vrchni.jpg}
-  \end{center}
-  \caption[Výsledná DPS - vrchní část]{Výsledná DPS - vrchní část.}
-\end{figure}
+Po zapnutí Univerzálního modulu posuvným přepínačem byla změřena všechna napětí a byla v pořádku. Po nahrání testovacího softwaru bylo zjištěno, že vše je funkční a v případě kapacitních tlačítek byla jejich citlivost 
+výrazně lepší, než v případě prototypové DPS. 
 
 \begin{figure}[!h]
   \begin{center}
@@ -827,9 +823,9 @@ rozměry pouzdra nebo kde musí procházet pouzdrem až na povrch.
   
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.4]{obrazky/3D_model_predni.jpg}
+    \includegraphics[scale=0.4]{obrazky/3D_model_zadni.jpg}
   \end{center}
-  \caption[3D model přední části DPS]{3D model přední části DPS.}
+  \caption[3D model zadní části DPS]{3D model zadní části DPS.}
 \end{figure}
 
 Následně byl nakreslen model pouzdra, jak by mělo vypadat bez vložené DPS. Poté byla vytvořena sestava, kde byla DPS již vložené v~pouzdře. Z~pouzdra musely vyčnívat součásti, které nesmí být 
@@ -841,9 +837,9 @@ dala DPS zavřít.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.4]{obrazky/3D_model_zadni.jpg}
+    \includegraphics[scale=0.4]{obrazky/forma_predni.jpg}
   \end{center}
-  \caption[3D model zadní části DPS]{3D model zadní části DPS.}
+  \caption[3D model přední části formy]{3D model přední části formy.}
 \end{figure}
 
 V~předním dílu formy byl ve spodní části vytvořen otvor o~průměru 2 mm pro vstřik silikonu. Ve spodní části byl proto, aby hladina silikonu postupně stoupala a~nevznikaly tak při vstřiku vzduchové 
@@ -857,13 +853,6 @@ Forma na silikonový obal byla vytištěna na FMD 3D tiskárně. Nemohla být po
 
 Před zalitím Univerzálního modulu do formy byly pomocí vteřinového lepidla zalepeny boční otvory v~konektoru USB-C, aby silikon nevtekl těmito otvory dovnitř a neucpal tak tento konektor. DPS byla 
 vložena do formy, utěsněna tavným lepidlem a stlačena pomocí svorek.
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.4]{obrazky/forma_predni.jpg}
-  \end{center}
-  \caption[3D model přední části formy]{3D model přední části formy.}
-\end{figure}
 
 Byl použit dvousložkový průhledný silikon GMS A30, který se míchá v~poměru 1:1 \cite{silikon}. Pomocí stříkačky byl silikon vtlačen do formy. Díky tomu, že otvor byl ve spodní části formy a zásobník 
 nahoře, tak hladina postupně stoupala a nemohlo tak dojít ke vzniku vzduchových kapes. Až byl naplněn i vrchní zásobník, tak byl nátlakový otvor ucpán, aby silikon nevytekl. Tuhnutí tohoto silikonu 
@@ -885,17 +874,31 @@ sám k~sobě.
 \section{Finální verze}
 Protože se silikonovým obalem u~prototypu byly problémy, tak byl obal finální verze Univerzálního modulu vytvořen jiným způsobem. Zároveň byl vybrán jednodušší postup a levnější řešení. 
 
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.2]{obrazky/v_krabicce.jpg}
+  \end{center}
+  \caption[Univerzální modul v krabičce]{Univerzální modul v krabičce.}
+\end{figure}
+
 Byla vymodelována kruhová krabička na finální verzi DPS, která pokrývá zadní a boční stranu Univerzálního modulu. V~bočních stranách jsou otvory pro nabíjecí konektor USB-C, vypínač, pásek programovatelných 
-LED a pro anténu LoRa modulu. Univerzální modul také musí být nasazovatelný na dubové týblo o průměru 8 mm. Proto byl vytvořen otvor v krabičce a také byl vytištěn díl, který zabraňuje, aby týblo poškodilo 
-elektroniku. Tento díl byl po vytištění vlepen do krabičky.  
+LED, anténu LoRa modulu a pro LED indikující napájecí napětí a nabíjení baterií. Univerzální modul také musí být nasazovatelný na dubové týblo o průměru 8 mm. Proto byl vytvořen otvor v krabičce a také byl 
+vytištěn díl, který zabraňuje, aby týblo poškodilo elektroniku. Tento díl byl po vytištění vlepen do krabičky.  
 
 Krabička byla vytištěna z PETG materiálu. Po vytištění byla DPS Univerzálního modulu sešroubována pomocí distančních sloupků o distanční délce 2 mm a šroubech M3 se zápustnou hlavou. Takto sešroubovaný Univerzální 
-modul byl vložena do vytištěné krabičky. Ke krabičce byla DPS přilepena tavným lepidlem a~vrchní strana Univerzálního modulu byla zalakována čirým lakem. 
+modul byl vložena do vytištěné krabičky. Pásek s programovatelnými LED byl přilepen po obvodu krabičky. Ke krabičce byla DPS přilepena tavným lepidlem a~vrchní strana Univerzálního modulu byla zalakována čirým lakem. 
+Také programovatelné LED byly přetřeny tímto lakem, protože nebyla dostupná voděodolná verze tohoto pásku s tímto typek LED. 
 
-Toto řešení také zaručuje určitou možnou voděodolnost a je mnohem jednodušší na výrobu než v případě silikonové verze. 
+Toto řešení zaručuje voděodolnost vůči mírnému dešti, která je pro takové outdoorové použití dostačující. Toto řešení je také mnohem jednodušší na výrobu než v případě silikonové verze. 
 
-%možná model
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.16]{obrazky/v_krabicce_bok.jpg}
+  \end{center}
+  \caption[Univerzální modul v krabičce z boku]{Univerzální modul v krabičce z boku.}
+\end{figure}
 
-%fotka finální verze hotové i s obalem
+
+
 
 
