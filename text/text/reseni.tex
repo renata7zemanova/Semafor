@@ -18,7 +18,7 @@ Dalším důvodem, proč jsem chtěla vytvořit toto zařízení bylo, že jsem 
 mě technika uchvátila. Stačilo, když to blikalo nebo dělalo zvuky, a mě to přišlo jako kouzlo. Zájem o~techniku by se měl vyvinout již v~útlém 
 dětství, proto je táborové prostředí velmi vhodným a~zároveň možná trochu neočekávaným cílem. 
 
-Technika je budoucnost lidstva a svět bude potřebovat čím dál více lidí, kteří se jí zabývají a rozumí jí. Na to je ale zapotřebí pro ně děti 
+Technika je budoucnost lidstva a svět bude potřebovat čím dál více lidí, kteří se jí zabývají a rozumí jí. Na to je ale zapotřebí pro ni děti 
 nadchnout. Je zapotřebí dětem ukázat, že technika může být zábavná, že se s~ní dají dělat zajímavé věci a že nemá místo jen v~průmyslu, ale může 
 mít zastoupení i na takových místech, jako jsou dětské tábory a outdoorové aktivity.  
 
@@ -65,10 +65,7 @@ především na nízkou spotřebu, i proto je komunikační vzdálenost maximál
 metrů. Bluetooth je také technologií pro propojení pouze 2 zařízení, kde jedno je tzv. master a druhý tzv. slave \cite{Bezdrat_muni}. 
 Jedno zařízení je tedy nadřazeno druhému. V~případě telefonu a sluchátek je telefon nadřazený sluchátkům. 
 
-Výhody bezdrátové technologie Bluetooth jsou \cite{Bezdrat_muni}:
-\begin{itemize}
-  \item nízká spotřeba.
-\end{itemize}
+Výhodou bezdrátové technologie Bluetooth je nízká spotřeba \cite{Bezdrat_muni}.
 
 Nevýhody jsou \cite{Bezdrat_muni}:
 \begin{itemize}
@@ -123,7 +120,7 @@ díky čemuž má pokrytí více než 90 \% území ČR \cite{Sigfox_Zooco}. Sig
 s~velkým dosahem, 50 km na volném prostranství a až 5 km v~zastavěných oblastech \cite{Sigfox_Zooco}.  
 
 Jedná se o~placenou službu, kdy až po zaplacení poplatku je poskytnuto připojení do sítě Sigfox \cite{Sigfox_Zooco}. Komunikace probíhá po 12 bajtových 
-blocích s~omezením na maximální počet 140 zpráv \cite{Sigfox_Zooco}. Síť je tedy určená především pro malý přenos dat např. pro dálkový odečet elektroměru 
+blocích s~omezením na maximální počet 140 zpráv \cite{Sigfox_Zooco}. Síť je tedy určená především pro malý přenos dat, např. pro dálkový odečet elektroměru 
 nebo pro posílání dat ze senzorů. 
 
 Výhody bezdrátové sítě Sigfox jsou \cite{Sigfox_cz} \cite{Sigfox_Zooco}:
@@ -169,7 +166,7 @@ s~přenosem menšího objemu dat \cite{ZigBee_smart}. Jedná se o~spolehlivou te
 \cite{ZigBee_smart}. Díky ZigBee může mít uživatel v~jedné aplikaci zařízení 
 od různých značek a výrobců, protože právě ZigBee zajišťuje jejich vzájemnou komunikaci \cite{ZigBee_smart}.
 
-Technologie ZigBee je určeno primárně pro senzorové sítě v~průmyslových aplikacích \cite{Bezdrat_muni}. Není vhodný pro práce s~velkými objemy dat \cite{Bezdrat_muni}.
+Technologie ZigBee je určena primárně pro senzorové sítě v~průmyslových aplikacích \cite{Bezdrat_muni}. Není vhodná pro práce s~velkými objemy dat \cite{Bezdrat_muni}.
 Pracuje v~bezlicenčním frekvenčním pásmu \cite{Bezdrat_muni}.
 
 Výhody bezdrátové technologie ZigBee jsou \cite{ZigBee_smart}:
@@ -220,7 +217,7 @@ tlačítka je obvod rozepnut a při uvolnění stisku je obvod sepnut.
 
 Výhody mechanických tlačítek jsou:
 \begin{itemize}
-  \item jednoduché připojení ke každému GPIO mikrokontroléru,
+  \item jednoduché připojení ke každému GPIO pinu mikrokontroléru,
   \item odezva je samotný stisk tlačítka,
   \item fyzické rozpojení obvodu.
 \end{itemize}
@@ -255,8 +252,8 @@ nějakou vlastní kapacitu (kapacita samotné nosné desky) a po přiložení pr
 připojenou kapacitu přechodu tlačítka a prstu díky obsahu železa v~krvi a vodivosti kůže \cite{PrincipKapTl}. 
 Prst se tedy chová jako druhá uzemněná elektroda \cite{PrincipKapTl}. 
 
-Kapacita snímače se tedy volí co nejmenší, aby přiložený prst vyvolal co nejvetší změnu kapacity. Ve snímači se vyskytuje
-RC článek, jehož doba nabíjení kondenzátoru se přiložením prstu mění, a tím je možné detekovat stisk tlačítka \cite{PrincipKapTl}. 
+Kapacita snímače se tedy volí co nejmenší, aby přiložený prst vyvolal co největší změnu kapacity. Ve snímači se vyskytuje
+RC článek, jehož doba nabíjení kondenzátoru se s přiložením prstu mění, a tím je možné detekovat stisk tlačítka \cite{PrincipKapTl}. 
 
 \begin{figure}[!h]
   \begin{center}
@@ -295,12 +292,12 @@ Ve výběru baterií hraje velkou roli kapacita, napětí, velikost a cena. Pož
 nové baterie v~balení a musely by se neustále doplňovat a udržovat. Moderní baterie jsou náchylné na přepólování, a proto není bezpečné, aby uživatel měnil baterie sám. Baterie by tedy musely být zabudované v~zařízení 
 bez možnosti výměny uživatelem. 
 
-Z~nabíjecích baterií je možno vybírat baterií LiFePO4, Li-Ion, Li-Pol, Ni-MH a~olověných baterií.
+Z~nabíjecích baterií je možno vybírat z typů LiFePO4, Li-Ion, Li-Pol, Ni-MH a~olověných baterií.
 
 \subsection{LiFePO4}
 LiFePO4 baterie mají jmenovité napětí v~rozsahu 3 až 3,3 V~\cite{LiFePO4_malina}. Její minimální provozní napětí je pak 2,5 V~a maximální je 3,65 V~\cite{LiFePO4_malina}.
 LiFePO4 je dnes baterie známá jako nejbezpečnější, nejspolehlivější a nejstabilnější baterie obsahující lithium \cite{LiFePO4_malina}. Je to nejvhodnější baterie pro 
-přenosná zařízení díky velmi dobrému poměru velikosti (hmotnosti) a kapacity. Její životnost je až 4$\times$ vetší než u~baterie Li-Ion \cite{LiFePO4_malina}. Je také hodnocena
+přenosná zařízení díky velmi dobrému poměru velikosti (hmotnosti) a kapacity. Její životnost je až 4$\times$ větší než u~baterie Li-Ion \cite{LiFePO4_malina}. Je také hodnocena
 jako nejbezpečnější z~dosud dostupných baterií \cite{LiFePO4_malina}. Baterie LiFePO4 mohou standardně dosáhnout životnosti až 7000 cyklů, to odpovídá cca 15 letům při bežném
 používání \cite{LiFePO4_malina}. Článek LiFePO4 je teplotně stabilní, nehořlavý (ani při zkratu), netrpí samovybíjením, není toxický a nevytéká \cite{LiFePO4_malina}.
 
