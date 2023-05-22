@@ -20,8 +20,6 @@
 extern LoRa_E22 LoRa;
 extern AT42QT1070Touch Touch_AT42;
 extern WebServer server;
-extern ArduinoMetronome share_delay;
-extern ArduinoMetronome LED_delay;
 
 #define NUM_OF_COLORS 11
 #define NUM_OF_LEDS 12
@@ -89,6 +87,7 @@ bool is_battery_voltage_ok(double threshold);
 void warn_if_battery_discharge();
 
 void switch_off_voltage_periferies();
+void switch_off_voltage_side_LEDs();
 
 void vibrate_motor_on();
 void vibrate_motor_off();

@@ -13,9 +13,6 @@ WiFiUDP udpSett;
 state_vector_t s_vect;
 Preferences pref;
 
-ArduinoMetronome share_delay(60000); //minuta
-ArduinoMetronome LED_delay(800);
-
 Colors LED_state[NUM_OF_LEDS] = {BLACK};
 Buttons touched_buttons[NUM_OF_BUTTONS] = {NONE};
 
@@ -32,7 +29,6 @@ void set_LED_brightness(){
   if(brightness < 15){
     brightness = 15;
   }
-  //neni to videt na LEDkach... nechapu
   LED.leds.setBrightness(brightness);
 }
 
@@ -118,8 +114,6 @@ void LEDs_all_toggle(Colors COLOR){
 double measure_battery_voltage(){
   int measure_val = analogRead(ADC_BATTERY_PIN);
   double voltage = (double(measure_val) - 531.0) / 100.0;
-  //Serial.print("voltage: ");
-  //Serial.println(voltage);
   return voltage; 
 }
 
@@ -142,6 +136,14 @@ void warn_if_battery_discharge(){
 
 void switch_off_voltage_periferies(){
   digitalWrite(SWITCH_VOLTAGE_PERIFERIES, ST_OFF);
+}
+
+void switch_off_voltage_side_LEDs(){
+  Wire.begin(GPIO_SDA, GPIO_SCL);
+  Wire.beginTransmission(0x41); 
+  Wire.write(1);
+  Wire.write(4); //nastaveni log 1 na pin 2
+  Wire.endTransmission();
 }
 
 void vibrate_motor_on(){
@@ -203,7 +205,7 @@ void handle_btn_vibration(std::vector<Buttons> button){
   }
 }
 
-void tick_for_buttons(){ //musim volat pravidelne a casto
+void tick_for_buttons(){ //musi se volat pravidelne a casto
   Touch_AT42.tick();
 }
 
@@ -369,45 +371,22 @@ void download_permanently_pref(){
   if(counter == 0){
     counter++;
     pref.putUInt("counter", counter);
-    Serial.println("zadna data jeste nebyla zapsana jako settings");
     pref.putBytes("settings", &s_vect, sizeof(s_vect));
   }
-  else
-    Serial.println("data uz byla zapsana");
 
   pref.getBytes("settings", &s_vect, sizeof(s_vect));
-  Serial.print("hra ");
-  Serial.print(s_vect.game);
-  Serial.print(" ");
-  Serial.print(s_vect.odpocitavadlo_timeout);
-  Serial.print(" ");
-  Serial.print(s_vect.semafor_min_timeout);
-  Serial.print(" ");
-  Serial.print(s_vect.semafor_max_timeout);
-  Serial.print(" ");
-  Serial.print(s_vect.vabnicka_num_of_colors);
-  Serial.print(" ");
-  Serial.print(s_vect.vabnicka_is_black);
-  Serial.print(" ");
-  Serial.println(s_vect.vabnicka_is_random);
   pref.end();
 }
 
 void start_server(){
     wifi_ap_enable();
 
-    server.on("/", handleRoot); //otevru v prohlizeci tuto stranku - lomitko 
-    //server.on("/admin", handleAdmin);
-    //server.on("/adminsave", handleAdminSave);
-    server.on("/datasave", handleDataSave); //webovka s nazvem datasave
-    //server.on("/upload", handleUpload);//
-    //server.on("/addparam", handleAddParam);
+    server.on("/", handleRoot); //hlavni stranka
+    server.on("/datasave", handleDataSave); //parametry
     server.onNotFound(handleRoot);
-    server.on("/style.css", handleStyle); //spusteni serveru a na nem je webovka
-
+    server.on("/style.css", handleStyle); //vzhled
     server.begin();
-
-//udp protokol - pro sdileni nastaveni ostatnim semaforum 
+    //udp protokol - pro sdileni nastaveni ostatnim 
     udpSett.begin(1111);
 
 }
@@ -416,18 +395,14 @@ void wifi_enable_connect(){
     WiFi.begin(wifi_ssid, wifi_password);
 }
 
-void wifi_disable(){ //vypnuti WiFi i serveru - musim udelat pred zacatkem hry
+void wifi_disable(){ 
     WiFi.disconnect(true);
-    //WiFi.disconnect();
 }
 
 void wifi_ap_enable(){
-    wifi_disable(); //vypnuti WiFi, ktera se k necemu pripoji a zapinam WiFi, ktera se vytvori a jde k ni pripojit
-    //WiFiAP.softAPConfig(wifi_IP, wifi_IP, net_mask); //konfigurace hlavni WiFi
-    // WiFi.softAPConfig((192, 168, 1, 1), (192, 168, 1, 1), (255, 255, 255, 0)); //konfigurace hlavni WiFi
-    WiFi.softAP(wifi_ssid, wifi_password); //vytvoreni hlavni WiFi - tim se take zapina server
-    // WiFi.softAP("Semafor", "12345678");
-    delay(500);
+  wifi_disable(); //vypnuti WiFi, ktera se k necemu pripoji a zapinam WiFi, ktera se vytvori a jde k ni pripojit
+  WiFi.softAP(wifi_ssid, wifi_password); 
+  delay(500);
 }
 
 void wifi_ap_disable(){
@@ -443,12 +418,9 @@ void share_settings(){
   for (uint8_t i = 0; i < adapter_sta_list.num; i++){
     tcpip_adapter_sta_info_t station = adapter_sta_list.sta[i];
     IPAddress clientIP((uint32_t) station.ip.addr);
-    Serial.print("Clients IP: ");
-    Serial.println(clientIP);
 
     udpSett.beginPacket(clientIP, 1111);
     udpSett.write((const uint8_t *) &s_vect, sizeof(s_vect)); //odeslani 
-    //udpSett.println("Ahoj svete"); //potom smazat a nechat to nahore 
     udpSett.endPacket();   
   }  
 }
@@ -469,19 +441,13 @@ bool receive_settings(){
 
   if(connected){
     state_vector_t receive_vector;
-
     int packetSize = udpSett.parsePacket();
-    if (packetSize) { 
+    if (packetSize){ 
       int len = udpSett.read((char *) &receive_vector, sizeof(receive_vector)); //cteni dat + kam chci nacist data (receive_vector)
-      if(len > 0) { //jestli mi vubec neco prislo
+      if(len > 0){ //jestli mi vubec neco prislo
         s_vect = receive_vector;
-        upload_permanently_pref(); //ulozeni do permanentni pameti
-        Serial.printf("New settings recieved and updated from Semafor ID: %d", receive_vector.game);
-        //wifi_disable();
+        upload_permanently_pref(); 
         return true; 
-      }
-      else {
-        Serial.printf("Error receive new settings from Semafor ID: %d", receive_vector.game);
       } 
     }
   }

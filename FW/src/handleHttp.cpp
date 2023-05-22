@@ -15,11 +15,8 @@ void handleRoot() { //uvodni webovka
                 "<meta name='viewport' content='width=device-width'>"
                 "<title>Semafor manager</title></head><body>"
                 "<h2>Konfigurační menu Univerzálního modulu pro podporu týmových her");
-    Page += F( //novy formular pro tlacitko pro konfiguraci - upload mode
+    Page += F( 
             "<form method='POST' action='datasave'>"); //vytvarim formular pro data
-            //po odeslani pomoci "submit" se posle vysledek na /datasave
-            // /datasave je dalsi webovka, ktera prijima data
-            // je zapnuta v start_server()
 
     Page += F(
                 "<h2>Odpočítávadlo</h2>"
@@ -28,7 +25,7 @@ void handleRoot() { //uvodni webovka
                 "Doba odpočtu [minuty]: "
                 "<input type='text' placeholder='");
                 
-    Page += String(s_vect.odpocitavadlo_timeout); //co je v te promenne, tak se mi ukaze jak by default na webu 
+    Page += String(s_vect.odpocitavadlo_timeout); //co je v te promenne, tak se mi ukaze na webu
 
     Page += F(
                 "' name='timeout_odpocitavadlo'/><br>" //nazev promenne, kterou odesila prohlizec
@@ -37,13 +34,21 @@ void handleRoot() { //uvodni webovka
      Page += F(
                 "<h2>Vábnička</h2>"
                 "Po prvním stisku se náhodně rozsvítí jedna z možných barev. Pokud je náhodnost zakázána, tak se po každém stisku středového tlačítka rozsvítí Univerzální modul barvou, která v sekvenci následuje. Pokud je náhodnost povolena, tak se Univerzální modul rozsvítí náhodně vygenerovanou barvou, ne však tou, kterou svítí. <br>"
-                "Počet barev: "
+                "Počet barev:<br>"
                 "<input type='text' placeholder='");
     Page += String(s_vect.vabnicka_num_of_colors);
 
     Page += F(
-                 "' name='num_of_colors_vabnicka'/><br>" 
-                 "Je mezi barvami černá? ano = 1, ne = 0: "
+                "' name='num_of_colors_vabnicka'/><br>" 
+                "2 = červená, modrá<br>"
+                "3 = červená, modrá, zelená<br>"
+                "4 = červená, modrá, zelená, žlutá<br>"
+                "5 = červená, modrá, zelená, žlutá, bílá<br>"
+                "6 = červená, modrá, zelená, žlutá, bílá, oranžová<br>"
+                "7 = červená, modrá, zelená, žlutá, bílá, oranžová, hnědá<br>"
+                "8 = červená, modrá, zelená, žlutá, bílá, oranžová, hnědá, fialová<br>"
+                "9 = červená, modrá, zelená, žlutá, bílá, oranžová, hnědá, fialová, růžová<br>"
+                "Je mezi barvami černá? ano = 1, ne = 0: "
                 "<input type='text' placeholder='");
     Page += String(s_vect.vabnicka_is_black);
 
@@ -81,70 +86,50 @@ void handleRoot() { //uvodni webovka
 
 
 void handleDataSave() {
-    Serial.println("handleDataSave");
     char buffer[10];
     int32_t temp;
 
     server.arg("timeout_odpocitavadlo").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer); //string na cislo
-    if(temp > 0) {
+    if(temp > 0)
         s_vect.odpocitavadlo_timeout = temp;
-        Serial.println(s_vect.odpocitavadlo_timeout);
-    }
 
     server.arg("num_of_colors_vabnicka").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer); 
-    if(temp > 0) {
+    if(temp > 0)
         s_vect.vabnicka_num_of_colors = temp;
-        Serial.println(s_vect.vabnicka_num_of_colors);
-    }
 
     server.arg("is_black_vabnicka").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer);
-    if(temp > 0) {
+    if(temp > 0)
         s_vect.vabnicka_is_black = temp;
-        Serial.println(s_vect.vabnicka_is_black);
-    }
 
     server.arg("is_random_vabnicka").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer);
-    if(temp > 0) {
+    if(temp > 0)
         s_vect.vabnicka_is_random = temp;
-        Serial.println(s_vect.vabnicka_is_random);
-    }
 
     server.arg("min_timeout_semafor").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer);
-    if(temp > 0) {
+    if(temp > 0)
         s_vect.semafor_min_timeout = temp;
-        Serial.println(s_vect.semafor_min_timeout);
-    }
 
     server.arg("max_timeout_semafor").toCharArray(buffer, sizeof(buffer) - 1);
     temp = atoi(buffer);
-    if(temp > 0) {
+    if(temp > 0)
         s_vect.semafor_max_timeout= temp;
-        Serial.println(s_vect.semafor_max_timeout);
-    }
 
-     if(server.hasArg("tlacitko_odpocitavadlo")){
-        Serial.println("tlacitko odpocitavadlo");
+     if(server.hasArg("tlacitko_odpocitavadlo"))
         s_vect.game = ODPOCITAVADLO;
-    }
-    else if(server.hasArg("tlacitko_vabnicka")){
-        Serial.println("tlacitko vabnicka");
+    else if(server.hasArg("tlacitko_vabnicka"))
         s_vect.game = VABNICKA;
-    }
-    else if(server.hasArg("tlacitko_semafor")){
-        Serial.println("tlacitko semafor");
+    else if(server.hasArg("tlacitko_semafor"))
         s_vect.game = SEMAFOR;
         
-    }
-
     upload_permanently_pref();
 
     //odkazovani na jakou stranku se vratit apod - nutna nastaveni serveru
-    server.sendHeader("Location", "/", true); //po nastaveni parametru se vrat na domovskou stranku = handleRoot
+    server.sendHeader("Location", "/", true); 
     server.sendHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     server.sendHeader("Pragma", "no-cache");
     server.sendHeader("Expires", "-1");

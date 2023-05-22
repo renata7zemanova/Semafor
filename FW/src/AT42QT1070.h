@@ -6,7 +6,6 @@
 #include <vector>
 
 class MovingAverage{
-    // std::array<int, 100> raw_data; //vytvori pole, kde je .size, iterace apod
     std::vector<int> raw_data;
     int index = 0;
     int sum = 0;
@@ -88,20 +87,18 @@ class AT42QT1070Touch{
         Wire.begin(sda_pin, scl_pin);
 
         Wire.beginTransmission(0x1B);
-        Wire.write(0x39); // sets register pointer to the reset register (0x39)
-        Wire.write(0xFF); // send non-zero value to initiate a reset
+        Wire.write(0x39);
+        Wire.write(0xFF); 
         Wire.endTransmission();
 
         Wire.beginTransmission(0x1B);
-        Wire.write(53); // sets register pointer 53 - adresa registru
-        Wire.write(15); // deaktivace guard key (je na poz. 0) - co chci zapsat do registru
+        Wire.write(53); //53 - adresa registru
+        Wire.write(15); //deaktivace guard key (je na poz. 0) - co chci zapsat do registru
         Wire.endTransmission();
 
-        delay(250); // wait for device to restart
+        delay(250); //cekani na restart zarizeni
 
         //rozdeleni tlacitek do skupin, abych mohla cist stisk vice tlacitek
-        //nelze cist soucasne tlacitka ve stejne skupine
-        //kazde tlacitko v jine skupine
         Wire.beginTransmission(0x1B); 
         Wire.write(39); //od registru 39 az po registr 45
         Wire.write(32); 
