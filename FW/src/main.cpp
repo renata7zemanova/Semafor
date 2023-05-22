@@ -4,7 +4,6 @@
 #include "lib.h"
 
 void setup() {
-  Serial.begin(115200);
   int counter = 0;
   int time_counter = 0;
 
@@ -50,23 +49,12 @@ void setup() {
       }
     }
 
-    else if((settings_delay.loopMs()) && (time_counter == 0)){ 
-      Serial.println("cas vyprsel");
+    else if(time_counter == 0){ 
       time_counter = 1;
       wifi_disable();
       LEDs_all_off();
       state = PLAY;
     }
-    
-    //cele odstranit
-    Serial.print("odpocet ");
-    Serial.print("time_counter ");
-    Serial.print(time_counter);
-    Serial.print(" aktualni cas: ");
-    Serial.print(LED_delay.loopMs());
-    Serial.print("  ");
-    Serial.println(settings_delay.loopMs());
-
     
     if(receive_settings()){
       LEDs_all_on(BLUE); //potvrzeni prijeti
