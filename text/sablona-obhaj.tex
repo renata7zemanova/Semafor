@@ -106,9 +106,8 @@
 						\item Bezpečnost
 						\item Široké využití
 						\item Voděodolnost
-						\item Nízkou cenu
+						\item Nízká cena
 						\item Jednoduchost
-						\item Možnost komunikace mezi jednotlivými Semafory
 						\item Bezdrátová konfigurovatelnost
 					\end{itemize}
 				%\includegraphics[width=0.8\columnwidth]{obrazky/soucastky}
@@ -129,6 +128,9 @@
 				\item Porovnat
 				\item Vybrat
 				\item Navrhnout 
+				\item Vyrobit a osadit 
+				\item Vyřešit voděodolnost
+				\item Naprogramovat
 		\end{itemize}
 		\end{column}
 		%
@@ -158,25 +160,14 @@
 		\begin{column}{0.5\textwidth}		% první sloupec
 			%Obrázek znázorňuje model:\\[2ex]
 			%
-			Bezdrátová komunikace
+			Bezdrátová konfigurace
 			\begin{itemize}
-				\item LoRa
-				\begin{itemize}
-					\item Dosah až 20 km 
-					\item Bezlicenční pásmo
-					\item Topologie hvězdy 
-					\item Obousměrná komunikace
-				\end{itemize}
 				\item WiFi
-				\begin{itemize}
-					\item Bezlicenční pásmo
-					\item Rozšířená 
-					\item V každém mobilním telefonu
-				\end{itemize}
+				\item Bezlicenční pásmo
+				\item Rozšířená 
+				\item V každém mobilním telefonu
+				\item Pro bezdrátovou kominukaci
 			\end{itemize}
-		\end{column}
-		%
-		\begin{column}{0.5\textwidth}		% druhý sloupec
 			Mikrokontrolér
 			\begin{itemize}
 				\item ESP32-C3-MINI-1
@@ -185,43 +176,21 @@
 				\item 13 GPIO pinů
 			\end{itemize}
 		\end{column}
-	\end{columns}											% ukončení prostředí sloupce
-\end{frame}
-
-
-\begin{frame} 
-	\frametitle{Napájení}
-	
-	\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
-		\begin{column}{0.4\textwidth}		% první sloupec
-			%Obrázek znázorňuje model:\\[2ex]
-			%
+		%
+		\begin{column}{0.5\textwidth}		% druhý sloupec
 			\begin{itemize}
-				\item Baterie LiFePO4
+				\item Napájení
 				\begin{itemize}
+					\item Baterie LiFePO4
 					\item 3 až 3,6 V
 					\item Nejbezpečnější
 					\item Životnost až 7000 cyklů 
 					\item Teplotně stabilní
-					\item Nehořlavé
-					\item Netoxické
+					\item Nehořlavé, netoxické
 				\end{itemize}
 				\item Nabíjecí obvod CN3058E
-				\begin{itemize}
-					\item Určený pro LiFePO4
-					\item Nastavitelný nabíjecí proud
-					\item Signalizace stavu nabíjení 
-				\end{itemize}
 				\item Měření napětí na baterii 
 			\end{itemize}
-		\end{column}
-		%
-		\begin{column}{0.6\textwidth}		% druhý sloupec
-			\begin{figure}%	
-				\centering
-				\vspace{1cm}	              % horizontální mezera
-				\includegraphics[width=1\columnwidth]{obrazky/CN3058E.png}
-			\end{figure}
 		\end{column}
 	\end{columns}											% ukončení prostředí sloupce
 \end{frame}
@@ -251,34 +220,125 @@
 				\item Kapacitní tlačítka
 				\item Mechanická odolnost
 				\item Životnost
+				\item Vibrační odezva
 				\item Převodník
 				\begin{itemize}
 					\item Komunikace po  $I^2C$
 					\item Až 7 tlačítek
 				\end{itemize}
 			\end{itemize}
-			\begin{figure}%	
-				\centering
-				\vspace{1cm}	              % horizontální mezera
-				%\includegraphics[width=0.8\columnwidth]{obrazky/soucastky}
-				%lze vložit popisek, ale povetšinou je to v prezentaci zbytečné
-				%\caption{Popisek obrázku}%
-				%\label{obr:ukazka}
-			\end{figure}
 		\end{column}
 	\end{columns}											% ukončení prostředí sloupce
 \end{frame}
 
 \begin{frame} 
-	\frametitle{Budoucnost}
+	\frametitle{Zapojení elektroniky}
+	\begin{figure}%	
+		\centering	          
+		\includegraphics[width=1\columnwidth]{obrazky/blokove_schema_finalni_verze.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Návrh a výroba DPS}
 	\begin{itemize}
-		\item Návrh DPS
-		\item Výroba a oživení DPS
-		\item Vytvoření her 
-		\item Webová stránka pro konfiguraci
+		\item 2 spojené DPS
+		\item Tlačítka 
+		\item LED
+		\item Baterie
+		\item JLCPCB
+		\item Ruční doosazení 
 	\end{itemize}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Výsledné DPS}
+	\begin{columns}[T] 	
+		\begin{column}{0.5\textwidth}	
+			\begin{figure}%	
+				\centering	          
+				\includegraphics[width=0.7\columnwidth]{obrazky/DPS_final_spodni.jpg}
+			\end{figure}
+		\end{column}
+
+		\begin{column}{0.5\textwidth}	
+			\begin{figure}%	
+				\centering	          
+				\includegraphics[width=0.9\columnwidth]{obrazky/DPS_final_vrchni.jpg}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Firmware}
+	\begin{columns}[T] 	
+		\begin{column}{0.35\textwidth}	
+			\begin{itemize}	
+				\item Práce se senzory 
+				\item Měření napětí na baterii
+				\item Bezdrátová konfigurace
+				\begin{itemize}
+					\item WiFi
+					\item Jednotlivé módy 
+					\item Popisy
+					\item Parametry 
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+
+		\begin{column}{0.65\textwidth}	
+			\begin{figure}
+				\centering	          
+				\includegraphics[width=1\columnwidth]{obrazky/konfiguracni_webova_stranka_prezentace.jpg}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Příklad využití}
+	\begin{columns}[T] 	
+		\begin{column}{0.25\textwidth}	
+			\begin{itemize}
+				\item 3 módy 
+				\item LED, tlačítka 
+				\item Vábnička
+				\item Klasický semafor
+				\item Odpočítávadlo 
+			\end{itemize}
+		\end{column}
+
+		\begin{column}{0.75\textwidth}	
+			\begin{figure}%	
+				\centering	          
+				\includegraphics[width=1\columnwidth]{obrazky/Odpocitavani_diagram.png}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Voděodolnost}
+	\begin{columns}[T] 	
+		\begin{column}{0.3\textwidth}	
+			\begin{itemize}
+				\item 3D tisk 
+				\item Distanční sloupky 
+				\item Přilepení 
+				\item Čirý lak
+			\end{itemize}
+		\end{column}
+
+		\begin{column}{0.7\textwidth}	
+			\begin{figure}%	
+				\centering	          
+				\includegraphics[width=1\columnwidth]{obrazky/v_krabicce_bok.jpg}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
 
 %%%%%%%%%%%%%
 \begin{frame} 
@@ -288,20 +348,20 @@
 		\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
 			\begin{column}{0.3\textwidth}		% první sloupec
 				\begin{itemize}
-					\item Bezdrátový modul
-					\item Mikrokontrolér
-					\item Napájení 
-					\item Senzory doteku
-					\item Signalizační prvky 
-					\item Návrh kompletní elektroniky
+					\item Návrh elektroniky
+					\item Návrh DPS
+					\item Výroba a osazení DPS
+					\item Firmware 
+					\item Bezdrátová konfigurace
+					\item Příklad využití 
+					\item Voděodolnost
 				\end{itemize}
 			\end{column}
 			%
 			\begin{column}{0.7\textwidth}		% druhý sloupec
 				\begin{figure}
 					\centering
-					\vspace{0.5cm}
-					\includegraphics[width=0.9\columnwidth]{obrazky/vysledne_blokove_schema_prezentace.jpg}
+					\includegraphics[width=0.65\columnwidth]{obrazky/v_krabicce.jpg}
 				\end{figure}
 			\end{column}
 		\end{columns}	
@@ -318,34 +378,33 @@
 		\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
 			\begin{column}{0.3\textwidth}		% první sloupec
 				{\Huge Děkuji za pozornost!}
-				\vspace{1cm}
+				\vspace{0.5cm}
 				\begin{itemize}
-					\item Bezdrátový modul
-					\item Mikrokontrolér
-					\item Napájení 
-					\item Senzory doteku
-					\item Signalizační prvky 
-					\item Návrh kompletní elektroniky
+					\item Návrh elektroniky
+					\item Návrh DPS
+					\item Výroba a osazení DPS
+					\item Firmware 
+					\item Bezdrátová konfigurace
+					\item Příklad využití 
+					\item Voděodolnost
 				\end{itemize}
 			\end{column}
 			%
 			\begin{column}{0.7\textwidth}		% druhý sloupec
 				\begin{figure}
 					\centering
-					\vspace{0.5cm}
-					\includegraphics[width=0.9\columnwidth]{obrazky/vysledne_blokove_schema_prezentace.jpg}
+					\includegraphics[width=0.65\columnwidth]{obrazky/v_krabicce.jpg}
 				\end{figure}
 			\end{column}
 		\end{columns}	
 	\end{center}
 \end{frame}
 
-% otázky oponenta
-%\frame{
-%\frametitle{Budoucnost}
-%	\emph{Jaká je souvislost Vašeho vzorce (1.2) s~Maxwellovými rovnicemi v~integrálním tvaru?}\\[2ex]
-	%
-%	Již staří Římané\,\dots
-%}
+\begin{frame} 
+	\frametitle{Otázky oponenta}
+	%\emph{Jaká je souvislost Vašeho vzorce (1.2) s~Maxwellovými rovnicemi v~integrálním tvaru?}
+	
+\end{frame}
+
 
 \end{document}
