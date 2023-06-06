@@ -320,7 +320,7 @@ void play_odpocitavadlo(){
   static ArduinoMetronome timeout_for_toggle(1000);
   
   if(!is_touched_enter() && counter_of_pressed == 0){
-    LED_light(0, WHITE);
+    LED_light(0, GREEN);
     return; 
   }
   if(is_touched_enter() && time_is_over){
@@ -345,8 +345,13 @@ void play_odpocitavadlo(){
       for(int i = 0; i <= part_of_leds; ++i)
         LED_light(NUM_OF_LEDS - i, RED);
     }
-    else 
+    else{
       time_is_over = true; 
+      piezo_on();
+      delay(200);
+      piezo_off();
+    }
+      
   }
 }
 
