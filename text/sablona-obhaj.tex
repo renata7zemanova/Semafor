@@ -89,7 +89,7 @@
 	\frametitle{Základní informace}
 	\begin{columns}[T] 								% prostředí sloupce s umístěním nahoře
 		\begin{column}{0.5\textwidth}		% první sloupec
-			Co je to Semafor?
+			K čemu slouží Univerzální modul?
 			\begin{itemize}
 				\item Outdoorová aplikace
 				\item Edukační účely, táborové hry
@@ -100,7 +100,7 @@
 		\end{column}
 		%
 		\begin{column}{0.5\textwidth}		% druhý sloupec
-				Požadavky:
+				Požadavky
 					\begin{itemize}
 						\item Kompaktnost
 						\item Bezpečnost
@@ -129,8 +129,8 @@
 				\item Vybrat
 				\item Navrhnout 
 				\item Vyrobit a osadit 
-				\item Vyřešit voděodolnost
 				\item Naprogramovat
+				\item Vyřešit voděodolnost
 		\end{itemize}
 		\end{column}
 		%
@@ -166,7 +166,6 @@
 				\item Bezlicenční pásmo
 				\item Rozšířená 
 				\item V každém mobilním telefonu
-				\item Pro bezdrátovou kominukaci
 			\end{itemize}
 			Mikrokontrolér
 			\begin{itemize}
@@ -223,7 +222,7 @@
 				\item Vibrační odezva
 				\item Převodník
 				\begin{itemize}
-					\item Komunikace po  $I^2C$
+					\item Komunikace po $I^2C$
 					\item Až 7 tlačítek
 				\end{itemize}
 			\end{itemize}
@@ -237,18 +236,6 @@
 		\centering	          
 		\includegraphics[width=1\columnwidth]{obrazky/blokove_schema_finalni_verze.png}
 	\end{figure}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Návrh a výroba DPS}
-	\begin{itemize}
-		\item 2 spojené DPS
-		\item Tlačítka 
-		\item LED
-		\item Baterie
-		\item JLCPCB
-		\item Ruční doosazení 
-	\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -324,8 +311,7 @@
 	\begin{columns}[T] 	
 		\begin{column}{0.3\textwidth}	
 			\begin{itemize}
-				\item 3D tisk 
-				\item Distanční sloupky 
+				\item 3D tisk  
 				\item Přilepení 
 				\item Čirý lak
 			\end{itemize}
@@ -402,9 +388,29 @@
 
 \begin{frame} 
 	\frametitle{Otázky oponenta}
-	%\emph{Jaká je souvislost Vašeho vzorce (1.2) s~Maxwellovými rovnicemi v~integrálním tvaru?}
+	\emph{Jak je řešená ochrana proti podbití? Jaký bude mít vliv na další vybíjení baterie napěťový dělič mezi R1 a R7 a rezistor R12 s diodou D16?}
+	\begin{itemize}
+		\item Není řešeno hardwarově
+		\item Softwarové vypínání napětí LED, LoRa modulu, zvyšovače napětí LT1930 a~převodníku pro kapacitní tlačítka AT42QT1070 
+		\item Přechod mikrokontroléru nebo LoRa modulu do režimu spánku 
+		\item MCU - 130 $\mu$A, powerLED - 3,3 mA, rezistorový dělič - 58 $\mu$A 
+	\end{itemize}
+
+	\begin{figure}
+		\includegraphics[width=0.13\columnwidth]{obrazky/dotaz_delic.jpg}
+		\includegraphics[width=0.28\columnwidth]{obrazky/dotaz_power_LED.jpg}
+	\end{figure}
 	
 \end{frame}
 
+\begin{frame} 
+	\frametitle{Otázky oponenta}
+	\emph{Jaká je celková spotřeba zařízení v běžném provozu a jak dlouho je baterie schopná v tomhle stavu modul napájet?}
+	\begin{itemize}
+		\item Kapacita baterie - 1800 mAh
+		\item Herní mód Odpočítávání - 200 mA 
+		\item 9 hodin provozu 
+	\end{itemize}
+\end{frame}
 
 \end{document}
